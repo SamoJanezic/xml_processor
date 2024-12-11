@@ -6,6 +6,7 @@
   },
   "type": "module",
   "scripts": {
-
+    "up": "node migrations/up",
+    "down": "node migrations/down"
   }
 }
