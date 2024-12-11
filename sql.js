@@ -35,8 +35,8 @@ export const sqlInsert = `INSERT INTO izdelki(
     ?,?,?,?,?,?,?,?,?,?
 )`;
 
-function findOne() {
-    const sql = 'SELECT * FROM izdelki WHERE ean = 543';
+function findOne(ean) {
+    const sql = `SELECT * FROM izdelki WHERE ean = ${ean}`;
     db.all(sql, (err, rows) => {
         if (err) return console.error(err.message);
 
