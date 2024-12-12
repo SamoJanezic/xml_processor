@@ -1,5 +1,7 @@
 import sqlite from "sqlite3";
-import { acordInsertIntoDb } from "./xml/acordParse.js"
+import { insertIntoDb } from "./parsers/acordParse.js"
+import { dobavitelji } from "./dobavitelji.js"
+
 
 
 const db = new sqlite.Database('./database/test.db', sqlite.OPEN_READWRITE, (err) => {
@@ -7,6 +9,5 @@ const db = new sqlite.Database('./database/test.db', sqlite.OPEN_READWRITE, (err
 });
 
 
-acordInsertIntoDb();
-
+insertIntoDb(dobavitelji.acord);
 
