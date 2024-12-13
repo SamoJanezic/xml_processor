@@ -12,6 +12,8 @@ export function insertIntoDb(obj) {
     const json = parser.parse(xmlFile);
     const products = eval(obj.nodes);  //this is data in xml as json
 
+    console.log(products[0])
+    process.exit();
 
     products.forEach(product => {
         let values = obj.keys.map(key => {

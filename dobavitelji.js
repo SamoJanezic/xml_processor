@@ -14,6 +14,11 @@ export const dobavitelji = {
         nodes: "json.podjetje.izdelek",
         file: "colby.xml",
         keys: ["izdelekEAN", "izdelekIme", "tehnicniopis", "PPCcena", "cena", "blagovnaZnamka", "kategorija", "slikaMala", "slikaVelika", "dobava"]
+    },
+    elkotex: {
+        nodes: "json.items.item",
+        file: "elkotex.xml",
+        keys: ["ean", "naziv", "opis", "mpc", "price", "znamkaId", "kategorijaNaziv", "slike", "slike", "zaloga"]
     }
 
 }

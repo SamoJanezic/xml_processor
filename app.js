@@ -5,4 +5,4 @@ import { dobavitelji } from "./dobavitelji.js"
 // insertIntoDb(dobavitelji.acord);
 // insertIntoDb(dobavitelji.avtera);
 // insertIntoDb(dobavitelji.colby);
-
+insertIntoDb(dobavitelji.elkotex);
