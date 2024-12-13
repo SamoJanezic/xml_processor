@@ -1,8 +1,22 @@
-import { insertIntoDb } from "./parsers/parser.js"
+import { insertIntoDb } from "./controllers/mainController.js"
 import { dobavitelji } from "./dobavitelji.js"
 
+const startTime = performance.now();
+
+let vsiDobavitelji = [];
+
+for(let key in dobavitelji) {
+    vsiDobavitelji.push(key);
+}
+
+vsiDobavitelji.forEach(el => insertIntoDb(dobavitelji[el]))
 
 // insertIntoDb(dobavitelji.acord);
 // insertIntoDb(dobavitelji.avtera);
 // insertIntoDb(dobavitelji.colby);
-insertIntoDb(dobavitelji.elkotex);
+// insertIntoDb(dobavitelji.elkotex);
+// insertIntoDb(dobavitelji.eventus);
+
+const endTime = performance.now()
+
+console.log(`It took ${endTime - startTime} milliseconds`);

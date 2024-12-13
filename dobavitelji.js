@@ -19,8 +19,12 @@ export const dobavitelji = {
         nodes: "json.items.item",
         file: "elkotex.xml",
         keys: ["ean", "naziv", "opis", "mpc", "price", "znamkaId", "kategorijaNaziv", "slike", "slike", "zaloga"]
+    },
+    eventus: {
+        nodes: "json.podjetje.izdelki.izdelek",
+        file: "eventus.xml",
+        keys: ["EAN", "izdelekIme", "opis", "PPC", "nabavnaCena", "blagovnaZnamka", "dodatneSlike", "slikaVelika", "dobava"]
     }
-
 }
 
 
