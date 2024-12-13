@@ -1,11 +1,25 @@
 export const dobavitelji = {
     acord: {
-        nodes: "podjetje.izdelki.izdelek",
-        nodes1: "['podjetje']['izdelki']['izdelek']",
+        nodes: "json.podjetje.izdelki.izdelek",
+        // nodes1: "['podjetje']['izdelki']['izdelek']",
         file: "acord.xml",
         keys: ["EAN", "izdelekIme", "opis", "PPC", "nabavnaCena", "blagovnaZnamka", "kategorija", "slikaMala", "slikaVelika", "dobava"]
-    },    
-    // acordOriginal: {
+    },
+    avtera: {
+        nodes: "json.podjetje.izdelki.izdelek",
+        file: "avtera.xml",
+        keys: ["EAN", "izdelekIme", "opis", "PPC", "nabavnaCena", "blagovnaZnamka", "kategorija", "dodatneSlike", "slikaVelika", "dobava"]
+    },
+    colby: {
+        nodes: "json.podjetje.izdelek",
+        file: "colby.xml",
+        keys: ["izdelekEAN", "izdelekIme", "tehnicniopis", "PPCcena", "cena", "blagovnaZnamka", "kategorija", "slikaMala", "slikaVelika", "dobava"]
+    }
+
+}
+
+
+    // acord: {
     //     nodes: "podjetje.izdelki.izdelek",
     //     file: "acord.xml",
     //     attributes: {
@@ -16,16 +30,16 @@ export const dobavitelji = {
     //         opis,
     //         PPC,
     //         cenaAkcijska,
-    //         nabavnaCena, 
-    //         DC, 
-    //         DRabat, 
-    //         blagovnaZnamka, 
-    //         dimenzijePaketa: [depth, height, width, grossWeight, netWeight], 
-    //         davcnaStopnja, 
-    //         kategorija, 
-    //         slikaMala, 
-    //         slikaVelika, 
-    //         dobava, 
+    //         nabavnaCena,
+    //         DC,
+    //         DRabat,
+    //         blagovnaZnamka,
+    //         dimenzijePaketa: [depth, height, width, grossWeight, netWeight],
+    //         davcnaStopnja,
+    //         kategorija,
+    //         slikaMala,
+    //         slikaVelika,
+    //         dobava,
     //         spletnaStranProizvajalca,
     //         dodatneLastnosti: {},
     //     }
@@ -151,8 +165,6 @@ export const dobavitelji = {
     //         brutoTeza
     //     }
     // }
-}
-
 // asbis1: {
 //     nodes: "ProductCatalog.Product",
 //     file: "./XML/asbis1.xml",
@@ -188,3 +200,11 @@ export const dobavitelji = {
 //         EAN
 //     }
 // },
+
+class Dobavitelj {
+    constructor(node, file, keys) {
+        this.node = node,
+        this.file = file,
+        this.keys = keys
+    }
+}
