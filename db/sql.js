@@ -1,30 +1,42 @@
 
 export const sqlCreate = `CREATE TABLE izdelki(
     id INTEGER PRIMARY KEY,
-    ean UNIQUE,
+    izdelek_id,
+    ean,
     izdelek_ime,
+    kratki_opis,
     opis,
-    cena_prodajna,
     cena_nabavna,
-    proizvajalec,
-    kategorija,
+    dealer_cena,
+    ppc,
+    davčna_stopnja,
     slika_mala,
     slika_velika,
-    zaloga
+    dodatne_lastnosti,
+    balgovna_znamka,
+    kategorija,
+    eprel_id,
+    dobavitelj
 )`;
 
 export const sqlInsert = `INSERT INTO izdelki(
+    izdelek_id,
     ean,
     izdelek_ime,
+    kratki_opis,
     opis,
-    cena_prodajna,
     cena_nabavna,
-    proizvajalec,
-    kategorija,
+    dealer_cena,
+    ppc,
+    davčna_stopnja,
     slika_mala,
     slika_velika,
-    zaloga) VALUES (
-    ?,?,?,?,?,?,?,?,?,?
+    dodatne_lastnosti,
+    balgovna_znamka,
+    kategorija,
+    eprel_id,
+    dobavitelj) VALUES (
+    ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
 )`;
 
 function findOne(ean) {

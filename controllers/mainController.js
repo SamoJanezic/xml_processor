@@ -1,5 +1,5 @@
 import { parser } from "./parseController.js";
-import { sqlInsert, sqlUpdate } from "../db/sql.js";
+import { sqlInsert } from "../db/sql.js";
 import { db } from "../db/db.js"
 
 
@@ -10,6 +10,12 @@ export function insertIntoDb(obj) {
 
     data.forEach(product => {
         let values = obj.keys.map(key => {
+            if (key === 'dobavitelj') {
+                return obj.name;
+            }
+            if (key === 'niPodatka') {
+                return null;
+            }
             if (product[key] === '') {
                 return null;
             }
@@ -21,17 +27,11 @@ export function insertIntoDb(obj) {
             }
             return product[key];
         });
-        let ean = values[0];
 
-        if (ean) {
-            db.run(sqlInsert, values , (err) => {
-                if(err){
-                    if(err.code === "SQLITE_CONSTRAINT") {
-                        db.run(sqlUpdate, ean, err => console.error(err));
-                    }
-                    console.error(err.code);
-                }
-            });
-        }
+        db.run(sqlInsert, values , (err) => {
+            if(err){
+                console.error(err);
+            }
+        });
     });
 }

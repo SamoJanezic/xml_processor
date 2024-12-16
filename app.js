@@ -1,7 +1,6 @@
 import { insertIntoDb } from "./controllers/mainController.js"
 import { dobavitelji } from "./dobavitelji.js"
 
-const startTime = performance.now();
 
 let vsiDobavitelji = [];
 
@@ -17,6 +16,3 @@ vsiDobavitelji.forEach(el => insertIntoDb(dobavitelji[el]))
 // insertIntoDb(dobavitelji.elkotex);
 // insertIntoDb(dobavitelji.eventus);
 
-const endTime = performance.now()
-
-console.log(`It took ${endTime - startTime} milliseconds`);

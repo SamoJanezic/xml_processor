@@ -1,219 +1,45 @@
 export const dobavitelji = {
+    // keys in order : izdelek_id,ean,izdelek_ime,kratki_opis,opis,cena_nabavna,dealer_cena,ppc,davčna_stopnja,slika_mala,slika_velika,dodatne_lastnosti,balgovna_znamka,kategorija,eprel_id
+
     acord: {
+        name: "acord",
         nodes: "json.podjetje.izdelki.izdelek",
         // nodes1: "['podjetje']['izdelki']['izdelek']",
         file: "acord.xml",
-        keys: ["EAN", "izdelekIme", "opis", "PPC", "nabavnaCena", "blagovnaZnamka", "kategorija", "slikaMala", "slikaVelika", "dobava"]
+        keys: ["izdelekID", "EAN", "izdelekIme", "niPodatka", "opis", "nabavnaCena", "DC", "PPC", "davcnaStopnja", "slikaMala", "slikaVelika", "dodatneLastnosti", "blagovnaZnamka", "kategorija", "niPodatka", "dobavitelj"]
     },
     avtera: {
+        name: "avtera",
         nodes: "json.podjetje.izdelki.izdelek",
         file: "avtera.xml",
-        keys: ["EAN", "izdelekIme", "opis", "PPC", "nabavnaCena", "blagovnaZnamka", "kategorija", "dodatneSlike", "slikaVelika", "dobava"]
+        keys: ["izdelekID", "EAN", "izdelekIme", "niPodatka", "opis", "nabavnaCena", "DC", "PPC", "davcnaStopnja", "dodatneSlike", "slikaVelika", "dodatneLastnosti", "blagovnaZnamka", "kategorija", "EprelID", "dobavitelj"]
     },
     colby: {
+        name: "colby",
         nodes: "json.podjetje.izdelek",
         file: "colby.xml",
-        keys: ["izdelekEAN", "izdelekIme", "tehnicniopis", "PPCcena", "cena", "blagovnaZnamka", "kategorija", "slikaMala", "slikaVelika", "dobava"]
+        keys: ["produktnakoda", "izdelekEAN", "izdelekIme", "kratkiopis", "tehnicniopis", "cena", "niPodatka", "PPCcena", "davcnaStopnja", "slikaMala", "dodatneSlike", "dodatneLastnosti", "blagovnaZnamka", "kategorija", "niPodatka", "dobavitelj"]
     },
     elkotex: {
+        name: "elkotex",
         nodes: "json.items.item",
         file: "elkotex.xml",
-        keys: ["ean", "naziv", "opis", "mpc", "price", "znamkaId", "kategorijaNaziv", "slike", "slike", "zaloga"]
+        keys: ["ident", "ean", "naziv", "niPodatka", "opis", "price", "niPodatka", "mpc", "davek", "niPodatka", "slike", "niPodatka", "znamkaId", "podkategorijaNaziv", "niPodatka", "dobavitelj"]
     },
     eventus: {
+        name: "eventus",
         nodes: "json.podjetje.izdelki.izdelek",
         file: "eventus.xml",
-        keys: ["EAN", "izdelekIme", "opis", "PPC", "nabavnaCena", "blagovnaZnamka", "dodatneSlike", "slikaVelika", "dobava"]
+        keys: ["izdelekID", "EAN", "izdelekIme", "kratek_opis", "opis", "nabavnaCena", "DC", "PPC", "davcnaStopnja", "dodatneSlijke", "slikaVelika", "dodatneLastnosti", "blagovnaZnamka",  "kategorija", "niPodatka", "dobavitelj"]
     }
 }
 
 
-    // acord: {
-    //     nodes: "podjetje.izdelki.izdelek",
-    //     file: "acord.xml",
-    //     attributes: {
-    //         izdelekID,
-    //         EAN,
-    //         izdelekIme,
-    //         url,
-    //         opis,
-    //         PPC,
-    //         cenaAkcijska,
-    //         nabavnaCena,
-    //         DC,
-    //         DRabat,
-    //         blagovnaZnamka,
-    //         dimenzijePaketa: [depth, height, width, grossWeight, netWeight],
-    //         davcnaStopnja,
-    //         kategorija,
-    //         slikaMala,
-    //         slikaVelika,
-    //         dobava,
-    //         spletnaStranProizvajalca,
-    //         dodatneLastnosti: {},
-    //     }
-    // },
-    // avtera: {
-    //     nodes: "podjetje.izdelki.izdelek",
-    //     file: "avtera.xml",
-    //     attributes: {
-    //         izdelekId,
-    //         vendorItemNo,
-    //         WarrantyCustomer,
-    //         izdelekIme,
-    //         opis,
-    //         url,
-    //         dodatneLastnosti: [],
-    //         slikaVelika,
-    //         dodatneSlike: [],
-    //         PPC,
-    //         cenaAkcijska,
-    //         nabavnaCena,
-    //         DC,
-    //         davcnaStopnja,
-    //         kategorija,
-    //         blagovnaZnamka,
-    //         skupinaIzdelka,
-    //         dobava,
-    //         zaloga,
-    //         EAN,
-    //         brutoDolzina,
-    //         brutoSirina,
-    //         brutoVisina,
-    //         brutoTeza,
-    //         eprelId
-    //     }
-    // },
-    // colby: {
-    //     nodes: "podjetje.izdelek",
-    //     file: "colby.xml",
-    //     attributes: {
-    //         izdelekEAN,
-    //         produktnaKoda,
-    //         zaloznik,
-    //         razvijalec,
-    //         sifraDobavitelja,
-    //         izdelekIme,
-    //         naziv2,
-    //         model,
-    //         url,
-    //         kratkiOpis,
-    //         tehničniOpis,
-    //         dodatneLastnosti,
-    //         slikaVelika,
-    //         slikaMala,
-    //         dodatneSlike: [],
-    //         slikaŠkatla,
-    //         cena,
-    //         cenaAkcijska,
-    //         PPCcena,
-    //         davcnaStopnja,
-    //         garancija,
-    //         netoTeza,
-    //         brutoTeza,
-    //         kategorija,
-    //         blagovnaZnamka,
-    //         URLTehnicneProizvajalca,
-    //         navodila,
-    //         dobava,
-    //         zaloga
-    //     }
-    // },
-    // elkotex: {
-    //     nodes: "items.item",
-    //     file: "elkotex.xml",
-    //     attributes: {
-    //         ident,
-    //         stevilka,
-    //         naziv,
-    //         opis,
-    //         slike: [],
-    //         price,
-    //         rabat,
-    //         zaloga,
-    //         kategorijaID,
-    //         kategorijaNaziv,
-    //         mpc,
-    //         garancija,
-    //         rokDobave,
-    //         ean,
-    //         znamkaId,
-    //         visina,
-    //         sirina,
-    //         globina,
-    //         brutoTeza,
-    //         davek,
-    //     }
-    // },
-    // eventus: {
-    //     nodes: "podjetje.izdelki.izdelek",
-    //     file: "eventus.xml",
-    //     attributes: {
-    //         izdelekId,
-    //         sifraBar,
-    //         sifraSku,
-    //         EAN,
-    //         izdelekIme,
-    //         url,
-    //         kratekOpis,
-    //         opis,
-    //         dodatneLastnosti: [],
-    //         slikaVelika,
-    //         dodatneSlike: [],
-    //         PPC,
-    //         nabavnaCena,
-    //         DC,
-    //         davcnaStopnja,
-    //         kategorija,
-    //         blagovnaZnamka,
-    //         dobava,
-    //         garancija,
-    //         brutoDolzina,
-    //         brutoSirina,
-    //         brutoVisina,
-    //         brutoTeza
-    //     }
-    // }
-// asbis1: {
-//     nodes: "ProductCatalog.Product",
-//     file: "./XML/asbis1.xml",
-//     attributes: {
-//         productCode,
-//         vendor,
-//         productType,
-//         productCategory,
-//         productDescription,
-//         image,
-//         productCard,
-//         attrList: {},
-//         images: []
-//     }
-// },
-// asbis2: {
-//     nodes: "CONTENT.PRICES.PRICE",
-//     file: "./XML/asbis2.xml",
-//     attributes: {
-//         WIC,
-//         description,
-//         vendorName,
-//         groupName,
-//         vpfName,
-//         currencyCode,
-//         avail,
-//         myPrice,
-//         warrantyTerm,
-//         groupId,
-//         vendorId,
-//         smallImage,
-//         productCard,
-//         EAN
-//     }
-// },
 
-class Dobavitelj {
-    constructor(node, file, keys) {
-        this.node = node,
-        this.file = file,
-        this.keys = keys
-    }
-}
+// class Dobavitelj {
+//     constructor(node, file, keys) {
+//         this.node = node,
+//         this.file = file,
+//         this.keys = keys
+//     }
+// }
