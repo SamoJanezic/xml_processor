@@ -1,55 +1,34 @@
+import { db } from "./db.js";
 
-export const sqlCreate = `CREATE TABLE izdelki(
-    id INTEGER PRIMARY KEY,
-    izdelek_id,
-    ean,
-    izdelek_ime,
-    kratki_opis,
-    opis,
-    cena_nabavna,
-    dealer_cena,
-    ppc,
-    davčna_stopnja,
-    slika_mala,
-    slika_velika,
-    dodatne_lastnosti,
-    balgovna_znamka,
-    kategorija,
-    eprel_id,
-    dobavitelj
-)`;
-
-export const sqlInsert = `INSERT INTO izdelki(
-    izdelek_id,
-    ean,
-    izdelek_ime,
-    kratki_opis,
-    opis,
-    cena_nabavna,
-    dealer_cena,
-    ppc,
-    davčna_stopnja,
-    slika_mala,
-    slika_velika,
-    dodatne_lastnosti,
-    balgovna_znamka,
-    kategorija,
-    eprel_id,
-    dobavitelj) VALUES (
-    ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
-)`;
-
-function findOne(ean) {
-    const sql = `SELECT * FROM izdelki WHERE ean = ${ean}`;
-    db.all(sql, (err, rows) => {
-        if (err) return console.error(err.message);
-
-        console.log(Boolean(rows[0]));
-    });
+export function createTable(tableName, attr) {
+	const sql = `CREATE TABLE ${tableName}(${attr})`;
+	db.run(sql);
 }
 
-export const sqlUpdate = `UPDATE izdelki SET izdelek_ime = 'spremenjen' WHERE ean = ?`;
+export function insertIntoTable(tableName, attr, values) {
+	if (attr.length != values.length) {
+		console.error("attributes and values are not the same length");
+	}
+	let markValues = attr.map((el) => {
+		return "?";
+	});
 
-export const sqlSelect = `SELECT * FROM izdelki`;
+	const sql = `INSERT INTO ${tableName} ("${attr.join(
+		'","'
+	)}") VALUES (${markValues.join()})`;
+	db.run(sql, values);
+}
 
-export const sqlDrop = `DROP TABLE izdelki`;
+export function dropTable(tableName) {
+	const sql = `DROP TABLE ${tableName}`;
+	db.run(sql);
+}
+
+export function findOne(querry, val) {
+	const sql = `SELECT * FROM izdelki WHERE ${querry} = ${val}`;
+	db.all(sql, (err, rows) => {
+		if (err) return console.error(err.message);
+
+		console.log(Boolean(rows[0]));
+	});
+}

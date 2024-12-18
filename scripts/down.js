@@ -1,11 +1,8 @@
-import { sqlDrop } from "../db/sql.js";
-import { db } from "../db/db.js"
+import { dropTable } from "../db/sql.js";
 
+try {
+    dropTable('izdelki');
+} catch (err) {
+    console.log(err.message)
+}
 
-db.run(sqlDrop, [], (err) => {
-    if (err) {
-        console.error(err)
-    } else {
-        console.log('Table izdelki removed successfully')
-    }
-});

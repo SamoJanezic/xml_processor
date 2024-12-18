@@ -1,11 +1,27 @@
-import { sqlCreate } from "../db/sql.js";
-import { db } from "../db/db.js"
+import { createTable } from "../db/sql.js";
 
+let columns = [
+	"id INTEGER PRIMARY KEY",
+	"izdelek_id",
+	"ean",
+	"izdelek_ime",
+	"kratki_opis",
+	"opis",
+	"cena_nabavna",
+	"dealer_cena",
+	"ppc",
+	"davcna_stopnja",
+	"slika_mala",
+	"slika_velika",
+	"dodatne_lastnosti",
+	"balgovna_znamka",
+	"kategorija",
+	"eprel_id",
+	"dobavitelj",
+];
 
-db.run(sqlCreate, [], (err) => {
-    if (err) {
-        console.error(err)
-    } else {
-        console.log('Table izdelki created successfully')
-    }
-});
+try {
+	createTable("izdelki", columns.join());
+} catch (err) {
+	console.log(err.message);
+}
