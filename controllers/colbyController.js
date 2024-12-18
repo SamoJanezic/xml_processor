@@ -1,6 +1,6 @@
-import izdelkiController from "./izdelkiController.js";
+import dobaviteljController from "./dobaviteljController.js";
 
-export class avteraController extends izdelkiController {
+export class colbyController extends dobaviteljController {
 	name = "colby";
 	nodes = "json.podjetje.izdelek";
 	file = "colby.xml";

@@ -1,6 +1,6 @@
-import izdelkiController from "./izdelkiController.js";
+import dobaviteljController from "./dobaviteljController.js";
 
-export class avteraController extends izdelkiController {
+export class avteraController extends dobaviteljController {
 	name = "avtera";
 	nodes = "json.podjetje.izdelki.izdelek";
 	file = "avtera.xml";
@@ -20,6 +20,17 @@ export class avteraController extends izdelkiController {
 		"blagovnaZnamka",
 		"kategorija",
 		"EprelID",
-		"dobavitelj"
+		"dobavitelj",
 	];
+
+	exceptions(param) {
+		if (param["kategorija"] === "Rezervni deli") {
+			return true;
+		}
+	}
+
+	executeAll() {
+		this.createObj();
+		this.insertDataIntoDb();
+	}
 }

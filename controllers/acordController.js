@@ -22,34 +22,23 @@ export class acordController extends dobaviteljController {
 		"niPodatka",
 		"dobavitelj",
 	];
-	allData = [
 
-	];
 
 	addKratki_opis() {
 		this.allData.forEach(el => {
-			el["kratki_opis"] = el["opis"].substring(3, 50) + '...';
-		})
+			if (typeof el["opis"] === String){
+				el["kratki_opis"] = el["opis"].substring(0, 100).replace(/(<([^>]+)>)/gi, "") + '...';
+			}
+		});
 	}
 
+	exceptions() {
 
+	}
 
+	executeAll() {
+		this.createObj();
+		this.addKratki_opis();
+		this.insertDataIntoDb();
+	}
 }
-
-
-				// if (key === "dobavitelj") {
-				// 	return this.name;
-				// }
-				// if (key === "niPodatka") {
-				// 	return null;
-				// }
-				// if (product[key] === "") {
-				// 	return null;
-				// }
-				// if (product[key] === undefined) {
-				// 	return null;
-				// }
-				// if (product[key].constructor === Object) {
-				// 	return Object.values(product[key])[0];
-				// }
-				// return product[key];

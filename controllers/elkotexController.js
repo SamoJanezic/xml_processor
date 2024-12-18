@@ -1,6 +1,6 @@
-import izdelkiController from "./izdelkiController.js";
+import dobaviteljController from "./dobaviteljController.js";
 
-export class avteraController extends izdelkiController {
+export class elkotexController extends dobaviteljController {
 	name = "elkotex";
 	nodes = "json.items.item";
 	file = "elkotex.xml";

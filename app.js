@@ -1,18 +1,12 @@
-import { insertIntoDb } from "./controllers/mainController.js"
-import { dobavitelji } from "./dobavitelji.js"
+import { acordController } from "./controllers/acordController.js";
+import { avteraController } from "./controllers/avteraController.js";
 
+const acord = new acordController();
+acord.createObj();
+acord.addKratki_opis();
+acord.insertDataIntoDb();
 
-let vsiDobavitelji = [];
-
-for(let key in dobavitelji) {
-    vsiDobavitelji.push(key);
-}
-
-vsiDobavitelji.forEach(el => insertIntoDb(dobavitelji[el]))
-
-// insertIntoDb(dobavitelji.acord);
-// insertIntoDb(dobavitelji.avtera);
-// insertIntoDb(dobavitelji.colby);
-// insertIntoDb(dobavitelji.elkotex);
-// insertIntoDb(dobavitelji.eventus);
-
+const avtera = new avteraController();
+avtera.createObj();
+// avtera.removeRezervniDeli();
+avtera.insertDataIntoDb();

@@ -1,6 +1,5 @@
 import { parser } from "./parseController.js";
-import { sqlInsert } from "../db/sql.js";
-import { db } from "../db/db.js";
+import { insertIntoTable } from "../db/sql.js";
 
 export default class Dobavitelj {
 	vrstice = [
@@ -12,7 +11,7 @@ export default class Dobavitelj {
 		"cena_nabavna",
 		"dealer_cena",
 		"ppc",
-		"davčna_stopnja",
+		"davcna_stopnja",
 		"slika_mala",
 		"slika_velika",
 		"dodatne_lastnosti",
@@ -21,14 +20,7 @@ export default class Dobavitelj {
 		"eprel_id",
 		"dobavitelj",
 	];
-
-	insertIntoDb() {
-		db.run(sqlInsert, values, (err) => {
-			if (err) {
-				console.error(err);
-			}
-		});
-	}
+	allData = [];
 
 	getData() {
 		const data = parser(this.file, this.nodes);
@@ -38,9 +30,13 @@ export default class Dobavitelj {
 	createObj() {
 		let vrstica = this.vrstice;
 		this.getData().forEach((product) => {
+			if (this.exceptions(product)) {
+				return;
+			}
+
 			let newObj = {};
+
 			this.keys.map((key, idx) => {
-				// console.log(vrstica[idx])
 				if (key === "dobavitelj") {
 					newObj[vrstica[idx]] = this.name;
 					return newObj;
@@ -49,10 +45,30 @@ export default class Dobavitelj {
 					newObj[vrstica[idx]] = null;
 					return newObj;
 				}
+				if (product[key] === "") {
+					newObj[vrstica[idx]] = null;
+					return newObj;
+				}
 				newObj[vrstica[idx]] = product[key];
+
 				return newObj;
 			});
 			this.allData.push(newObj);
+		});
+	}
+
+	insertDataIntoDb() {
+		this.allData.forEach((el) => {
+			let arr = [];
+			for (let key in el) {
+				arr.push(el[key]);
+			}
+
+			try {
+				insertIntoTable("izdelki", this.vrstice, arr);
+			} catch {
+				(err) => console.error(err);
+			}
 		});
 	}
 }
