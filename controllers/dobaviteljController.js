@@ -82,8 +82,7 @@ export default class Dobavitelj {
 			return obj['#text'];
 		}
 		obj.lastnost.forEach(el => {
-			el['@_naziv'].replace(':', '')
-			str += el['@_naziv'] + ': ' + el['#text'] + ' | ';
+			str += el['@_naziv'].replace(':', '') + ': ' + el['#text'] + ' | ';
 		})
 		return str;
 	}
