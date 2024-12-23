@@ -81,9 +81,20 @@ export default class Dobavitelj {
 		if(!obj.hasOwnProperty("lastnost")) {
 			return obj['#text'];
 		}
+		if(!obj.lastnost.length) {
+			return str += obj.lastnost['@_naziv'] + ': ' + obj.lastnost['#text'];
+		}
 		obj.lastnost.forEach(el => {
 			str += el['@_naziv'].replace(':', '') + ': ' + el['#text'] + ' | ';
 		})
 		return str;
+	}
+
+	addKratki_opis() {
+		this.allData.forEach(el => {
+			if(el["opis"] !== null) {
+				el["kratki_opis"] = el["opis"].substring(0, 100).replace(/(<([^>]+)>)/gi, "") + '...';
+			}
+		});
 	}
 }

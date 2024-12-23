@@ -25,13 +25,14 @@ export class avteraController extends dobaviteljController {
 	];
 
 	exceptions(param) {
-		if (param["kategorija"] === "Rezervni deli") {
+		if (param["kategorija"]["#text"] === "Rezervni deli") {
 			return true;
 		}
 	}
 
 	executeAll() {
 		this.createObj();
+		this.addKratki_opis();
 		this.insertDataIntoDb();
 	}
 }

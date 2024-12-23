@@ -24,17 +24,8 @@ export class acordController extends dobaviteljController {
 		"dobavitelj",
 	];
 
-
-	addKratki_opis() {
-		this.allData.forEach(el => {
-			if(el["opis"] !== null) {
-				el["kratki_opis"] = el["opis"].substring(0, 100).replace(/(<([^>]+)>)/gi, "") + '...';
-			}
-		});
-	}
-
 	exceptions() {
-
+		return;
 	}
 
 	executeAll() {
