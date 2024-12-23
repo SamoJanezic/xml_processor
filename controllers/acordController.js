@@ -4,6 +4,7 @@ export class acordController extends dobaviteljController {
 	name = "acord";
 	nodes = "json.podjetje.izdelki.izdelek";
 	file = "acord.xml";
+	encoding = "utf8";
 	keys = [
 		"izdelekID",
 		"EAN",
@@ -26,7 +27,7 @@ export class acordController extends dobaviteljController {
 
 	addKratki_opis() {
 		this.allData.forEach(el => {
-			if (typeof el["opis"] === String){
+			if(el["opis"] !== null) {
 				el["kratki_opis"] = el["opis"].substring(0, 100).replace(/(<([^>]+)>)/gi, "") + '...';
 			}
 		});

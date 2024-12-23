@@ -23,7 +23,7 @@ export default class Dobavitelj {
 	allData = [];
 
 	getData() {
-		const data = parser(this.file, this.nodes);
+		const data = parser(this.file, this.nodes, this.encoding);
 		return data;
 	}
 
@@ -49,6 +49,10 @@ export default class Dobavitelj {
 					newObj[vrstica[idx]] = null;
 					return newObj;
 				}
+				if (typeof product[key] === 'object') {
+					newObj[vrstica[idx]] = this.parseObject(product[key]);
+					return newObj;
+				}
 				newObj[vrstica[idx]] = product[key];
 
 				return newObj;
@@ -70,5 +74,17 @@ export default class Dobavitelj {
 				(err) => console.error(err);
 			}
 		});
+	}
+
+	parseObject(obj) {
+		let str = '';
+		if(!obj.hasOwnProperty("lastnost")) {
+			return obj['#text'];
+		}
+		obj.lastnost.forEach(el => {
+			el['@_naziv'].replace(':', '')
+			str += el['@_naziv'] + ': ' + el['#text'] + ' | ';
+		})
+		return str;
 	}
 }
