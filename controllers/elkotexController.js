@@ -22,4 +22,8 @@ export class elkotexController extends dobaviteljController {
 		"niPodatka",
 		"dobavitelj",
 	];
+
+	exceptions() {
+
+	}
 }

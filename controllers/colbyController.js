@@ -22,4 +22,8 @@ export class colbyController extends dobaviteljController {
 		"niPodatka",
 		"dobavitelj",
 	];
+
+	exceptions() {
+		
+	}
 }

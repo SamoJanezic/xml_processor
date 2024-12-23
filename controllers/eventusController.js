@@ -22,4 +22,8 @@ export class eventusController extends dobaviteljController {
 		"niPodatka",
 		"dobavitelj",
 	];
+
+	exceptions() {
+
+	}
 }
