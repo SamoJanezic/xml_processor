@@ -39,22 +39,13 @@ export default class Dobavitelj {
 			this.keys.map((key, idx) => {
 				if (key === "dobavitelj") {
 					newObj[vrstica[idx]] = this.name;
-					return newObj;
-				}
-				if (key === "niPodatka") {
+				} else if (key === "niPodatka" || product[key] === "") {
 					newObj[vrstica[idx]] = null;
-					return newObj;
-				}
-				if (product[key] === "") {
-					newObj[vrstica[idx]] = null;
-					return newObj;
-				}
-				if (typeof product[key] === 'object') {
+				} else if (typeof product[key] === "object") {
 					newObj[vrstica[idx]] = this.parseObject(product[key]);
-					return newObj;
+				} else {
+					newObj[vrstica[idx]] = product[key];
 				}
-				newObj[vrstica[idx]] = product[key];
-
 				return newObj;
 			});
 			this.allData.push(newObj);
@@ -67,7 +58,6 @@ export default class Dobavitelj {
 			for (let key in el) {
 				arr.push(el[key]);
 			}
-
 			try {
 				insertIntoTable("izdelki", this.vrstice, arr);
 			} catch {
@@ -77,23 +67,26 @@ export default class Dobavitelj {
 	}
 
 	parseObject(obj) {
-		let str = '';
-		if(!obj.hasOwnProperty("lastnost")) {
-			return obj['#text'];
+		let str = "";
+		if (!obj.hasOwnProperty("lastnost")) {
+			return obj["#text"];
 		}
-		if(!obj.lastnost.length) {
-			return str += obj.lastnost['@_naziv'] + ': ' + obj.lastnost['#text'];
+		if (!obj.lastnost.length) {
+			return (str +=
+				obj.lastnost["@_naziv"] + ": " + obj.lastnost["#text"]);
 		}
-		obj.lastnost.forEach(el => {
-			str += el['@_naziv'].replace(':', '') + ': ' + el['#text'] + ' | ';
-		})
+		obj.lastnost.forEach((el) => {
+			str += el["@_naziv"].replace(":", "") + ": " + el["#text"] + " | ";
+		});
 		return str;
 	}
 
 	addKratki_opis() {
-		this.allData.forEach(el => {
-			if(el["opis"] !== null) {
-				el["kratki_opis"] = el["opis"].substring(0, 100).replace(/(<([^>]+)>)/gi, "") + '...';
+		this.allData.forEach((el) => {
+			if (el["opis"] !== null) {
+				el["kratki_opis"] =
+					el["opis"].substring(0, 100).replace(/(<([^>]+)>)/gi, "") +
+					"...";
 			}
 		});
 	}

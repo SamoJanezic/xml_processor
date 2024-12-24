@@ -8,14 +8,14 @@ export class colbyController extends dobaviteljController {
 		"produktnakoda",
 		"izdelekEAN",
 		"izdelekIme",
+		"niPodatka",
 		"kratkiopis",
-		"tehnicniopis",
 		"cena",
 		"niPodatka",
 		"PPCcena",
 		"davcnaStopnja",
-		"slikaMala",
-		"dodatneSlike",
+		"SlikaSkatla",
+		"slikaVelika",
 		"dodatneLastnosti",
 		"blagovnaZnamka",
 		"kategorija",
@@ -25,5 +25,11 @@ export class colbyController extends dobaviteljController {
 
 	exceptions() {
 		
+	}
+
+	executeAll() {
+		this.createObj();
+		this.addKratki_opis();
+		this.insertDataIntoDb();
 	}
 }
