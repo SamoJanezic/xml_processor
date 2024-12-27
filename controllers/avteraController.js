@@ -1,10 +1,11 @@
 import dobaviteljController from "./dobaviteljController.js";
+import {encode, decode, labels} from 'windows-1250';
 
 export class avteraController extends dobaviteljController {
 	name = "avtera";
 	nodes = "json.podjetje.izdelki.izdelek";
 	file = "avtera.xml";
-	encoding = "utf8";
+	encoding = "windows1250";
 	keys = [
 		"izdelekID",
 		"EAN",
