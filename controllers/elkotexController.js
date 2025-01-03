@@ -28,7 +28,7 @@ export class elkotexController extends dobaviteljController {
 	}
 
 	executeAll() {
-		this.createObj();
+		this.createDataObject();
 		this.insertDataIntoDb();
 	}
 }

@@ -1,5 +1,4 @@
 import dobaviteljController from "./dobaviteljController.js";
-import {encode, decode, labels} from 'windows-1250';
 
 export class avteraController extends dobaviteljController {
 	name = "avtera";
@@ -32,7 +31,7 @@ export class avteraController extends dobaviteljController {
 	}
 
 	executeAll() {
-		this.createObj();
+		this.createDataObject();
 		this.addKratki_opis();
 		this.insertDataIntoDb();
 	}

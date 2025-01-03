@@ -29,7 +29,7 @@ export class acordController extends dobaviteljController {
 	}
 
 	executeAll() {
-		this.createObj();
+		this.createDataObject();
 		this.addKratki_opis();
 		this.insertDataIntoDb();
 	}

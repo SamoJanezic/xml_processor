@@ -27,7 +27,7 @@ export default class Dobavitelj {
 		return data;
 	}
 
-	createObj() {
+	createDataObject() {
 		let vrstica = this.vrstice;
 		this.getData().forEach((product) => {
 			if (this.exceptions(product)) {
