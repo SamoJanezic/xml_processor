@@ -27,8 +27,17 @@ export class colbyController extends dobaviteljController {
 		
 	}
 
+	cleanOpis() {
+		this.allData.forEach((el) => {
+			if(el["opis"] !== null) {
+				el["opis"] = el["opis"].replace(/(<([^>]+)>)/gi, "");
+			}
+		});
+	}
+
 	executeAll() {
-		this.createObj();
+		this.createDataObject();
+		this.cleanOpis();
 		this.addKratki_opis();
 		this.insertDataIntoDb();
 	}
