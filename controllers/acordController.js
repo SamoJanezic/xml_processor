@@ -24,8 +24,10 @@ export class acordController extends dobaviteljController {
 		"dobavitelj",
 	];
 
-	exceptions() {
-		return;
+	exceptions(param) {
+		if (param["EAN"] === '' || param["EAN"].toString().length < 5) {
+			return true;
+		}
 	}
 
 	executeAll() {

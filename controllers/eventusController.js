@@ -23,7 +23,14 @@ export class eventusController extends dobaviteljController {
 		"dobavitelj",
 	];
 
-	exceptions() {
+	exceptions(param) {
+		if (param["kategorija"]["#text"] === "Rezervni deli") {
+			return true;
+		}
+	}
 
+	executeAll() {
+		this.createDataObject();
+		this.insertDataIntoDb();
 	}
 }

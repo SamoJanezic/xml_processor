@@ -23,8 +23,10 @@ export class elkotexController extends dobaviteljController {
 		"dobavitelj",
 	];
 
-	exceptions() {
-
+	exceptions(param) {
+		if (param["podkategorijaNaziv"].includes("Rezervni deli")) {
+			return true;
+		}
 	}
 
 	executeAll() {
