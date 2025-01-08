@@ -1,5 +1,5 @@
 import { parser } from "./parseController.js";
-import { insertIntoTable } from "../db/sql.js";
+import { insertIntoTable, findOne } from "../db/sql.js";
 
 export default class Dobavitelj {
 	vrstice = [
@@ -53,11 +53,18 @@ export default class Dobavitelj {
 	}
 
 	insertDataIntoDb() {
-		this.allData.forEach((el) => {
+
+		this.allData.forEach(async (el) => {
 			let arr = [];
 			for (let key in el) {
 				arr.push(el[key]);
 			}
+
+			// let result = await findOne('ean', 5099206030015);
+
+			// console.log(result);
+			// process.exit();
+
 			try {
 				insertIntoTable("izdelki", this.vrstice, arr);
 			} catch {
@@ -68,6 +75,9 @@ export default class Dobavitelj {
 
 	parseObject(obj) {
 		let str = "";
+		if (obj.dodatnaSlika1) {
+			return obj.dodatnaSlika1;
+		}
 		if (!obj.hasOwnProperty("lastnost")) {
 			return obj["#text"];
 		}

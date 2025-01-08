@@ -24,11 +24,28 @@ export function dropTable(tableName) {
 	db.run(sql);
 }
 
-export function findOne(querry, val) {
-	const sql = `SELECT * FROM izdelki WHERE ${querry} = ${val}`;
-	db.all(sql, (err, rows) => {
-		if (err) return console.error(err.message);
+// export function findOne (querry, val) {
+// 	let exists = false
+// 	const sql = `SELECT ean FROM izdelki WHERE ${querry} = ${val}`;
+// 	db.all(sql, (err, rows) => {
+// 		if (err) return console.error(err.message);
+// 		exists = true;
+// 	});
+// 	return exists;
+// }
 
-		console.log(Boolean(rows[0]));
-	});
+export function clearTable() {
+	const sql = `DELETE FROM izdelki`;
+	db.run(sql);
+}
+
+
+export async function findOne (querry, val) {
+	const sql = `SELECT ean, dobavitelj FROM izdelki WHERE ${querry} = ${val}`;
+	return new Promise ((resolve, reject) => {
+		db.all(sql, (err, rows) => {
+			if(err){return  reject(err);}
+			resolve(rows[0]);
+		});
+	})
 }
