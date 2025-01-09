@@ -18,25 +18,14 @@ const izdelki = [
 	"kategorija",
 	"eprel_id",
 	"dobavitelj",
+	"UNIQUE (ean, dobavitelj)"
 ];
-
-const duplikati = [
-	"id INTEGER PIMARY KEY",
-	"izdelek_ime",
-	"ean",
-	"cena_nabavna",
-	"dealer_cena",
-	"ppc",
-	"dobavitelj"
-]
 
 
 
 try {
 	createTable("izdelki", izdelki.join());
 	console.log("Tabela izdelki kreirana");
-	createTable("duplikati", duplikati.join());
-	console.log("tabela duplikati kreirana")
 } catch (err) {
 	console.log(err.message);
 }
