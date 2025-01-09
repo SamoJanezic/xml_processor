@@ -1,11 +1,47 @@
-import { acordController } from "./controllers/acordController.js";
-import { avteraController } from "./controllers/avteraController.js";
-import { eventusController } from "./controllers/eventusController.js";
-import { colbyController } from "./controllers/colbyController.js";
-import { elkotexController } from "./controllers/elkotexController.js";
+import { insertIntoTable } from "../db/sql.js"
 
-const acord = new acordController();
-const avtera = new avteraController();
+let test = {
+    baza: 'izdelki',
+    vrstice: [
+		"izdelek_id",
+		"ean",
+		"izdelek_ime",
+		"kratki_opis",
+		"opis",
+		"cena_nabavna",
+		"dealer_cena",
+		"ppc",
+		"davcna_stopnja",
+		"slika_mala",
+		"slika_velika",
+		"dodatne_lastnosti",
+		"balgovna_znamka",
+		"kategorija",
+		"eprel_id",
+		"dobavitelj",
+    ],
+    attr: [
+        12345,
+        99299,
+        'dildo',
+        '18cm',
+        '18cm in vibracija',
+        12,
+        15,
+        25,
+        22,
+        null,
+        null,
+        'pinky',
+        'pfy',
+        'užitek',
+        null,
+        'sexfriends'
+    ]
+}
 
-acord.executeAll();
-avtera.executeAll();
+try {
+    insertIntoTable(test.baza, test.vrstice, test.attr);
+} catch {
+    (err) => console.error(err.message);
+}

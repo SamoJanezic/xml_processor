@@ -53,17 +53,12 @@ export default class Dobavitelj {
 	}
 
 	insertDataIntoDb() {
+		this.allData.forEach((el) => {
 
-		this.allData.forEach(async (el) => {
 			let arr = [];
 			for (let key in el) {
 				arr.push(el[key]);
 			}
-
-			// let result = await findOne('ean', 5099206030015);
-
-			// console.log(result);
-			// process.exit();
 
 			try {
 				insertIntoTable("izdelki", this.vrstice, arr);

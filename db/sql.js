@@ -15,7 +15,8 @@ export function insertIntoTable(tableName, attr, values) {
 
 	const sql = `INSERT INTO ${tableName} ("${attr.join(
 		'","'
-	)}") VALUES (${markValues.join()})`;
+	)}") VALUES (${markValues.join()})
+	ON CONFLICT(ean, dobavitelj) DO UPDATE SET opis = "spremenjeno";`;
 	db.run(sql, values);
 }
 
@@ -24,15 +25,15 @@ export function dropTable(tableName) {
 	db.run(sql);
 }
 
-// export function findOne (querry, val) {
-// 	let exists = false
-// 	const sql = `SELECT ean FROM izdelki WHERE ${querry} = ${val}`;
-// 	db.all(sql, (err, rows) => {
-// 		if (err) return console.error(err.message);
-// 		exists = true;
-// 	});
-// 	return exists;
-// }
+export function findOne (querry, val) {
+	let exists = false
+	const sql = `SELECT ean FROM izdelki WHERE ${querry} = ${val}`;
+	db.all(sql, (err, rows) => {
+		if (err) return console.error(err.message);
+		exists = true;
+	});
+	return exists;
+}
 
 export function clearTable() {
 	const sql = `DELETE FROM izdelki`;
@@ -40,12 +41,12 @@ export function clearTable() {
 }
 
 
-export async function findOne (querry, val) {
-	const sql = `SELECT ean, dobavitelj FROM izdelki WHERE ${querry} = ${val}`;
-	return new Promise ((resolve, reject) => {
-		db.all(sql, (err, rows) => {
-			if(err){return  reject(err);}
-			resolve(rows[0]);
-		});
-	})
-}
+// export async function findOne (querry, val) {
+// 	const sql = `SELECT ean, dobavitelj FROM izdelki WHERE ${querry} = ${val}`;
+// 	return new Promise ((resolve, reject) => {
+// 		db.all(sql, (err, rows) => {
+// 			if(err){return  reject(err);}
+// 			resolve(rows[0]);
+// 		});
+// 	})
+// }
