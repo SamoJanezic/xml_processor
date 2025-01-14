@@ -28,17 +28,35 @@ export function dropTable(tableName) {
 export function findOne (querry, val) {
 	let exists = false
 	const sql = `SELECT ean FROM izdelki WHERE ${querry} = ${val}`;
-	db.all(sql, (err, rows) => {
+	let data = db.all(sql, (err, rows) => {
 		if (err) return console.error(err.message);
-		exists = true;
+		console.log(rows);
 	});
-	return exists;
+	return data;
 }
 
 export function clearTable() {
 	const sql = `DELETE FROM izdelki`;
 	db.run(sql);
 }
+
+export async function selectAll () {
+	const sql = `SELECT id, ean, izdelek_ime, opis, cena_nabavna, dealer_cena, ppc, balgovna_znamka, dobavitelj FROM izdelki`;
+	return new Promise ((resolve, reject) => {
+		db.all(sql, (err, rows) => {
+			if(err){return  reject(err);}
+			resolve(rows);
+		});
+	})
+}
+
+// export async function selectAll() {
+// 	const sql = `SELECT * FROM izdelki`;
+// 	db.all(sql, (rows, err) => {
+// 		if (err) return console.error(err.message);
+// 		return rows;
+// 	});
+// }
 
 
 // export async function findOne (querry, val) {
