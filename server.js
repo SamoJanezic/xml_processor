@@ -1,6 +1,7 @@
 import { createServer } from "http";
 import { selectAll } from "./db/sql.js";
 import allow from "allow-cors";
+import http from "http";
 
 const getData = await selectAll();
 const allData = JSON.stringify(getData);
@@ -14,6 +15,8 @@ const server = createServer((req, res) => {
 	res.setHeader("Content-Type", "text/plain");
 	res.end(allData);
 });
+
+
 server.listen(port, hostname, () => {
 	console.log(`Server running at http://${hostname}:${port}/`);
 });

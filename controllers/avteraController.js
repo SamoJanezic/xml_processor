@@ -28,6 +28,9 @@ export class avteraController extends dobaviteljController {
 		if (param["kategorija"]["#text"] === "Rezervni deli") {
 			return true;
 		}
+		if (param["EAN"] === '' || param["EAN"].toString().length < 5) {
+			return true;
+		}
 	}
 
 	executeAll() {

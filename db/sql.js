@@ -41,13 +41,13 @@ export function clearTable() {
 }
 
 export async function selectAll () {
-	const sql = `SELECT id, ean, izdelek_ime, opis, cena_nabavna, dealer_cena, ppc, balgovna_znamka, dobavitelj FROM izdelki`;
+	const sql = `SELECT id, ean, kategorija, izdelek_ime, opis, cena_nabavna, dealer_cena, ppc, balgovna_znamka, dobavitelj FROM izdelki`;
 	return new Promise ((resolve, reject) => {
 		db.all(sql, (err, rows) => {
 			if(err){return  reject(err);}
 			resolve(rows);
 		});
-	})
+	});
 }
 
 // export async function selectAll() {
