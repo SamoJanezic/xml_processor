@@ -2,6 +2,7 @@
   "dependencies": {
     "allow-cors": "^2.0.0",
     "axios": "^1.7.9",
+    "express": "^4.21.2",
     "fast-xml-parser": "^4.5.0",
     "sqlite3": "^5.1.7",
     "windows-1250": "^3.0.4"
@@ -10,6 +11,7 @@
   "scripts": {
     "up": "node scripts/up",
     "down": "node scripts/down",
-    "clear": "node scripts/clear"
+    "clear": "node scripts/clear",
+    "update": "node xml-downloader/app.js"
   }
 }

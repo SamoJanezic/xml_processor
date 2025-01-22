@@ -40,7 +40,7 @@ export function clearTable() {
 	db.run(sql);
 }
 
-export async function selectAll () {
+export async function selectAll() {
 	const sql = `SELECT id, ean, kategorija, izdelek_ime, opis, cena_nabavna, dealer_cena, ppc, balgovna_znamka, dobavitelj FROM izdelki`;
 	return new Promise ((resolve, reject) => {
 		db.all(sql, (err, rows) => {
@@ -48,6 +48,16 @@ export async function selectAll () {
 			resolve(rows);
 		});
 	});
+}
+
+export function update(querry, val, attr, value) {
+	const sql = `UPDATE izdelki SET ${attr} = ${value} WHERE ${querry} = ${val}`;
+	db.run(sql);
+}
+
+export function deleteItem(id) {
+	const sql = `DELETE FROM izdelki WHERE id = ${id}`;
+	db.run(sql);
 }
 
 // export async function selectAll() {
