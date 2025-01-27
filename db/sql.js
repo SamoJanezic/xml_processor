@@ -50,9 +50,13 @@ export async function selectAll() {
 	});
 }
 
-export function update(querry, val, attr, value) {
-	const sql = `UPDATE izdelki SET ${attr} = ${value} WHERE ${querry} = ${val}`;
-	db.run(sql);
+export function updateItem(id , pairs) {
+	const sql = `UPDATE izdelki SET ${pairs} WHERE id = ${id}`;
+	db.run(sql, (err) => {
+		if(err) {
+			console.error(err);
+		}
+	});
 }
 
 export function deleteItem(id) {
