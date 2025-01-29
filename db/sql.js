@@ -25,14 +25,14 @@ export function dropTable(tableName) {
 	db.run(sql);
 }
 
-export function findOne (querry, val) {
-	let exists = false
-	const sql = `SELECT ean FROM izdelki WHERE ${querry} = ${val}`;
-	let data = db.all(sql, (err, rows) => {
-		if (err) return console.error(err.message);
-		console.log(rows);
-	});
-	return data;
+export async function findOne (querry, val) {
+	const sql = `SELECT * FROM izdelki WHERE ${querry} = ${val}`;
+	return new Promise((resolve, reject) => {
+		db.all(sql, (err, row) => {
+			if(err){return  reject(err);}
+			resolve(row);
+		});
+	})
 }
 
 export function clearTable() {
@@ -40,8 +40,8 @@ export function clearTable() {
 	db.run(sql);
 }
 
-export async function selectAll() {
-	const sql = `SELECT id, ean, kategorija, izdelek_ime, opis, cena_nabavna, dealer_cena, ppc, balgovna_znamka, dobavitelj FROM izdelki`;
+export async function selectAll(tableName, cols) {
+	const sql = `SELECT ${cols} FROM ${tableName}`;
 	return new Promise ((resolve, reject) => {
 		db.all(sql, (err, rows) => {
 			if(err){return  reject(err);}
@@ -63,22 +63,3 @@ export function deleteItem(id) {
 	const sql = `DELETE FROM izdelki WHERE id = ${id}`;
 	db.run(sql);
 }
-
-// export async function selectAll() {
-// 	const sql = `SELECT * FROM izdelki`;
-// 	db.all(sql, (rows, err) => {
-// 		if (err) return console.error(err.message);
-// 		return rows;
-// 	});
-// }
-
-
-// export async function findOne (querry, val) {
-// 	const sql = `SELECT ean, dobavitelj FROM izdelki WHERE ${querry} = ${val}`;
-// 	return new Promise ((resolve, reject) => {
-// 		db.all(sql, (err, rows) => {
-// 			if(err){return  reject(err);}
-// 			resolve(rows[0]);
-// 		});
-// 	})
-// }

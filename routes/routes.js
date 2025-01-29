@@ -1,18 +1,8 @@
 import express from "express";
-import { selectAll, deleteItem } from "../db/sql.js";
-import { separateKeysAndValues, test } from "../middlewares/baseMiddleware.js";
-
-const getData = await selectAll();
-const allData = JSON.stringify(getData);
+import { selectAll, findOne } from "../db/sql.js";
+import { formatAndUpdate, readId} from "../middlewares/baseMiddleware.js";
 
 const router = express.Router();
-
-router.get("/", (req, res) => {
-	res.statusCode = 200;
-	res.send("GET request to the homepage");
-	res.setHeader("Content-Type", "text/plain");
-    res.end(allData);
-});
 
 router.post("/post", (req, res) => {
 	console.log(req.body)
@@ -20,15 +10,9 @@ router.post("/post", (req, res) => {
 });
 
 router.get("/getData", async (req, res) => {
-    const getData = await selectAll();
+	const columns = ['id', 'ean', 'kategorija', 'izdelek_ime', 'cena_nabavna', 'dealer_cena', 'ppc', 'balgovna_znamka', 'dobavitelj'];
+    const getData = await selectAll('izdelki', columns);
     res.status(200).json(getData);
-});
-
-router.post("/", (req, res) => {
-    const postData = req.body;
-	res.setHeader("Content-Type", "application/json");
-	console.log("Received POST data:", postData);
-    res.status(400).json({ message: "Data received"});
 });
 
 router.delete("/delete", (req, res) => {
@@ -38,9 +22,14 @@ router.delete("/delete", (req, res) => {
 
 router.put("/put", (req, res) => {
 	res.status(200);
-	test(req.body);
+	formatAndUpdate(req.body);
 	res.end("Data received");
 });
 
+router.get("/getSingle", async (req, res) => {
+	const id = readId(req.query);
+	const singleData = await findOne('id', id);
+	res.status(200).json(singleData);
+});
 
 export default router;

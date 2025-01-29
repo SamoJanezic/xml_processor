@@ -8,7 +8,7 @@ export function separateKeysAndValues(req, res) {
     }
 }
 
-export function test(obj) {
+export function formatAndUpdate(obj) {
     let arr = [];
     let id = null;
     for (let key in obj) {
@@ -21,5 +21,13 @@ export function test(obj) {
 
     const joined = arr.join(", ");
     updateItem(id, joined);
-    
+}
+
+
+export function readId(data) {
+    let id = null;
+    Object.keys(data).forEach(key => {
+        id = data[key];
+    });
+    return id;
 }
