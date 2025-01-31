@@ -1,5 +1,3 @@
-import { updateItem } from "../db/sql.js";
-
 export function separateKeysAndValues(req, res) {
     if (req.body && typeof req.body === 'object') {
         const { id, ...rest } = req.body;
@@ -19,8 +17,7 @@ export function formatAndUpdate(obj) {
         }
     }
 
-    const joined = arr.join(", ");
-    updateItem(id, joined);
+    return { id, arr };
 }
 
 
