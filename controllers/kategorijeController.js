@@ -1,131 +1,161 @@
 const kategorije = {
-	Računalništvo: {
-		Prenosniki: ["Dodatki za prenosnike"],
-		AIO: null,
-		"Namizni Računalniki": null,
-		"Mini Računalniki": null,
-		"Tablični Računalniki": null,
-		Strežniki: null,
-		NAS: null,
-		Monitorji: null,
-		Komponente: [
-			"Osnovne plošče",
-			"Procesorji",
-			"Pomnilniki",
-			"Trdi diski",
-			"Ohišja",
-			"Napajalniki",
-			"Grafične kartice",
-			"Optične enote",
-			"Zvočne kartice",
-			"Hlajenje",
-		],
-		"Mrežna oprema": null,
-		"Tiskanje in optično branje": null,
-		"Zunanje naprave": ["Tipkovnice", "Miške"],
-		Gaming: null,
-		"Programska oprema": null,
-		"Kripto svet": null,
-	},
-	"Zvok in slika": { Televizije: ["Nosilci za TV"] },
-	Fotoaparati: ["Objektivi"],
-	"Radio in budilke": null,
-	"HI-FI in prenosni zvočniki": null,
-	"Domači kino": null,
-	"Video Nadzor": [
-		"Snemalniki",
-		"Kamere",
-		"domofoni",
+	Računalništvo: [
+		{ "Prenosniki": ["Dodatki za prenosnike"] },
+		"AIO",
+		"Namizni Računalniki",
+		"Mini Računalniki",
+		"Tablični Računalniki",
+		"Strežniki",
+		"NAS",
 		"Monitorji",
-		"Nosilci",
-		"Napajalniki",
+		{
+			"Komponente": [
+				"Osnovne plošče",
+				"Procesorji",
+				"Pomnilniki",
+				"Trdi diski",
+				"Ohišja",
+				"Napajalniki",
+				"Grafične kartice",
+				"Optične enote",
+				"Zvočne kartice",
+				"Hlajenje",
+			],
+		},
+		"Mrežna oprema",
+		"Tiskanje in optično branje",
+		{ "Zunanje naprave": ["Tipkovnice", "Miške"] },
+		"Gaming",
+		"Programska oprema",
+		"Kripto svet",
 	],
-	Projekcija: [
-		"Projektorji",
-		"Projekcijska platna",
-		"Nosilci za projektorje",
-		"Žarnice za projektorje",
+	"Zvok in slika": [
+		{ "Televizije": ["Nosilci za TV"] },
+		{ "Fotoaparati": ["Objektivi"] },
+		"Radio in budilke",
+		"HI-FI in prenosni zvočniki",
+		"Domači kino",
+		{
+			"Video Nadzor": [
+				"Snemalniki",
+				"Kamere",
+				"domofoni",
+				"Monitorji",
+				"Nosilci",
+				"Napajalniki",
+			],
+		},
+		{
+			"Projekcija": [
+				"Projektorji",
+				"Projekcijska platna",
+				"Nosilci za projektorje",
+				"Žarnice za projektorje",
+			],
+		},
 	],
-	"Bela Tehnika": {
-		"Pranje in sušenje": [
-			"Pralni stroji",
-			"Sušilni stroji",
-			"Pralno sušilni stroji",
-		],
-		Pomivanje: ["Pomivalni stroji"],
-		"Hlajenje in zamrzovanje": ["Hladilniki", "Zamrzovalniki"],
-		"Kuhanje in pečenje": [
-			"Pečice",
-			"Kuhališča",
-			"Kuhalni seti",
-			"Štedilniki",
-			"Nape",
-		],
-	},
-	"Dom in vrt": {
-		"Mali gospodinjski aparati": [
-			"Mikrovalovne Pečice",
-			"Mesoreznice in salamoreznice",
-			"Cvrtniki",
-			"Kuhalniki",
-			"Grelniki vode",
-			"Kuhinjski roboti",
-			"Kuhinjski žari",
-			"Mešalniki",
-			"Opekači kruha",
-			"Sokovniki in ožemalniki",
-			"Aparati za peko kruha",
-			"Vakuumski aparati",
-			"Multipraktiki",
-			"Priprava kave in čaja",
-			"Sušilci sadja",
-			"Posoda",
-			"Prenosna kuhališča",
-			"Ledomati",
-			"Tehtnice",
-			"Likalniki",
-			"Sesalniki",
-		],
-		"Hlajenje in gretje": [
-			"Klimatske naprave",
-			"Ventilatorji",
-			"Radiatorji",
-			"Razvlažilci zraka",
-			"Vlažilci zraka",
-			"Bojlerji",
-			"Toplotne črpalke",
-			"Hranilniki vode",
-		],
-		Žari: null,
-		"Naprave za pametni dom": null,
-		"Pametni vrtovi in semena": ["Pametni vrtovi", "Semena"],
-	},
-	"Družina, šport in prosti čas": {
-		"Osebna nega": [
-			"Brivniki",
-			"Strižniki",
-			"Nega las",
-			"Depilatorji - epilatorji",
-			"Ustna nega",
-			"Pripomočki za osebno nego",
-		],
-		Daljnogledi: null,
-		"Kolesa in skuterji": null,
-		"Droni in dodatki": null,
-		Čelade: null,
-		"Športne ure": null,
-		Kampiranje: null,
-		"Hladilne torbe": null,
-		Termovke: null,
-		"Čistilci na tlak in metle": null,
-	},
+	"Bela Tehnika": [
+		{
+			"Pranje in sušenje": [
+				"Pralni stroji",
+				"Sušilni stroji",
+				"Pralno sušilni stroji",
+			],
+		},
+		{ "Pomivanje": ["Pomivalni stroji"] },
+		{ "Hlajenje in zamrzovanje": ["Hladilniki", "Zamrzovalniki"] },
+		{
+			"Kuhanje in pečenje": [
+				"Pečice",
+				"Kuhališča",
+				"Kuhalni seti",
+				"Štedilniki",
+				"Nape",
+			],
+		},
+	],
+
+	"Dom in vrt": [
+		{
+			"Mali gospodinjski aparati": [
+				"Mikrovalovne Pečice",
+				"Mesoreznice in salamoreznice",
+				"Cvrtniki",
+				"Kuhalniki",
+				"Grelniki vode",
+				"Kuhinjski roboti",
+				"Kuhinjski žari",
+				"Mešalniki",
+				"Opekači kruha",
+				"Sokovniki in ožemalniki",
+				"Aparati za peko kruha",
+				"Vakuumski aparati",
+				"Multipraktiki",
+				"Priprava kave in čaja",
+				"Sušilci sadja",
+				"Posoda",
+				"Prenosna kuhališča",
+				"Ledomati",
+				"Tehtnice",
+				"Likalniki",
+				"Sesalniki",
+			],
+		},
+		{
+			"Hlajenje in gretje": [
+				"Klimatske naprave",
+				"Ventilatorji",
+				"Radiatorji",
+				"Razvlažilci zraka",
+				"Vlažilci zraka",
+				"Bojlerji",
+				"Toplotne črpalke",
+				"Hranilniki vode",
+			],
+		},
+		"Žari",
+		"Naprave za pametni dom",
+		{ "Pametni vrtovi in semena": ["Pametni vrtovi", "Semena"] },
+	],
+	"Družina, šport in prosti čas": [
+		{
+			"Osebna nega": [
+				"Brivniki",
+				"Strižniki",
+				"Nega las",
+				"Depilatorji - epilatorji",
+				"Ustna nega",
+				"Pripomočki za osebno nego",
+			],
+		},
+		"Daljnogledi",
+		"Kolesa in skuterji",
+		"Droni in dodatki",
+		"Čelade",
+		"Športne ure",
+		"Kampiranje",
+		"Hladilne torbe",
+		"Termovke",
+		"Čistilci na tlak in metle",
+	],
 };
 
-const category = 'daljnogledi';
+function getKeysForValue(obj, value) {
+	let keys = [];
+	for (let key in obj) {
+		if (typeof obj[key] === 'object') {
+			keys = keys.concat(getKeysForValue(obj[key], value).map(subKey => `${key} > ${subKey}`));
+		} else if (obj[key] === value) {
+			keys.push(key);
+		}
+	}
+
+	return keys;
+}
 
 
-function getKeyByValue(object, value) {
-    console.log(Object.keys(object).find(key => object[key] === value));
-};
+function formatKeys(item) {
+	str = getKeysForValue(kategorije, item);
+	return str[0].replace(/ (> [0-9])+/g, "");
+}
 
-getKeyByValue(kategorije['Družina, šport in prosti čas'], category);
