@@ -1,6 +1,6 @@
 const kategorije = {
 	Računalništvo: [
-		{ "Prenosniki": ["Dodatki za prenosnike"] },
+		{ Prenosniki: ["Dodatki za prenosnike"] },
 		"AIO",
 		"Namizni Računalniki",
 		"Mini Računalniki",
@@ -9,7 +9,7 @@ const kategorije = {
 		"NAS",
 		"Monitorji",
 		{
-			"Komponente": [
+			Komponente: [
 				"Osnovne plošče",
 				"Procesorji",
 				"Pomnilniki",
@@ -24,14 +24,28 @@ const kategorije = {
 		},
 		"Mrežna oprema",
 		"Tiskanje in optično branje",
-		{ "Zunanje naprave": ["Tipkovnice", "Miške"] },
+		{
+			"Zunanje naprave": [
+				"Tipkovnice",
+				"Miške",
+				"UPS",
+				"Kompleti",
+				"Slušalke",
+				"Zvočniki",
+				"Spletne kamere",
+				"USB Ključki",
+				"Spominske kartice in čitalci",
+				"Mediji",
+				"Konferenčna oprema",
+			],
+		},
 		"Gaming",
 		"Programska oprema",
 		"Kripto svet",
 	],
 	"Zvok in slika": [
-		{ "Televizije": ["Nosilci za TV"] },
-		{ "Fotoaparati": ["Objektivi"] },
+		{ Televizije: ["Nosilci za TV"] },
+		{ Fotoaparati: ["Objektivi"] },
 		"Radio in budilke",
 		"HI-FI in prenosni zvočniki",
 		"Domači kino",
@@ -46,7 +60,7 @@ const kategorije = {
 			],
 		},
 		{
-			"Projekcija": [
+			Projekcija: [
 				"Projektorji",
 				"Projekcijska platna",
 				"Nosilci za projektorje",
@@ -62,7 +76,7 @@ const kategorije = {
 				"Pralno sušilni stroji",
 			],
 		},
-		{ "Pomivanje": ["Pomivalni stroji"] },
+		{ Pomivanje: ["Pomivalni stroji"] },
 		{ "Hlajenje in zamrzovanje": ["Hladilniki", "Zamrzovalniki"] },
 		{
 			"Kuhanje in pečenje": [
@@ -143,8 +157,12 @@ const kategorije = {
 function getKeysForValue(obj, value) {
 	let keys = [];
 	for (let key in obj) {
-		if (typeof obj[key] === 'object') {
-			keys = keys.concat(getKeysForValue(obj[key], value).map(subKey => `${key} > ${subKey}`));
+		if (typeof obj[key] === "object") {
+			keys = keys.concat(
+				getKeysForValue(obj[key], value).map(
+					(subKey) => `${key} > ${subKey}`
+				)
+			);
 		} else if (obj[key] === value) {
 			keys.push(key);
 		}
@@ -153,9 +171,14 @@ function getKeysForValue(obj, value) {
 	return keys;
 }
 
-
-function formatKeys(item) {
-	str = getKeysForValue(kategorije, item);
-	return str[0].replace(/ (> [0-9])+/g, "");
+export function formatKeys(item) {
+	const str = getKeysForValue(kategorije, item);
+	const arr = [];
+	if (str[1]) {
+		str.forEach((el) => {
+			arr.push(el.replace(/ (> [0-9])+/g, "") + " > " + item);
+		});
+		return arr;
+	}
+	return str[0].replace(/ (> [0-9])+/g, "") + " > " + item;
 }
-
