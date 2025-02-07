@@ -63,7 +63,6 @@ export class acordController extends dobaviteljController {
 	}
 
 	sortCategories() {
-		let counter = 0;
 		this.allData.forEach((el) => {
 			switch (el.kategorija) {
 				case "UPS napajanja, inverterji, regulatorji napetosti":

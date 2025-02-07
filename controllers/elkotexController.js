@@ -29,6 +29,16 @@ export class elkotexController extends dobaviteljController {
 		}
 	}
 
+	sortCategory() {
+		const arr = [];
+		this.allData.forEach((el) => {
+			if (!arr.includes(el.kategorija)) {
+				arr.push(el.kategorija);
+			}
+		});
+		console.log(arr);
+	}
+
 	executeAll() {
 		this.createDataObject();
 		this.insertDataIntoDb();

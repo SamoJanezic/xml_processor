@@ -27,6 +27,16 @@ export class colbyController extends dobaviteljController {
 		
 	}
 
+	sortCategory() {
+		const arr = [];
+		this.allData.forEach((el) => {
+			if (!arr.includes(el.kategorija)) {
+				arr.push(el.kategorija);
+			}
+		});
+		console.log(arr);
+	}
+
 	cleanOpis() {
 		this.allData.forEach((el) => {
 			if(el["opis"] !== null) {
