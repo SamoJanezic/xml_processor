@@ -33,14 +33,10 @@ export class avteraController extends dobaviteljController {
 			"Kabli in adapterji",
 			"Vinske omarice",
 			"Električni skuterji",
-			"FPP za podjetja in domačo up.",
 			"Dodatki za skiroje",
 			"Poslovni telefoni",
 			"Dodatki za telefone",
 			"ReproMS",
-			"Consumer zmogljivi (Envy, Spectre, Omnibook)",
-			"Consumer gaming (Omen, Victus)",
-			"Consumer osnovni (Laptop, Pavilion, X360)",
 		];
 		if (param["EAN"] === "" || param["EAN"].toString().length < 5) {
 			return true;
@@ -65,9 +61,11 @@ export class avteraController extends dobaviteljController {
 					el.kategorija = "Zamrzovalniki";
 					break;
 				case "LED TV":
+				case "LED prikazovalniki":
 					el.kategorija = "Televizije";
 					break;
 				case "Čitalci kartic":
+				case "Spominske kartice":
 					el.kategorija = "Spominske kartice in čitalci";
 					break;
 				case "LCD monitorji":
@@ -113,12 +111,13 @@ export class avteraController extends dobaviteljController {
 					el.kategorija = "Zvok in slika";
 					break;
 				case "DSP programska oprema":
+				case "FPP za podjetja in domačo up.":
 					el.kategorija = "Programska oprema";
 					break;
 				case "Komunikacijske rešitve":
 				case "Avdio konferenčni sistemi":
 				case "Video konferenčni sistemi":
-					el.kategorija = "Konferenčni sistemi";
+					el.kategorija = "Konferenčna oprema";
 					break;
 				case "Računalniki - All in One":
 					el.kategorija = "AIO";
@@ -130,6 +129,9 @@ export class avteraController extends dobaviteljController {
 				case "Električne pečice":
 					el.kategorija = "Pečice";
 					break;
+				case 'Consumer zmogljivi (Envy, Spectre, Omnibook)':
+				case 'Consumer gaming (Omen, Victus)':
+  				case 'Consumer osnovni (Laptop, Pavilion, X360)':
 				case "Prenosniki - poslovni":
 				case "Prenosniki - zmogljivi":
 				case "Prenosniki - gaming":
@@ -153,7 +155,13 @@ export class avteraController extends dobaviteljController {
 				case "Mestne čelade":
 					el.kategorija = "Čelade";
 					break;
-				case "":
+				case "Nosljive naprave":
+					el.kategorija = "Športne ure";
+					break;
+				case "Električna ogrevala":
+					el.kategorija = "Hlajenje in gretje";
+					break;
+				case "LED prikazovalniki":
 					count++;
 					console.log(el, count);
 					break;
@@ -165,6 +173,6 @@ export class avteraController extends dobaviteljController {
 		this.createDataObject();
 		this.addKratki_opis();
 		this.sortCategories();
-		// this.insertDataIntoDb();
+		this.insertDataIntoDb();
 	}
 }
