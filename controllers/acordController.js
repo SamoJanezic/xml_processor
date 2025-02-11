@@ -26,7 +26,6 @@ export class acordController extends dobaviteljController {
 	];
 
 	exceptions(param) {
-		// console.log(param['kategorija']['#text']);
 		const ignoreCategory = [
 			"Žarnice",
 			"Zunanja svetila",
@@ -134,7 +133,7 @@ export class acordController extends dobaviteljController {
 					el.kategorija = "Strežniki";
 					break;
 				case "Razdelilci in prenapetostna zaščita":
-					el.kategorija = "Prenapetostna zaščita";
+					el.kategorija = "UPS";
 					break;
 				case "Šport in prosti čas":
 					el.kategorija = "Šport in prosti čas";

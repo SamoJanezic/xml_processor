@@ -39,47 +39,191 @@ export class elkotexController extends dobaviteljController {
 			"Robustni telefoni",
 			"Ostali izdelki",
 			"Odstranjevalci vlaken",
-			"Video adapterji",
 			"Ohišja za diske",
-			'Vrtno pohištvo in dodatki',
-			'LED trakovi'
-
-
+			"Vrtno pohištvo in dodatki",
+			"LED trakovi",
+			"Telefonija",
+			"Sokovniki",
+			"Čistilniki zraka",
+			"Baterije in polnilci",
+			"Polnilne postaje, agregati",
+			'Pohištvo',
+			'Solarni paneli',
+			'Namizne svetilke',
+			'Dodatki',
+			'Sit-stand mize, podstavki in nosilci',
+			'Koši za odpadke',
+			"Ostalo",
+			"Rezervni deli"
 		];
-		if (param["podkategorijaNaziv"].includes("Rezervni deli")) {
-			return true;
-		}
 		if (ignoreCategory.includes(param["podkategorijaNaziv"])) {
 			return true;
 		}
+		// if (param["podkategorijaNaziv"].includes("Rezervni deli")) {
+		// 	return true;
+		// }
 	}
 
 	sortCategory() {
 		this.allData.forEach((el) => {
 			switch (el.kategorija) {
-				case 'Microsoft Windows':
-				case 'Microsoft Office':
+				case 'Razširitvene kartice':
+					el.kategorija = "Komponenta";
+					break;
+				case "Likaniki":
+					el.kategorija = "Likalniki";
+				case 'Nega zob':
+					el.kategorija = "Ustna nega";
+					break;
+				case 'Nega telesa':
+					el.kategorija = "Pripomočki za osebno nego";
+					break;
+				case 'Pisarniška tehnika':
+				case 'Uničevalci dokumentov':
+				case 'Organizatorji in dodatki':
+				case 'Organizatorji in dodatki':
+					el.kategorija = "POS in dodatki";
+					break;
+				case 'Laserski tiskalniki':
+					el.kategorija = "Tiskalniki";
+					break;
+				case "Bluetooth":
+					el.kategorija = "Mediji";
+					break;
+				case 'Ojačevalniki brezžičnega omrežja':
+				case 'PoE':
+				case 'Mrežne kartice':
+					el.kategorija = "Mrežne kartice, antene, WIFI ojačevalci";
+					break;
+				case 'Difuzorji':
+					el.kategorija = "Vlažilci zraka";
+					break;
+				case 'Torbe in nahrbtniki za fotoaparate in drone':
+					el.kategorija = "Fotoaparati";
+					break;
+				case 'Pametne ure':
+					el.kategorija = 'Športne ure';
+					break;
+				case 'Klasični in ročni sesalniki':
+				case 'Pokončni sesalniki':
+				case 'Parni čistilniki':
+					el.kategorija = "Sesalniki";
+					break;
+				case 'Prenosni zvočniki':
+					el.kategorija = "HI-FI in Prenosni zvočniki";
+					break;
+				case 'Domofoni':
+				case 'Vremenske postaje':
+					el.kategorija = "Naprave za pametni dom";
+					break;
+				case "Krmilniki in stikala":
+				case 'Stikala':
+				case 'Usmerjevalniki':
+					el.kategorija = "Usmerjevalniki, stikala in AP";
+					break;
+				case "Ventilatorji in dodatki":
+					el.kategorija = "Ventilatorji";
+					break;
+				case "Mini-micro-barebone (NUC)":
+					el.kategorija = "Mini";
+					break;
+				case 'Napajalniki za prenosnike':
+				case "Torbe za prenosnike":
+				case "Nahrbtniki za prenosnike":
+				case 'Hlajenje za prenosnike':
+					el.kategorija = "Dodatki za prenosnike";
+					break;
+				case "Oljni radiatorji":
+				case "Konvekcijski radiatorji":
+					el.kategorija = "Radiatorji";
+				case "Slušalke in mikrofoni":
+				case 'Naglavne slušalke':
+				case 'True Wireless slušalke':
+				case 'In-Ear slušalke':
+					el.kategorija = "Slušalke";
+					break;
+				case "USB hubi in priklopne postaje":
+				case 'Centralne nadzorne enote (HUB)':
+					el.kategorija = "Zunanje naprave";
+					break;
+				case "Video adapterji":
+				case 'Zvočni adapterji':
+				case "Priključni kabli in adapterji":
+				case "Kabli":
+				case 'Podaljški, razdelilci':
+				case 'Video kabli':
+				case 'Mrežni kabli':
+				case 'Mrežni adapterji':
+				case 'Video kabli':
+				case 'Urejanje kablov':
+				case 'Avto polnilci':
+				case 'Zvočni kabli':
+					el.kategorija = "Kabli in adapterji";
+					break;
+				case "Kuhinjsko orodje":
+				case "Kuhinjski organizatorji":
+				case 'Kuhinjski pripomočki':
+				case 'Priprava hrane':
+					el.kategorija = "Mali gospodinjski aparati";
+					break;
+				case "Zvočni sistemi za domači kino":
+				case 'Medijski predvajalniki':
+					el.kategorija = "Domači kino";
+					break;
+				case "Tablični računalniki in e-Bralniki":
+				case "Etuiji za tablice in diske":
+					el.kategorija = "Tablični računalniki";
+					break;
+				case "Torbe in nahrbtniki za prosti čas":
+					el.kategorija = "Šport in prosti čas";
+					break;
+				case "Vlažilniki zraka":
+					el.kategorija = "Vlažilci zraka";
+					break;
+				case "MP3/MP4 predvajalniki":
+				case "Pametne zapestnice":
+				case "Pametni telefoni":
+				case 'Nosilci za telefone':
+				case 'Prenosne baterije / Powerbank':
+					el.kategorija = "Pametne naprave";
+					break;
+				case "Dodatki za skiroje":
+				case "Električni skiroji":
+				case "Vse za kolo":
+					el.kategorija = "Kolesa in skuterji";
+					break;
+				case "IR grelniki":
+				case "Hladilci zraka":
+				case "Kaloriferji, stenski grelniki":
+				case 'Kamini':
+				case 'Solarni paneli':
+					el.kategorija = "Hlajenje in gretje";
+					break;
+				case "Microsoft Windows":
+				case "Microsoft Office":
 					el.kategorija = "Programska oprema";
-				case 'Home Plug PowerLine':
+					break;
+				case "Home Plug PowerLine":
 					el.kategorija = "Powerline";
 					break;
-				case 'NAS naprave':
+				case "NAS naprave":
+				case "NAS dodatki":
 					el.kategorija = "NAS sistemi";
 					break;
 				case "Hladilniki za procesorje":
-					el.kategorija = 'Hlajenje';
+				case "Termalne paste":
+					el.kategorija = "Hlajenje";
 					break;
-				case 'Mlinčki za kavo':
-				case 'Kavni aparati':
+				case "Mlinčki za kavo":
+				case "Kavni aparati":
 					el.kategorija = "Priprava kave in čaja";
 					break;
-				case 'Zunanji diski':
-				case 'Zunanji SSD diski':
+				case "Zunanji diski":
+				case "Zunanji SSD diski":
 					el.kategorija = "Trdi diski";
-				case "Ostali izdelki":
-					console.log(el);
 					break;
-				case 'Tonerji in črnila':
+				case "Tonerji in črnila":
+				case 'Papir':
 					el.kategorija = "Potrošni material";
 					break;
 				case "Spominske kartice":
@@ -108,8 +252,8 @@ export class elkotexController extends dobaviteljController {
 					el.kategorija = "Mešalniki";
 					break;
 				case "Posode za živila":
-				case 'Kuhinjska posoda':
-				case 'Posodice za vodo':
+				case "Kuhinjska posoda":
+				case "Posodice za vodo":
 					el.kategorija = "Posoda";
 					break;
 				case "Penilniki mleka":
@@ -119,40 +263,48 @@ export class elkotexController extends dobaviteljController {
 					el.kategorija = "Kuhinjski žari";
 					break;
 				case "Stojala za perilo in obešalniki":
+				case "Vrtno orodje":
+				case "Ročno orodje":
+				case "Hišni polnilci":
+				case 'Čiščenje okolice':
+				case 'Oprema za delavnice, skladišča':
+				case 'Senčniki in paviljoni':
+				case "Oprema vrta in okolice":
 					el.kategorija = "Dom in vrt";
 					break;
 				case "Radio/Gramofoni":
 					el.kategorija = "Radio in budilke";
 					break;
-				case 'Kamp svetilke in komarniki':
+				case "Kamp žari":
+				case 'Žari in kurišča':
+					el.kategorija = "Žari";
+					break;
+				case 'Prenosne svetilke':
+				case 'Termovke':
+				case "Kamp dodatki in ostalo":
+				case "Kamp hladilne skrinje in torbe":
+				case "Kamp svetilke in komarniki":
 				case "Kamp paviljoni, šotori, senčniki":
 				case "Kamp pohištvo":
-				case "Kamp žari":
 				case "Kamp ležalniki in stoli":
 				case "Kamp kuhinjski pripomočki":
 					el.kategorija = "Kampiranje";
 					break;
-				case 'Pametne sijalke':
-				case 'Robotski sesalniki':
-				case 'Robotske kosilnice':
+				case "Pametne sijalke":
+				case "Robotski sesalniki":
+				case "Robotske kosilnice":
 				case "Pametni dom":
+				case 'Pametne vtičnice':
+				case 'Senzorji':
 					el.kategorija = "Naprave za pametni dom";
 					break;
 			}
 		});
-
-		const arr = [];
-		this.allData.forEach((el) => {
-			if (!arr.includes(el.kategorija)) {
-				arr.push(el.kategorija);
-			}
-		});
-		console.table(arr);
 	}
 
 	executeAll() {
 		this.createDataObject();
 		this.sortCategory();
-		// this.insertDataIntoDb();
+		this.insertDataIntoDb();
 	}
 }

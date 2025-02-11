@@ -161,10 +161,6 @@ export class avteraController extends dobaviteljController {
 				case "Električna ogrevala":
 					el.kategorija = "Hlajenje in gretje";
 					break;
-				case "LED prikazovalniki":
-					count++;
-					console.log(el, count);
-					break;
 			}
 		});
 	}

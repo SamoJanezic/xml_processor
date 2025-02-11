@@ -150,20 +150,16 @@ export class colbyController extends dobaviteljController {
 				case "Dodatki za gaming stole":
 					el.kategorija = "Gaming stoli";
 					break;
-				// case "Polnilna postaja":
-				// 	console.log(el)
-				// 	// el.kategorija = "Igre";
-				// 	break;
 			}
 		});
 
-		const arr = [];
-		this.allData.forEach((el) => {
-			if (!arr.includes(el.kategorija)) {
-				arr.push(el.kategorija);
-			}
-		});
-		console.table(arr);
+		// const arr = [];
+		// this.allData.forEach((el) => {
+		// 	if (!arr.includes(el.kategorija)) {
+		// 		arr.push(el.kategorija);
+		// 	}
+		// });
+		// console.table(arr);
 	}
 
 	cleanOpis() {
