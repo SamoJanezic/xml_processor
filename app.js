@@ -3,19 +3,23 @@ import { avteraController } from "./controllers/avteraController.js";
 import { colbyController } from "./controllers/colbyController.js";
 import { elkotexController } from "./controllers/elkotexController.js";
 import { eventusController } from "./controllers/eventusController.js";
+import { asbisController } from "./controllers/asbisController.js";
 
 
-const acord = new acordController();
-acord.executeAll();
+// const acord = new acordController();
+// acord.executeAll();
 
-const avtera = new avteraController();
-avtera.executeAll();
+// const avtera = new avteraController();
+// avtera.executeAll();
 
-const colby = new colbyController();
-colby.executeAll();
+// const colby = new colbyController();
+// colby.executeAll();
 
-const elkotex = new elkotexController();
-elkotex.executeAll();
+// const elkotex = new elkotexController();
+// elkotex.executeAll();
 
-const eventus = new eventusController();
-eventus.executeAll();
+// const eventus = new eventusController();
+// eventus.executeAll();
+
+const asbis = new asbisController();
+asbis.executeAll();

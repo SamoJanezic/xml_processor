@@ -23,13 +23,21 @@ export default class Dobavitelj {
 	allData = [];
 
 	getData() {
+		if (typeof(this.file) === "object") {
+			return this.file.map(el => {return parser(el.fileName, el.node)});
+		}
 		const data = parser(this.file, this.nodes, this.encoding);
 		return data;
 	}
 
 	createDataObject() {
 		let vrstica = this.vrstice;
-		this.getData().forEach((product) => {
+		let getData = this.getData();
+
+		if(this.name === 'asbis') {
+			getData = this.combineData();
+		}
+		getData.forEach((product) => {
 			if (this.exceptions(product)) {
 				return;
 			}
