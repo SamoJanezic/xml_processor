@@ -1,5 +1,5 @@
 import { parser } from "./parseController.js";
-import { insertIntoTable, findOne } from "../db/sql.js";
+import { insertIntoTable } from "../db/sql.js";
 
 export default class Dobavitelj {
 	vrstice = [
@@ -37,10 +37,24 @@ export default class Dobavitelj {
 		if(this.name === 'asbis') {
 			getData = this.combineData();
 		}
+
+
 		getData.forEach((product) => {
 			if (this.exceptions(product)) {
 				return;
 			}
+
+			if(product.dodatneLastnosti && product.dodatneLastnosti.lastnost && Array.isArray(product.dodatneLastnosti.lastnost)) {
+				product.dodatneLastnosti.lastnost.forEach(el => {
+					if (el['@_naziv'] === "Energijska nalepka") {
+						// let eprel = el['#text'].match(/[0-9]+/g)
+						// console.log(eprel)
+					}
+				})
+			}
+		
+        
+
 
 			let newObj = {};
 
@@ -62,7 +76,6 @@ export default class Dobavitelj {
 
 	insertDataIntoDb() {
 		this.allData.forEach((el) => {
-
 			let arr = [];
 			for (let key in el) {
 				arr.push(el[key]);
@@ -85,8 +98,7 @@ export default class Dobavitelj {
 			return obj["#text"];
 		}
 		if (!obj.lastnost.length) {
-			return (str +=
-				obj.lastnost["@_naziv"] + ": " + obj.lastnost["#text"]);
+			return (str += obj.lastnost["@_naziv"] + ": " + obj.lastnost["#text"]);
 		}
 		obj.lastnost.forEach((el) => {
 			str += el["@_naziv"].replace(":", "") + ": " + el["#text"] + " | ";
@@ -94,8 +106,15 @@ export default class Dobavitelj {
 		return str;
 	}
 
+	// removeHTMLTags (str) {
+	// 	return str.replace(/(<([^>]+)>)/gi, "");
+	// }
+
 	addKratki_opis() {
 		this.allData.forEach((el) => {
+			// if (el['eprel_id']) {
+			// 	el['eprel_id'] = this.removeHTMLTags(el['eprel_id']);
+			// }
 			if (el["opis"] !== null) {
 				el["kratki_opis"] =
 					el["opis"].substring(0, 100).replace(/(<([^>]+)>)/gi, "") +

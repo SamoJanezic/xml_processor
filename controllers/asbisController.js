@@ -29,22 +29,22 @@ export class asbisController extends dobaviteljController {
     }
 
     combineData() {
-        const allData = [];
+        const combinedData = [];
         const asbis1 = this.getData()[0];
         const asbis2 = this.getData()[1];
         asbis1.forEach(product => {
             asbis2.forEach(price => {
                 if (product.ProductCode === price.WIC) {
-                    allData.push({...product, ...price});
+                    combinedData.push({...product, ...price});
+                    // console.log({...product, ...price}.AttrList)
                 }
             });
         });
-        return allData;
+        return combinedData;
     };
 
     executeAll() {
         this.combineData();
-        this.createDataObject();
         this.insertDataIntoDb();
     };
 }
