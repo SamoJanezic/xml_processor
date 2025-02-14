@@ -1,12 +1,13 @@
-Xml imports:
-  ☐ dodaj Liebherr
-  ☐ dodaj BSH
 
 Popravila:
   ☐ asbis opis and kratki opis popravilo
   ☐ createDataObject in parseObject (naj dela za vse ali pa naredi za vsakega posebej) (bo najbrž dodatne slike tudi uredilo)
   ☐ dodatne slike ne delujejo pri vseh
   ☐ dodatne lastnosti ne delujejo pri vseh
+
+Xml imports:
+  ☐ dodaj Liebherr
+  ☐ dodaj BSH
 
 Database:
   ☐ dodaj zalogo in/ali dobavljivost

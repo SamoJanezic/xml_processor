@@ -1,3 +1,4 @@
+
 import dobaviteljController from "./dobaviteljController.js";
 import { formatKeys } from "./kategorijeController.js";
 
@@ -59,7 +60,7 @@ export class acordController extends dobaviteljController {
 		if (ignoreCategory.includes(param["kategorija"]["#text"])) {
 			return true;
 		}
-	}
+	};
 
 	sortCategories() {
 		this.allData.forEach((el) => {
@@ -173,12 +174,25 @@ export class acordController extends dobaviteljController {
 				// 	el.kategorija += " # še potrebno oddeliti";
 			}
 		});
-	}
+	};
+
+	keyRules(obj, product, key, idx, vrstica) {
+		if (key === "dobavitelj") {
+			obj[vrstica[idx]] = this.name;
+		} else if (key === "niPodatka" || product[key] === "") {
+			obj[vrstica[idx]] = null;
+		} else if (typeof product[key] === "object") {
+			obj[vrstica[idx]] = this.parseObject(product[key]);
+		} else {
+			obj[vrstica[idx]] = product[key];
+		}
+		return obj;
+	};
 
 	executeAll() {
 		this.createDataObject();
 		this.sortCategories();
 		this.addKratki_opis();
 		this.insertDataIntoDb();
-	}
-}
+	};
+};

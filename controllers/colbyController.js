@@ -70,7 +70,7 @@ export class colbyController extends dobaviteljController {
 		if (ignoreCategory.includes(param["kategorija"]["#text"])) {
 			return true;
 		}
-	}
+	};
 
 	sortCategory() {
 		this.allData.forEach((el) => {
@@ -160,7 +160,7 @@ export class colbyController extends dobaviteljController {
 		// 	}
 		// });
 		// console.table(arr);
-	}
+	};
 
 	cleanOpis() {
 		this.allData.forEach((el) => {
@@ -168,7 +168,21 @@ export class colbyController extends dobaviteljController {
 				el["opis"] = el["opis"].replace(/(<([^>]+)>)/gi, "");
 			}
 		});
-	}
+	};
+
+	keyRules(obj, product, key, idx, vrstica) {
+		if (key === "dobavitelj") {
+			obj[vrstica[idx]] = this.name;
+		} else if (key === "niPodatka" || product[key] === "") {
+			obj[vrstica[idx]] = null;
+		} else if (typeof product[key] === "object") {
+			obj[vrstica[idx]] = this.parseObject(product[key]);
+		} else {
+			obj[vrstica[idx]] = product[key];
+		}
+		return obj;
+	};
+
 
 	executeAll() {
 		this.createDataObject();

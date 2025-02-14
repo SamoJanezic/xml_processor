@@ -38,38 +38,14 @@ export default class Dobavitelj {
 			getData = this.combineData();
 		}
 
-
 		getData.forEach((product) => {
+			let newObj = {};
+
 			if (this.exceptions(product)) {
 				return;
 			}
 
-			if(product.dodatneLastnosti && product.dodatneLastnosti.lastnost && Array.isArray(product.dodatneLastnosti.lastnost)) {
-				product.dodatneLastnosti.lastnost.forEach(el => {
-					if (el['@_naziv'] === "Energijska nalepka") {
-						// let eprel = el['#text'].match(/[0-9]+/g)
-						// console.log(eprel)
-					}
-				})
-			}
-		
-        
-
-
-			let newObj = {};
-
-			this.keys.map((key, idx) => {
-				if (key === "dobavitelj") {
-					newObj[vrstica[idx]] = this.name;
-				} else if (key === "niPodatka" || product[key] === "") {
-					newObj[vrstica[idx]] = null;
-				} else if (typeof product[key] === "object") {
-					newObj[vrstica[idx]] = this.parseObject(product[key]);
-				} else {
-					newObj[vrstica[idx]] = product[key];
-				}
-				return newObj;
-			});
+			this.keys.map((key, idx) => this.keyRules(newObj, product, key, idx, vrstica));
 			this.allData.push(newObj);
 		});
 	}
