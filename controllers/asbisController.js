@@ -43,7 +43,7 @@ export class asbisController extends dobaviteljController {
         return combinedData;
     };
 
-    keyRules(obj, product, key, idx, vrstica) {
+    getEprel() {
         // if(product.dodatneLastnosti && product.dodatneLastnosti.lastnost && Array.isArray(product.dodatneLastnosti.lastnost)) {
         // 	product.dodatneLastnosti.lastnost.forEach(el => {
         // 		if (el['@_naziv'] === "Energijska nalepka") {
@@ -52,21 +52,12 @@ export class asbisController extends dobaviteljController {
         // 		}
         // 	})
         // }
-		if (key === "dobavitelj") {
-			obj[vrstica[idx]] = this.name;
-		} else if (key === "niPodatka" || product[key] === "") {
-			obj[vrstica[idx]] = null;
-		} else if (typeof product[key] === "object") {
-			obj[vrstica[idx]] = this.parseObject(product[key]);
-		} else {
-			obj[vrstica[idx]] = product[key];
-		}
-		return obj;
-	};
-
+    }
 
     executeAll() {
         this.combineData();
+        this.createDataObject();
+        this.getEprel();
         this.insertDataIntoDb();
     };
 };

@@ -50,6 +50,21 @@ export default class Dobavitelj {
 		});
 	}
 
+	keyRules(obj, product, key, idx, vrstica) {
+		if (key === "dobavitelj") {
+			obj[vrstica[idx]] = this.name;
+		} else if (key === "eprel") {
+			obj[vrstica[idx]] = this.getEprel(product[key]);
+		} else if (key === "niPodatka" || product[key] === "") {
+			obj[vrstica[idx]] = null;
+		} else if (typeof product[key] === "object") {
+			obj[vrstica[idx]] = this.parseObject(product[key]);
+		} else {
+			obj[vrstica[idx]] = product[key];
+		}
+		return obj;
+	};
+
 	insertDataIntoDb() {
 		this.allData.forEach((el) => {
 			let arr = [];

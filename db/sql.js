@@ -8,6 +8,7 @@ export function createTable(tableName, attr) {
 export function insertIntoTable(tableName, attr, values) {
 	if (attr.length != values.length) {
 		console.error("attributes and values are not the same length");
+		process.exit();
 	}
 	let markValues = attr.map((el) => {
 		return "?";

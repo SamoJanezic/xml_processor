@@ -1,7 +1,12 @@
 
+Prednost:
+  ☐ dodaj filtre
+  ☐ marža glede na kategorijo
+
 Popravila:
   ☐ asbis opis and kratki opis popravilo
-  ☐ createDataObject in parseObject (naj dela za vse ali pa naredi za vsakega posebej) (bo najbrž dodatne slike tudi uredilo)
+  ☐ createDataObject (naj dela za vse ali pa naredi za vsakega posebej)
+  ☐ parseObject  (bo najbrž dodatne slike tudi uredilo)
   ☐ dodatne slike ne delujejo pri vseh
   ☐ dodatne lastnosti ne delujejo pri vseh
 
@@ -19,10 +24,11 @@ Features:
   ☐ Dodatki k serverju
   ☐ možnost da sprožiš skripto čez server
   ☐ spremeni maržo glede na kategorijo
+  ☐ dodaj kontroler za napake (errorController)
 
 Epreli:
   ✔ Avtera @done(25-02-13 15:03)
-  ☐ Acord
+  ✔ Acord @done(25-02-17 10:53)
   ☐ Colby
   ✔ Eventus @done(25-02-13 15:04)
   ☐ Asbis

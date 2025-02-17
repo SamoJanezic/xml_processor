@@ -176,18 +176,18 @@ export class acordController extends dobaviteljController {
 		});
 	};
 
-	keyRules(obj, product, key, idx, vrstica) {
-		if (key === "dobavitelj") {
-			obj[vrstica[idx]] = this.name;
-		} else if (key === "niPodatka" || product[key] === "") {
-			obj[vrstica[idx]] = null;
-		} else if (typeof product[key] === "object") {
-			obj[vrstica[idx]] = this.parseObject(product[key]);
+	getEprel(key) {
+		// if (product[key] !== undefined) {
+		// 	obj[vrstica[idx]] = product[key].match(/[0-9]+/g)[0];
+		// } else {
+		// 	obj[vrstica[idx]] = null;
+		// }
+		if (key !== undefined) {
+			return key.match(/[0-9]+/g)[0];
 		} else {
-			obj[vrstica[idx]] = product[key];
+			return null;
 		}
-		return obj;
-	};
+	}
 
 	executeAll() {
 		this.createDataObject();
