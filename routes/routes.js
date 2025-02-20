@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/getData", async (req, res) => {
 	const columns = ['id', 'ean', 'kategorija', 'izdelek_ime', 'cena_nabavna', 'dealer_cena', 'ppc', 'balgovna_znamka', 'dobavitelj'];
-    const getData = await selectAll('izdelki', columns);
+    const getData = await selectAll('izdelek', columns);
     res.status(200).json(getData);
 });
 
