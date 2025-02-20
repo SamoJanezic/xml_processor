@@ -1,8 +1,13 @@
 import { db } from "./db.js";
 
 export function createTable(tableName, attr) {
-	const sql = `CREATE TABLE ${tableName}(${attr})`;
-	db.run(sql);
+	try {
+		const sql = `CREATE TABLE ${tableName}(${attr})`;
+		db.run(sql);
+		console.log(`Tabela ${tableName} kreirana`);
+	} catch (err) {
+		console.error(err.message);
+	}
 }
 
 export function insertIntoTable(tableName, attr, values) {
@@ -16,8 +21,7 @@ export function insertIntoTable(tableName, attr, values) {
 
 	const sql = `INSERT INTO ${tableName} ("${attr.join(
 		'","'
-	)}") VALUES (${markValues.join()})
-	ON CONFLICT(ean, dobavitelj) DO UPDATE SET opis = "spremenjeno";`;
+	)}") VALUES (${markValues.join()});`;
 	db.run(sql, values);
 }
 
@@ -27,7 +31,7 @@ export function dropTable(tableName) {
 }
 
 export async function findOne (querry, val) {
-	const sql = `SELECT * FROM izdelki WHERE ${querry} = ${val}`;
+	const sql = `SELECT * FROM izdelek WHERE ${querry} = ${val}`;
 	return new Promise((resolve, reject) => {
 		db.all(sql, (err, row) => {
 			if(err){return  reject(err);}
@@ -37,12 +41,13 @@ export async function findOne (querry, val) {
 }
 
 export function clearTable() {
-	const sql = `DELETE FROM izdelki`;
+	const sql = `DELETE FROM izdelek`;
 	db.run(sql);
 }
 
 export async function selectAll(tableName, cols) {
-	const sql = `SELECT ${cols} FROM ${tableName}`;
+	// const sql = `SELECT ${cols} FROM ${tableName}`;
+	const sql = `SELECT * FROM ${tableName}`;
 	return new Promise ((resolve, reject) => {
 		db.all(sql, (err, rows) => {
 			if(err){return  reject(err);}
@@ -52,7 +57,7 @@ export async function selectAll(tableName, cols) {
 }
 
 export function updateItem(id , pairs) {
-	const sql = `UPDATE izdelki SET ${pairs} WHERE id = ${id}`;
+	const sql = `UPDATE izdelek SET ${pairs} WHERE id = ${id}`;
 	db.run(sql, (err) => {
 		if(err) {
 			console.error(err);
@@ -61,6 +66,6 @@ export function updateItem(id , pairs) {
 }
 
 export function deleteItem(id) {
-	const sql = `DELETE FROM izdelki WHERE id = ${id}`;
+	const sql = `DELETE FROM izdelek WHERE id = ${id}`;
 	db.run(sql);
 }

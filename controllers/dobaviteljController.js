@@ -73,7 +73,7 @@ export default class Dobavitelj {
 			}
 
 			try {
-				insertIntoTable("izdelki", this.vrstice, arr);
+				insertIntoTable("izdelek", this.vrstice, arr);
 			} catch {
 				(err) => console.error(err);
 			}
