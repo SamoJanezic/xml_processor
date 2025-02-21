@@ -1,29 +1,56 @@
 import express from "express";
-import { selectAll, findOne, updateItem } from "../db/sql.js";
-import { formatAndUpdate, readId} from "../middlewares/baseMiddleware.js";
+import { izdelek } from "../Models/test.js";
 
 const router = express.Router();
 
-
-router.get("/getData", async (req, res) => {
-	const columns = ['id', 'ean', 'kategorija', 'izdelek_ime', 'cena_nabavna', 'dealer_cena', 'ppc', 'balgovna_znamka', 'dobavitelj'];
-    const getData = await selectAll('izdelek', columns);
-    res.status(200).json(getData);
+router.get("/getData", (req, res) => {
+	const columns = [
+		"id",
+		"ean",
+		"kategorija",
+		"izdelek_ime",
+		"cena_nabavna",
+		"dealer_cena",
+		"ppc",
+		"balgovna_znamka",
+		"dobavitelj",
+	];
+	izdelek
+		.findAll({
+			attributes: columns,
+		})
+		.then((data) => {
+			res.status(200).json(data);
+		})
+		.catch((err) => {
+			console.error(err);
+		});
 });
 
-router.get("/getSingle", async (req, res) => {
-	const id = readId(req.query);
-	const singleData = await findOne('id', id);
-	res.status(200).json(singleData);
+router.get("/getSingle", (req, res) => {
+	izdelek
+		.findOne({
+			where: { id: req.query.id },
+		})
+		.then((data) => {
+			res.status(200).json(data);
+		})
+		.catch((err) => {
+			console.error(err);
+		});
 });
 
 router.put("/update", (req, res) => {
-	res.status(200);
-	// console.log(req.body.values);
-	const data = formatAndUpdate(req.body.values);
-	updateItem(data.id, data.arr);
-	res.end("Data received");
+	izdelek
+		.update(req.body.values, {
+			where: { id: req.body.values.id },
+		})
+		.then(() => {
+			res.status(200);
+		})
+		.catch((err) => {
+			console.error(err);
+		});
 });
-
 
 export default router;

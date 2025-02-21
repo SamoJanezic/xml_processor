@@ -1,5 +1,6 @@
 import { parser } from "./parseController.js";
 import { insertIntoTable } from "../db/sql.js";
+import { izdelek } from "../Models/test.js";
 
 export default class Dobavitelj {
 	vrstice = [
@@ -66,18 +67,7 @@ export default class Dobavitelj {
 	};
 
 	insertDataIntoDb() {
-		this.allData.forEach((el) => {
-			let arr = [];
-			for (let key in el) {
-				arr.push(el[key]);
-			}
-
-			try {
-				insertIntoTable("izdelek", this.vrstice, arr);
-			} catch {
-				(err) => console.error(err);
-			}
-		});
+		insertIntoTable(izdelek, this.allData);
 	}
 
 	parseObject(obj) {

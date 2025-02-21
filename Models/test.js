@@ -1,7 +1,7 @@
 import { db } from "../db/db.js";
 import { DataTypes } from "sequelize";
 
-const izdelek = db.define(
+export const izdelek = db.define(
     "Izdelek",
     {
         id: {
@@ -75,5 +75,3 @@ const izdelek = db.define(
         }
     }
 );
-
-izdelek.sync({ force: true });
