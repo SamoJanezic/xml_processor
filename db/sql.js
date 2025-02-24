@@ -49,8 +49,8 @@ export function selectAll(tableName, cols) {
 		});
 }
 
-export function updateItem(id, pairs) {
-	izdelek
+export function updateItem(tableName, id, pairs) {
+	tableName
 		.update(req.body.values, {
 			where: { id: req.body.values.id },
 		})
@@ -62,8 +62,8 @@ export function updateItem(id, pairs) {
 		});
 }
 
-export function deleteItem(id) {
-	izdelek.destroy({
+export function deleteItem(tableName,id) {
+	tableName.destroy({
 		where: {
 			firstName: "Jane",
 		},

@@ -1,5 +1,5 @@
 import express from "express";
-import { izdelek } from "../Models/test.js";
+import { izdelekTest } from "../Models/test.js";
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ router.get("/getData", (req, res) => {
 		"balgovna_znamka",
 		"dobavitelj",
 	];
-	izdelek
+	izdelekTest
 		.findAll({
 			attributes: columns,
 		})
@@ -28,7 +28,7 @@ router.get("/getData", (req, res) => {
 });
 
 router.get("/getSingle", (req, res) => {
-	izdelek
+	izdelekTest
 		.findOne({
 			where: { id: req.query.id },
 		})
@@ -41,7 +41,7 @@ router.get("/getSingle", (req, res) => {
 });
 
 router.put("/update", (req, res) => {
-	izdelek
+	izdelekTest
 		.update(req.body.values, {
 			where: { id: req.body.values.id },
 		})
