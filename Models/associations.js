@@ -15,19 +15,33 @@ import { Dobavitelj } from "./Dobavitelj.js";
 //     { id: 2, dobavitelj: "acord", kategorija: "pc", ime_izdelka: "hyperion", opis_izdelka: "hype", kratki_opis_izdelka: "h", nabavna_cena: 1.66, dealer_cena: 1.77, redna_cena: 1.88, ppc: 1.99 }
 // ]);
 
-Izdelek.hasMany(IzdelekDobavitelj, { foreignKey: 'izdelek_ean' });
-IzdelekDobavitelj.belongsTo(Izdelek, {foreignKey: 'izdelek_ean' });
+let foreignKeys = [{table: Izdelek, column: "izdelek_ean"}, {table: Kategorija, column: "kategorija"}, {table: Dobavitelj, column: "dobavitelj"}];
+
+foreignKeys.forEach(el => {
+    el.table.hasMany(IzdelekDobavitelj, { foreignKey: el.column });
+    IzdelekDobavitelj.belongsTo(el.table, { foreignKey: el.column });
+});
+
+
+// Izdelek.hasMany(IzdelekDobavitelj, { foreignKey: 'izdelek_ean' });
+// IzdelekDobavitelj.belongsTo(Izdelek, {foreignKey: 'izdelek_ean' });
+
+// Dobavitelj.hasMany(IzdelekDobavitelj, { foreignKey: 'dobavitelj' });
+// IzdelekDobavitelj.belongsTo(Dobavitelj, {foreignKey: 'dobavitelj' });
+
+// Kategorija.hasMany(IzdelekDobavitelj, { foreignKey: 'kategorija' });
+// IzdelekDobavitelj.belongsTo(Kategorija, {foreignKey: 'kategorija' });
 
 let izdelek, izdelekDobavitelj;
 
 db.sync({ alter: true }).then(() => {
-    return IzdelekDobavitelj.findOne({ where: { id: 2 } });
-}).then((data) => {
-    izdelekDobavitelj = data;
-    return Izdelek.findOne({ where: { ean: 123456789 } });
-}).then((data) => {
-    izdelek = data;
-    izdelekDobavitelj.setIzdelek(izdelek);
+//     return IzdelekDobavitelj.findOne({ where: { id: 2 } });
+// }).then((data) => {
+//     izdelekDobavitelj = data;
+//     return Izdelek.findOne({ where: { ean: 123456789 } });
+// }).then((data) => {
+//     izdelek = data;
+//     izdelekDobavitelj.setIzdelek(izdelek);
 })
 .catch(err => {
     console.log(err);
