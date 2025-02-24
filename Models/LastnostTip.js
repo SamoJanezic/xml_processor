@@ -1,16 +1,12 @@
 import { db } from "../db/db.js";
+import { DataTypes } from "sequelize";
 
-const LastnostTip = db.define(
-    "Lastnost_tip",
+export const LastnostTip = db.define(
+    "LASTNOST_TIP",
     {
-        lt_id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
-        opcija: {
+        lastnost: {
             type: DataTypes.STRING,
-            allowNull: false,
-        }
+            primaryKey: true,
+        },
     }
 );

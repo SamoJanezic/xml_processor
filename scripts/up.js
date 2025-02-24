@@ -1,4 +1,4 @@
 import { createTable } from "../db/sql.js";
-import { izdelek } from "../Models/test.js";
+import { izdelekTest } from "../Models/test.js";
 
-createTable(izdelek);
+createTable(izdelekTest);

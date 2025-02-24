@@ -1,6 +1,6 @@
 import { parser } from "./parseController.js";
 import { insertIntoTable } from "../db/sql.js";
-import { izdelek } from "../Models/test.js";
+import { izdelekTest } from "../Models/test.js";
 
 export default class Dobavitelj {
 	vrstice = [
@@ -46,12 +46,18 @@ export default class Dobavitelj {
 				return;
 			}
 
+			// console.log(product);
+			// process.exit()
+
 			this.keys.map((key, idx) => this.keyRules(newObj, product, key, idx, vrstica));
 			this.allData.push(newObj);
+			console.log(newObj);
+			process.exit();
 		});
 	}
 
 	keyRules(obj, product, key, idx, vrstica) {
+
 		if (key === "dobavitelj") {
 			obj[vrstica[idx]] = this.name;
 		} else if (key === "eprel") {
@@ -67,7 +73,7 @@ export default class Dobavitelj {
 	};
 
 	insertDataIntoDb() {
-		insertIntoTable(izdelek, this.allData);
+		insertIntoTable(izdelekTest, this.allData);
 	}
 
 	parseObject(obj) {

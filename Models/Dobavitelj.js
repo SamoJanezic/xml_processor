@@ -1,16 +1,12 @@
 import { db } from "../db/db.js";
+import { DataTypes } from "sequelize";
 
-const Dobavitelj = db.define(
-    "Dobavitelj",
+export const Dobavitelj = db.define(
+    "DOBAVITELJ",
     {
-        dobavitelj_id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
         dobavitelj: {
             type: DataTypes.STRING,
-            allowNull: false,
+            primaryKey: true,
         }
     }
 );

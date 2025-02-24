@@ -1,8 +1,8 @@
 import { db } from "../db/db.js";
 import { DataTypes } from "sequelize";
 
-export const izdelek = db.define(
-    "Izdelek",
+export const izdelekTest = db.define(
+    "IzdelekTest",
     {
         id: {
             type: DataTypes.INTEGER,

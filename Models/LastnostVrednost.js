@@ -1,7 +1,8 @@
 import { db } from "../db/db.js";
+import { DataTypes } from "sequelize";
 
-const LastnostVrednost = db.define(
-    "Lastnost_vrednost",
+export const LastnostVrednost = db.define(
+    "LASTNOST_VREDNOST",
     {
         dobavitelj_id: {
             type: DataTypes.INTEGER,

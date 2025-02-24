@@ -1,18 +1,23 @@
 import { db } from "../db/db.js";
+import { DataTypes } from "sequelize";
 
-const Izdelek = db.define(
-	"Izdelek",
+export const Izdelek = db.define(
+	"IZDELEK",
 	{
-        izdelek_id: {
+        ean: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
+			allowNull: false,
         },
-		ime: {
+		eprel: {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-		opis: {
+		davcna_stopnja: {
+			type: DataTypes.REAL,
+			allowNull: false,
+		},
+		blagovna_znamka: {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
