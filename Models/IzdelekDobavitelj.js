@@ -8,15 +8,27 @@ export const IzdelekDobavitelj = db.define(
             type: DataTypes.INTEGER,
             primaryKey: true,
         },
-        // izdelek_ean: {
-        //     type: DataTypes.STRING,
-        // },
-        // DOBAVITELJ_dobavitelj: {
-        //     type: DataTypes.STRING,
-        // },
-        // KATEGORIJA_kategorija: {
-        //     type: DataTypes.STRING,
-        // },
+        izdelek_ean: {
+            type: DataTypes.STRING,
+            references: {
+                model: "IZDELEK",
+                key: "ean",
+            },
+        },
+        DOBAVITELJ_dobavitelj: {
+            type: DataTypes.STRING,
+            references: {
+                model: "DOBAVITELJ",
+                key: "dobavitelj",
+            },
+        },
+        KATEGORIJA_kategorija: {
+            type: DataTypes.STRING,
+            references: {
+                model: "KATEGORIJA",
+                key: "kategorija",
+            }
+        },
         ime_izdelka: {
             type: DataTypes.STRING,
             allowNull: false,
