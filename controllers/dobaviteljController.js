@@ -1,6 +1,12 @@
+import { db } from "../db/db.js";
 import { parser } from "./parseController.js";
 import { insertIntoTable } from "../db/sql.js";
+import { Izdelek } from "../Models/Izdelek.js";
+import { IzdelekDobavitelj } from "../Models/IzdelekDobavitelj.js";
 import { izdelekTest } from "../Models/test.js";
+import { Kategorija } from "../Models/Kategorija.js";
+import { DobaviteljTabela } from "../Models/Dobavitelj.js"
+import { Komponenta } from "../Models/Komponenta.js";
 
 export default class Dobavitelj {
 	vrstice = [
@@ -16,7 +22,7 @@ export default class Dobavitelj {
 		"slika_mala",
 		"slika_velika",
 		"dodatne_lastnosti",
-		"balgovna_znamka",
+		"blagovna_znamka",
 		"kategorija",
 		"eprel_id",
 		"dobavitelj",
@@ -46,18 +52,13 @@ export default class Dobavitelj {
 				return;
 			}
 
-			// console.log(product);
-			// process.exit()
-
 			this.keys.map((key, idx) => this.keyRules(newObj, product, key, idx, vrstica));
+
 			this.allData.push(newObj);
-			console.log(newObj);
-			process.exit();
 		});
 	}
 
 	keyRules(obj, product, key, idx, vrstica) {
-
 		if (key === "dobavitelj") {
 			obj[vrstica[idx]] = this.name;
 		} else if (key === "eprel") {
@@ -72,32 +73,54 @@ export default class Dobavitelj {
 		return obj;
 	};
 
-	insertDataIntoDb() {
-		insertIntoTable(izdelekTest, this.allData);
+	async insertDataIntoDb() {
+		const komponenta = this.splitDodatneLastnosti();
+
+		const izdelekData = this.allData.map(el => {
+			return {
+				ean: el.ean,
+				eprel: el.eprel_id,
+				davcna_stopnja: 22,
+				blagovna_znamka: el.blagovna_znamka
+			}
+		});
+
+		const izdelekDobaviteljData = this.allData.map(el => {
+			return {
+				izdelek_ean: el.ean,
+				ime_izdelka: el.izdelek_ime,
+				KATEGORIJA_kategorija: el.kategorija,
+				DOBAVITELJ_dobavitelj: el.dobavitelj,
+				opis_izdelka: el.opis,
+				kratki_opis_izdelka: el.kratki_opis,
+				nabavna_cena: el.cena_nabavna,
+				dealer_cena: el.dealer_cena,
+				ppc: el.ppc
+			}
+		});
+
+		const kategorijaData = this.allData.map(el => {
+			return {kategorija: el.kategorija};
+		});
+
+
+		db.sync({alter: true});
+		insertIntoTable(DobaviteljTabela, {dobavitelj: this.name});
+		insertIntoTable(Izdelek, izdelekData);
+		insertIntoTable(IzdelekDobavitelj, izdelekDobaviteljData);
+		insertIntoTable(Kategorija, kategorijaData);
+		insertIntoTable(Komponenta, komponenta);
+
 	}
 
-	parseObject(obj) {
-		let str = "";
-		if (obj.dodatnaSlika1) {
-			return obj.dodatnaSlika1;
-		}
-		if (!obj.hasOwnProperty("lastnost")) {
-			return obj["#text"];
-		}
-		if (!obj.lastnost.length) {
-			return (str += obj.lastnost["@_naziv"] + ": " + obj.lastnost["#text"]);
-		}
-		obj.lastnost.forEach((el) => {
-			str += el["@_naziv"].replace(":", "") + ": " + el["#text"] + " | ";
-		});
-		return str;
-	}
+
 
 	// removeHTMLTags (str) {
 	// 	return str.replace(/(<([^>]+)>)/gi, "");
 	// }
 
 	addKratki_opis() {
+		let count = 0
 		this.allData.forEach((el) => {
 			// if (el['eprel_id']) {
 			// 	el['eprel_id'] = this.removeHTMLTags(el['eprel_id']);
