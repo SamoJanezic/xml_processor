@@ -14,6 +14,7 @@ export const IzdelekDobavitelj = db.define(
                 model: "IZDELEK",
                 key: "ean",
             },
+            allowNull: false
         },
         DOBAVITELJ_dobavitelj: {
             type: DataTypes.STRING,
@@ -31,31 +32,31 @@ export const IzdelekDobavitelj = db.define(
         },
         ime_izdelka: {
             type: DataTypes.STRING,
-            allowNull: false,
         },
         opis_izdelka: {
             type: DataTypes.TEXT,
-            allowNull: false,
         },
         kratki_opis_izdelka: {
             type: DataTypes.TEXT,
-            allowNull: false,
-        },
-        nabavna_cena: {
-            type: DataTypes.FLOAT,
-            allowNull: false,
         },
         dealer_cena: {
             type: DataTypes.FLOAT,
-            allowNull: false,
         },
         redna_cena: {
             type: DataTypes.FLOAT,
-            allowNull: false,
         },
         ppc: {
             type: DataTypes.FLOAT,
-            allowNull: false,
         },
+    },
+    {
+        indexes: [
+            {
+                unique:true,
+                fields: ['izdelek_ean', 'DOBAVITELJ_dobavitelj']
+            }
+        ]
     }
 );
+
+// vrednost lastnosti veži na ean in lastnost

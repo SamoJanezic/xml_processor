@@ -7,6 +7,7 @@ export const Kategorija = db.define(
         kategorija: {
             type: DataTypes.STRING,
             primaryKey: true,
+            allowNull: false
         }
-    }
+    },
 );
