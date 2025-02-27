@@ -1,7 +1,7 @@
 import { db } from "../db/db.js";
 import { DataTypes } from "sequelize";
 
-export const Kategorija = db.define(
+export const Atribut = db.define(
     "ATRIBUT",
     {
         id: {
@@ -23,5 +23,3 @@ export const Kategorija = db.define(
         }
     }
 );
-
-
