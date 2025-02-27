@@ -12,7 +12,7 @@ export function createTable(tableName) {
 export function insertIntoTable(tableName, obj) {
 	if (obj.length) {
 		tableName
-			.bulkCreate(obj)
+			.bulkCreate(obj, {ignoreDuplicates: true})
 			.then(() => {
 				console.log(
 					`Successfully inserted ${obj.length} entries into ${tableName}`
