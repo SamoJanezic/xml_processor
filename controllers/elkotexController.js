@@ -299,6 +299,23 @@ export class elkotexController extends dobaviteljController {
 		});
 	};
 
+	parseObject(obj) {
+		let str = "";
+		if (obj.dodatnaSlika1) {
+			return obj.dodatnaSlika1;
+		}
+		if (!obj.hasOwnProperty("lastnost")) {
+			return obj["#text"];
+		}
+		if (!obj.lastnost.length) {
+			return (str += obj.lastnost["@_naziv"] + ": " + obj.lastnost["#text"]);
+		}
+		obj.lastnost.forEach((el) => {
+			str += el["@_naziv"].replace(":", "") + ": " + el["#text"] + " | ";
+		});
+		return str;
+	};
+
 	getEprel() {
 		return null;
 		// function extractNumber(str) {

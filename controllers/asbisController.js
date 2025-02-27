@@ -43,6 +43,23 @@ export class asbisController extends dobaviteljController {
         return combinedData;
     };
 
+    parseObject(obj) {
+		let str = "";
+		if (obj.dodatnaSlika1) {
+			return obj.dodatnaSlika1;
+		}
+		if (!obj.hasOwnProperty("lastnost")) {
+			return obj["#text"];
+		}
+		if (!obj.lastnost.length) {
+			return (str += obj.lastnost["@_naziv"] + ": " + obj.lastnost["#text"]);
+		}
+		obj.lastnost.forEach((el) => {
+			str += el["@_naziv"].replace(":", "") + ": " + el["#text"] + " | ";
+		});
+		return str;
+	};
+
     getEprel() {
         // if(product.dodatneLastnosti && product.dodatneLastnosti.lastnost && Array.isArray(product.dodatneLastnosti.lastnost)) {
         // 	product.dodatneLastnosti.lastnost.forEach(el => {

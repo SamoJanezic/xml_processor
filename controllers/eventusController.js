@@ -46,7 +46,7 @@ export class eventusController extends dobaviteljController {
 		// if (param["kategorija"]["#text"] === "Rezervni deli") {
 		// 	return true;
 		// }
-	}
+	};
 
 	sortCategory() {
 		this.allData.forEach((el) => {
@@ -141,11 +141,28 @@ export class eventusController extends dobaviteljController {
 					break;
 			}
 		})
-	}
+	};
+
+	parseObject(obj) {
+		let str = "";
+		if (obj.dodatnaSlika1) {
+			return obj.dodatnaSlika1;
+		}
+		if (!obj.hasOwnProperty("lastnost")) {
+			return obj["#text"];
+		}
+		if (!obj.lastnost.length) {
+			return (str += obj.lastnost["@_naziv"] + ": " + obj.lastnost["#text"]);
+		}
+		obj.lastnost.forEach((el) => {
+			str += el["@_naziv"].replace(":", "") + ": " + el["#text"] + " | ";
+		});
+		return str;
+	};
 
 	getEprel() {
 		return null;
-	}
+	};
 
 	executeAll() {
 		this.createDataObject();
