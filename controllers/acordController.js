@@ -68,7 +68,7 @@ export class acordController extends dobaviteljController {
 				case "UPS napajanja, inverterji, regulatorji napetosti":
 					el.kategorija = "UPS";
 					break;
-				case "Igričarski pripomočki":
+				case "Igračarski pripomočki":
 					el.kategorija = "Igralni pripomočki";
 					break;
 				case "Mrežne kartice in adapterji":
@@ -176,6 +176,37 @@ export class acordController extends dobaviteljController {
 		});
 	};
 
+	parseObject(obj) {
+		// let str = "";
+		if (obj.dodatnaSlika1) {
+			return obj.dodatnaSlika1;
+		}
+		if (!obj.hasOwnProperty("lastnost")) {
+			return obj["#text"];
+		}
+		// if (!obj.lastnost.length) {
+		// 	return (str += obj.lastnost["@_naziv"] + ": " + obj.lastnost["#text"]);
+		// }
+		// obj.lastnost.forEach((el) => {
+		// 	str += el["@_naziv"].replace(":", "") + ": " + el["#text"] + " | ";
+		// });
+		// return str;
+		if(obj.lastnost) {
+			return obj;
+		}
+	};
+
+	splitDodatneLastnosti() {
+		let lastnosti = [];
+		this.allData.forEach(data => data.dodatne_lastnosti.lastnost.forEach(el => {
+			if(el['@_naziv'] === "EAN koda" || el['@_naziv'] === "Proizvajalčeva koda") {
+				return;
+			}
+			lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el['@_naziv'], lastnostVrednost: el['#text']})
+		}));
+		return lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}});
+	}
+
 	getEprel(key) {
 		// if (product[key] !== undefined) {
 		// 	obj[vrstica[idx]] = product[key].match(/[0-9]+/g)[0];
@@ -187,7 +218,7 @@ export class acordController extends dobaviteljController {
 		} else {
 			return null;
 		}
-	}
+	};
 
 	executeAll() {
 		this.createDataObject();
