@@ -5,21 +5,21 @@ export const Izdelek = db.define(
 	"IZDELEK",
 	{
         ean: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             primaryKey: true,
 			allowNull: false,
         },
 		eprel: {
 			type: DataTypes.STRING,
-			allowNull: false,
+			allowNull: true,
 		},
 		davcna_stopnja: {
-			type: DataTypes.REAL,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 		blagovna_znamka: {
 			type: DataTypes.STRING,
-			allowNull: false,
+			allowNull: true,
 		},
 	}
 );
