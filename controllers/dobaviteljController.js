@@ -7,6 +7,7 @@ import { izdelekTest } from "../Models/test.js";
 import { Kategorija } from "../Models/Kategorija.js";
 import { DobaviteljTabela } from "../Models/Dobavitelj.js"
 import { Komponenta } from "../Models/Komponenta.js";
+import { Atribut } from "../Models/Atribut.js";
 
 export default class Dobavitelj {
 	vrstice = [
@@ -74,7 +75,9 @@ export default class Dobavitelj {
 	};
 
 	async insertDataIntoDb() {
-		const komponenta = this.splitDodatneLastnosti();
+		const komponenta = this.splitDodatneLastnosti().komponenta;
+
+		const atribut = this.splitDodatneLastnosti().atribut;
 
 		const izdelekData = this.allData.map(el => {
 			return {
@@ -103,14 +106,13 @@ export default class Dobavitelj {
 			return {kategorija: el.kategorija};
 		});
 
-
 		db.sync({alter: true});
 		insertIntoTable(DobaviteljTabela, {dobavitelj: this.name});
 		insertIntoTable(Izdelek, izdelekData);
 		insertIntoTable(IzdelekDobavitelj, izdelekDobaviteljData);
 		insertIntoTable(Kategorija, kategorijaData);
 		insertIntoTable(Komponenta, komponenta);
-
+		insertIntoTable(Atribut, atribut);
 	}
 
 

@@ -167,25 +167,39 @@ export class avteraController extends dobaviteljController {
 	};
 
 	parseObject(obj) {
-		let str = "";
 		if (obj.dodatnaSlika1) {
 			return obj.dodatnaSlika1;
 		}
 		if (!obj.hasOwnProperty("lastnost")) {
 			return obj["#text"];
 		}
-		if (!obj.lastnost.length) {
-			return (str += obj.lastnost["@_naziv"] + ": " + obj.lastnost["#text"]);
+		if(obj.lastnost) {
+			return obj;
 		}
-		obj.lastnost.forEach((el) => {
-			str += el["@_naziv"].replace(":", "") + ": " + el["#text"] + " | ";
-		});
-		return str;
 	};
 
-	getEprel() {
-		return null;
-	};
+	splitDodatneLastnosti() {
+		let lastnosti = [];
+
+		this.allData.forEach(data => {
+			if (data.dodatne_lastnosti && data.dodatne_lastnosti.lastnost) {
+				if(!data.dodatne_lastnosti.lastnost.length) {
+					lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: data['@_naziv'], lastnostVrednost: data['#text']})
+				} else {
+					data.dodatne_lastnosti.lastnost.forEach(el => {
+					if(el['@_naziv'] === "EAN koda" || el['@_naziv'] === "Proizvajalčeva koda" || el['#text'] === ' ' || el['#text'] === '/') {
+						return;
+						}
+						lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el['@_naziv'], lastnostVrednost: el['#text']})
+					})
+				}
+			}
+		});
+		return {
+			komponenta: lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}}),
+			atribut: lastnosti.map(el => { return {KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}})
+		};
+	}
 
 	executeAll() {
 		this.createDataObject();

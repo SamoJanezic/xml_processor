@@ -184,13 +184,6 @@ export class acordController extends dobaviteljController {
 		if (!obj.hasOwnProperty("lastnost")) {
 			return obj["#text"];
 		}
-		// if (!obj.lastnost.length) {
-		// 	return (str += obj.lastnost["@_naziv"] + ": " + obj.lastnost["#text"]);
-		// }
-		// obj.lastnost.forEach((el) => {
-		// 	str += el["@_naziv"].replace(":", "") + ": " + el["#text"] + " | ";
-		// });
-		// return str;
 		if(obj.lastnost) {
 			return obj;
 		}
@@ -199,12 +192,15 @@ export class acordController extends dobaviteljController {
 	splitDodatneLastnosti() {
 		let lastnosti = [];
 		this.allData.forEach(data => data.dodatne_lastnosti.lastnost.forEach(el => {
-			if(el['@_naziv'] === "EAN koda" || el['@_naziv'] === "Proizvajalčeva koda") {
+			if(el['@_naziv'] === "EAN koda" || el['@_naziv'] === "Proizvajalčeva koda" || el['#text'] === ' ' || el['#text'] === '/') {
 				return;
 			}
 			lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el['@_naziv'], lastnostVrednost: el['#text']})
 		}));
-		return lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}});
+		return {
+			komponenta: lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}}),
+			atribut: lastnosti.map(el => { return {KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}})
+		};
 	}
 
 	getEprel(key) {
