@@ -42,7 +42,7 @@ export const IzdelekDobavitelj = db.define(
         dealer_cena: {
             type: DataTypes.FLOAT,
         },
-        redna_cena: {
+        nabavna_cena: {
             type: DataTypes.FLOAT,
         },
         ppc: {

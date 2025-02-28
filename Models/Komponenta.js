@@ -4,13 +4,9 @@ import { DataTypes } from "sequelize";
 export const Komponenta = db.define(
     "KOMPONENTA",
     {
-        id: {
+        komponenta_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-        },
-        komponenta: {
-            type: DataTypes.STRING,
-            allowNull: false,
         },
         KATEGORIJA_kategorija: {
             type: DataTypes.STRING,
@@ -18,6 +14,10 @@ export const Komponenta = db.define(
                 model: "KATEGORIJA",
                 key: "kategorija",
             }
+        },
+        komponenta: {
+            type: DataTypes.STRING,
+            allowNull: false,
         },
     },
     {

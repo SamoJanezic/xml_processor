@@ -9,17 +9,24 @@ export const Atribut = db.define(
             primaryKey: true,
             autoIncrement: true,
         },
-        ime: {
+        KOMPONENTA_komponenta: {
+            type:DataTypes.STRING,
+            references: {
+                model: "KOMPONENTA",
+                key: "komponenta"
+            }
+        },
+        atribut: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        KATEGORIJA_kategorija: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: "KATEGORIJA",
-                key: "id",
-            },
-        }
+    },
+    {
+        indexes: [
+            {
+                unique:true,
+                fields: ['atribut', 'KOMPONENTA_komponenta']
+            }
+        ]
     }
 );

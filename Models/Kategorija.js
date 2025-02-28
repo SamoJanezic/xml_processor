@@ -4,10 +4,15 @@ import { DataTypes } from "sequelize";
 export const Kategorija = db.define(
     "KATEGORIJA",
     {
+        kategorija_id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
         kategorija: {
             type: DataTypes.STRING,
-            primaryKey: true,
-            allowNull: false
+            allowNull: false,
+            unique: true
         }
     },
 );
