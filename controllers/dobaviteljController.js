@@ -29,6 +29,8 @@ export default class Dobavitelj {
 		"dobavitelj",
 	];
 	allData = [];
+	komponenta = null;
+	atribut = null;
 
 	getData() {
 		if (typeof(this.file) === "object") {
@@ -73,12 +75,22 @@ export default class Dobavitelj {
 		}
 		return obj;
 	};
+	
+	addKratki_opis() {
+		let count = 0
+		this.allData.forEach((el) => {
+			// if (el['eprel_id']) {
+			// 	el['eprel_id'] = this.removeHTMLTags(el['eprel_id']);
+			// }
+			if (el["opis"] !== null) {
+				el["kratki_opis"] =
+					el["opis"].substring(0, 100).replace(/(<([^>]+)>)/gi, "") +
+					"...";
+			}
+		});
+	};
 
 	async insertDataIntoDb() {
-		const komponenta = this.splitDodatneLastnosti().komponenta;
-
-		const atribut = this.splitDodatneLastnosti().atribut;
-
 		const izdelekData = this.allData.map(el => {
 			return {
 				ean: el.ean,
@@ -111,8 +123,11 @@ export default class Dobavitelj {
 		insertIntoTable(Izdelek, izdelekData);
 		insertIntoTable(IzdelekDobavitelj, izdelekDobaviteljData);
 		insertIntoTable(Kategorija, kategorijaData);
-		insertIntoTable(Komponenta, komponenta);
-		insertIntoTable(Atribut, atribut);
+		if (this.komponenta && this.atribut) {
+			// console.log(this.name)
+			insertIntoTable(Komponenta, this.komponenta);
+			insertIntoTable(Atribut, this.atribut);
+		}
 	}
 
 
@@ -121,17 +136,4 @@ export default class Dobavitelj {
 	// 	return str.replace(/(<([^>]+)>)/gi, "");
 	// }
 
-	addKratki_opis() {
-		let count = 0
-		this.allData.forEach((el) => {
-			// if (el['eprel_id']) {
-			// 	el['eprel_id'] = this.removeHTMLTags(el['eprel_id']);
-			// }
-			if (el["opis"] !== null) {
-				el["kratki_opis"] =
-					el["opis"].substring(0, 100).replace(/(<([^>]+)>)/gi, "") +
-					"...";
-			}
-		});
-	}
 }

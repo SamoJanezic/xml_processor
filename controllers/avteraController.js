@@ -195,16 +195,15 @@ export class avteraController extends dobaviteljController {
 				}
 			}
 		});
-		return {
-			komponenta: lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}}),
-			atribut: lastnosti.map(el => { return {KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}})
-		};
+		this.komponenta = lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}});
+		this.atribut = lastnosti.map(el => { return {KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}});
 	}
 
 	executeAll() {
 		this.createDataObject();
 		this.addKratki_opis();
 		this.sortCategories();
+		this.splitDodatneLastnosti();
 		this.insertDataIntoDb();
 	};
 };

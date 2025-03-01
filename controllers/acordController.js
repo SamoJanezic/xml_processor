@@ -197,10 +197,8 @@ export class acordController extends dobaviteljController {
 			}
 			lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el['@_naziv'], lastnostVrednost: el['#text']})
 		}));
-		return {
-			komponenta: lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}}),
-			atribut: lastnosti.map(el => { return {KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}})
-		};
+		this.komponenta = lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}});
+		this.atribut = lastnosti.map(el => { return {KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}});
 	}
 
 	getEprel(key) {
@@ -220,6 +218,7 @@ export class acordController extends dobaviteljController {
 		this.createDataObject();
 		this.sortCategories();
 		this.addKratki_opis();
+		this.splitDodatneLastnosti();
 		this.insertDataIntoDb();
 	};
 };

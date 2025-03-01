@@ -331,6 +331,7 @@ export class elkotexController extends dobaviteljController {
 		// console.log(extractedNumber)
 	}
 
+
 	executeAll() {
 		this.createDataObject();
 		this.sortCategory();

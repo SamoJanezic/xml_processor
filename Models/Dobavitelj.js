@@ -7,10 +7,11 @@ export const DobaviteljTabela = db.define(
         dobavitelj_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true,
         },
         dobavitelj: {
             type: DataTypes.STRING,
-            primaryKey: true,
+            unique: true,
         }
     }
 );

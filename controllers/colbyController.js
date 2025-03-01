@@ -191,6 +191,7 @@ export class colbyController extends dobaviteljController {
 		return null;
 	};
 
+
 	executeAll() {
 		this.createDataObject();
 		this.cleanOpis();
