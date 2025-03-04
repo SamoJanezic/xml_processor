@@ -2,7 +2,7 @@ import { db } from "../db/db.js";
 import { DataTypes } from "sequelize";
 
 export const IzdelekKomponenta = db.define(
-    "KATEGORIJA",
+    "IZDELEK_KOMPONENTA",
     {
         id: {
             primaryKey: true,

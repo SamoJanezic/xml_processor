@@ -184,15 +184,16 @@ export class acordController extends dobaviteljController {
 		if (!obj.hasOwnProperty("lastnost")) {
 			return obj["#text"];
 		}
-		if(obj.lastnost) {
+		if (obj.lastnost) {
 			return obj;
 		}
 	};
 
 	splitDodatneLastnosti() {
+		const ignore = ["EAN koda:", "Proizvajalčeva koda", ' ', '/']
 		let lastnosti = [];
 		this.allData.forEach(data => data.dodatne_lastnosti.lastnost.forEach(el => {
-			if(el['@_naziv'] === "EAN koda" || el['@_naziv'] === "Proizvajalčeva koda" || el['#text'] === ' ' || el['#text'] === '/') {
+			if(ignore.includes(el['@_naziv'] || ignore.includes(el['#text']))) {
 				return;
 			}
 			lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el['@_naziv'], lastnostVrednost: el['#text']})

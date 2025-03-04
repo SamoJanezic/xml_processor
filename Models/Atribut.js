@@ -9,6 +9,14 @@ export const Atribut = db.define(
             primaryKey: true,
             autoIncrement: true,
         },
+        izdelek_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: "IZDELEK_DOBAVITELJ",
+                key: "id"
+            },
+            allowNull: false
+        },
         KOMPONENTA_komponenta: {
             type:DataTypes.STRING,
             references: {
