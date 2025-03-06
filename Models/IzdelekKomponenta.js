@@ -10,7 +10,7 @@ export const IzdelekKomponenta = db.define(
             type: DataTypes.INTEGER,
         },
         izdelek_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             references: {
                 model: "IZDELEK",
