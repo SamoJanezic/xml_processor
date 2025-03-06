@@ -1,15 +1,20 @@
 import { db } from "../db/db.js";
+import { DataTypes } from "sequelize";
 
-const Slika = db.define(
-    "Slika",
+export const Slika = db.define(
+    "SLIKA",
     {
         slika_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        izdelek_id: {
-            type: DataTypes.INTEGER,
+        izdelek_ean: {
+            type: DataTypes.STRING,
+            references: {
+                model: 'IZDELEK_DOBAVITELJ',
+                key: 'ean',
+            },
             allowNull: false,
         },
         slika: {
