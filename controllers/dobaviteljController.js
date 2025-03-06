@@ -3,7 +3,6 @@ import { parser } from "./parseController.js";
 import { insertIntoTable } from "../db/sql.js";
 import { Izdelek } from "../Models/Izdelek.js";
 import { IzdelekDobavitelj } from "../Models/IzdelekDobavitelj.js";
-import { izdelekTest } from "../Models/test.js";
 import { Kategorija } from "../Models/Kategorija.js";
 import { DobaviteljTabela } from "../Models/Dobavitelj.js"
 import { Komponenta } from "../Models/Komponenta.js";
@@ -76,7 +75,7 @@ export default class Dobavitelj {
 	};
 
 	addKratki_opis() {
-		let count = 0
+		let count = 0;
 		this.allData.forEach((el) => {
 			// if (el['eprel_id']) {
 			// 	el['eprel_id'] = this.removeHTMLTags(el['eprel_id']);
@@ -90,7 +89,6 @@ export default class Dobavitelj {
 	};
 
 	async insertDataIntoDb() {
-		// console.log(this.allData);
 		const izdelekData = this.allData.map(el => {
 			return {
 				ean: el.ean,
