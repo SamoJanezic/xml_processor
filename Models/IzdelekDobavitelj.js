@@ -58,5 +58,3 @@ export const IzdelekDobavitelj = db.define(
         ]
     }
 );
-
-// vrednost lastnosti veži na ean in lastnost

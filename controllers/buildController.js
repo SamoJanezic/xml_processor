@@ -1,5 +1,7 @@
 import * as fs from 'fs';
 import { XMLBuilder } from "fast-xml-parser";
+import { db } from '../db/db.js';
+import { IzdelekDobavitelj } from '../Models/IzdelekDobavitelj.js';
 
 const products = [
 	{
@@ -13,21 +15,15 @@ const products = [
 		nabavnaCena: 43.99,
 		DC: 43.99,
 		DRabat: 0,
-		blagovnaZnamka: "POWERWALKER",
-		dimenzijePaketa: {
-			depth : 180,
-			height: 170,
-			width: 70,
-			grossWeight: 6.00,
-			netWeight: 7.00,
-		},
+		blagovnaZnamka: {'#text': 'POWERWALKER', '@_id': 'POWERWALKER'},
+		dimenzijePaketa: null,
 		davcnaStopnja: 22,
-		kategorija: "UPS napajanja",
+		kategorija: {'#text': 'UPS napajanja', '@_id': '105'},
 		slikaMala:
 			"https://www.pcplus.si/media/catalog/product/cache/1/small_image/120x/602f0fa2c1f0d1ba5e241f914e856ff9/1/2/128944_14.jpg",
 		slikaVelika:
 			"https://www.pcplus.si/media/catalog/product/1/2/128944_14.jpg",
-		dobava: "Na zalogi",
+		dobava: {'#text': 'Na zalogi', '@_id': '1'},
 		spletnaStranProizvajalca: null,
 		dodatneLastnosti: {
 			lastnost: [
@@ -53,12 +49,23 @@ const products = [
 		dobava: "Na zalogi",
 		dodatneLastnosti: {
 			lastnost: [
-				{ naziv: "Spin", text: "1200rpm" },
-				{ naziv: "čas", text: "24h" },
+				{ '#text': "1200rpm", '@_naziv': "Spin", '@_id': 'spin' },
+				{ '#text': "24h", '@_naziv': "čas", '@_id': 'cas' },
 			],
 		},
+		dodatneSlike: {
+			dodatnaSlika1: 'https://www.pcplus.si/media/catalog/product/1/2/128942_11.jpg'
+		},
+		'@_id': '40'
 	},
 ];
+
+
+
+const izdelek = await IzdelekDobavitelj.findOne({where: {izdelek_ean: 5099206027176}});
+
+console.log(izdelek)
+
 
 const head = `<?xml version="1.0" encoding="UTF-8"?>
 <podjetje id="Acord 92, Ljubljana" storitev="BSMAGE/xml-export" uporabnik="prodaja@softtrade.si" ts="05.03.2025 09:12:48" opis_storitve="https://www.pcplus.si/catalog-export/">
@@ -66,12 +73,13 @@ const head = `<?xml version="1.0" encoding="UTF-8"?>
 `;
 
 const foot = `</izdelki>
-</podjetje>`
+</podjetje>`;
 
 const options = {
     arrayNodeName: "izdelek",
     ignoreAttributes : false,
-    format:true,
+    format: true,
+	cdataPropName: "lastnost",
 }
 
 const builder = new XMLBuilder(options);
