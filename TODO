@@ -1,15 +1,14 @@
 
 Prednost:
-  ☐ dodaj filtre
+  ✔ dodaj filtre @done(25-03-10 12:34)
   ☐ marža glede na kategorijo
 
 Popravila:
   ☐ asbis opis and kratki opis popravilo
-  ☐ createDataObject (naj dela za vse ali pa naredi za vsakega posebej)
-  ☐ parseObject  (bo najbrž dodatne slike tudi uredilo)
+  ✔ createDataObject (naj dela za vse ali pa naredi za vsakega posebej) @done(25-03-10 12:34)
+  ✔ parseObject  (bo najbrž dodatne slike tudi uredilo) @done(25-03-10 12:34)
   ☐ dodatne slike ne delujejo pri vseh
-  ☐ dodatne lastnosti ne delujejo pri vseh
-  ☐ db funkcije iz routes daj v sql.js
+  ✔ dodatne lastnosti ne delujejo pri vseh @done(25-03-10 12:35)
 
 Xml imports:
   ☐ dodaj Liebherr
@@ -22,7 +21,6 @@ Database:
 Features:
   ☐ Exportiraj xml
   ☐ skuži nekaj z eprel in euro nalepkami
-  ☐ Dodatki k serverju
   ☐ možnost da sprožiš skripto čez server
   ☐ spremeni maržo glede na kategorijo
   ☐ dodaj kontroler za napake (errorController)

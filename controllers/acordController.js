@@ -1,6 +1,6 @@
 
 import dobaviteljController from "./dobaviteljController.js";
-import { formatKeys } from "./kategorijeController.js";
+// import { formatKeys } from "./kategorijeController.js";
 
 export class acordController extends dobaviteljController {
 	name = "acord";
@@ -65,6 +65,9 @@ export class acordController extends dobaviteljController {
 	sortCategories() {
 		this.allData.forEach((el) => {
 			switch (el.kategorija) {
+				case "Avdio/Video":
+					el.kategorija = "Zvok in slika";
+					break;
 				case "UPS napajanja, inverterji, regulatorji napetosti":
 					el.kategorija = "UPS";
 					break;
@@ -171,8 +174,9 @@ export class acordController extends dobaviteljController {
 					el.kategorija = "POS in dodatki";
 					break;
 				// default:
-				// 	el.kategorija += " # še potrebno oddeliti";
+				// 		console.log(el.kategorija);
 			}
+			
 		});
 	};
 
