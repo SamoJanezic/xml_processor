@@ -1,7 +1,11 @@
 import * as fs from 'fs';
 import { XMLBuilder } from "fast-xml-parser";
 import { db } from '../db/db.js';
-import { IzdelekDobavitelj } from '../Models/IzdelekDobavitelj.js';
+import { softtradePodatki } from '../db/sql.js';
+
+const file = `${process.cwd()}/../xml/softtrade.xml`
+
+console.log(softtradePodatki);
 
 const products = [
 	{
@@ -60,20 +64,25 @@ const products = [
 	},
 ];
 
-
-
-const izdelek = await IzdelekDobavitelj.findOne({where: {izdelek_ean: 5099206027176}});
-
-console.log(izdelek)
-
-
-const head = `<?xml version="1.0" encoding="UTF-8"?>
-<podjetje id="Acord 92, Ljubljana" storitev="BSMAGE/xml-export" uporabnik="prodaja@softtrade.si" ts="05.03.2025 09:12:48" opis_storitve="https://www.pcplus.si/catalog-export/">
-<izdelki>
-`;
-
-const foot = `</izdelki>
-</podjetje>`;
+export const softtradePodatki = await db.query(
+	`SELECT ean,
+		blagovna_znamka,
+		ime_izdelka,
+		nabavna_cena,
+		ppc,
+		kategorija,
+		komponenta,
+		atribut
+	FROM IZDELEK
+		INNER JOIN
+		IZDELEK_DOBAVITELJ ON IZDELEK.ean = IZDELEK_DOBAVITELJ.izdelek_ean
+		INNER JOIN
+		KATEGORIJA ON IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija = KATEGORIJA.kategorija
+		INNER JOIN
+		KOMPONENTA ON KATEGORIJA.kategorija = KOMPONENTA.KATEGORIJA_kategorija
+		INNER JOIN
+		ATRIBUT ON IZDELEK.ean = ATRIBUT.izdelek_ean AND
+		KOMPONENTA.komponenta = ATRIBUT.KOMPONENTA_komponenta`);
 
 const options = {
     arrayNodeName: "izdelek",
@@ -84,18 +93,62 @@ const options = {
 
 const builder = new XMLBuilder(options);
 
-const file = `${process.cwd()}/../xml/softtrade.xml`
-
 const output = builder.build(products);
 
-fs.writeFileSync(file, head, (err) => {
-    if (err) throw err;
-    console.log('saved!');
-});
+function formatNodes(node) {
+	const outputNode = {
+		IzdelekID: 123,
+		EAN: node.ean,
+		izdelekIme: node.ime_izdelka,
+		url: 'www.bla.com',
+		opis: node.opis,
+		PPC: node.ppc,
+		cenaAkcijska: node.cenaAkcijska,
+		nabavnaCena: node.nabavna_cena,
+		DC: node.dealer_cena,
+		DRabat: 0,
+		blagovnaZnamka: node.blagovna_znamka,
+		dimenzijePaketa: {
+			depth: 0,
+			height: 0,
+			width:0,
+			grossWeight:0.00,
+			netWeight: 0.0000
+		},
+		davcnaStopnja: node.davcna_stopnja,
+		kategorija: node.kategorija,
+		slikaMala: node.slika_mala,
+		slikaVelika: node.slika_velika,
+		dobava: 'na zalogi',
+		spletnaStranProizvajalca: '',
+		dodatneLastnosti: node.dodatneLastnosti
+	}
 
-fs.appendFileSync(file, output, (err) => {
-	if (err) throw err;
-	console.log('bla')
-})
+	return outputNode;
+}
 
-fs.appendFileSync(file, foot);
+
+
+
+function build($file) {
+	const head = `<?xml version="1.0" encoding="UTF-8"?>
+<podjetje id="Acord 92, Ljubljana" storitev="BSMAGE/xml-export" uporabnik="prodaja@softtrade.si" ts="05.03.2025 09:12:48" opis_storitve="https://www.pcplus.si/catalog-export/">
+<izdelki>
+`;
+	const foot = `</izdelki>
+	</podjetje>`;
+
+	fs.writeFileSync($file, head, (err) => {
+		if (err) throw err;
+		console.log('saved!');
+	});
+
+	fs.appendFileSync($file, output, (err) => {
+		if (err) throw err;
+		console.log('bla');
+	});
+
+	fs.appendFileSync($file, foot);
+}
+
+// build(file);
