@@ -1,3 +1,6 @@
+import { Sequelize } from "sequelize";
+import { db } from "./db.js";
+
 export function createTable(tableName) {
 	tableName
 		.sync({ force: true })
@@ -68,4 +71,29 @@ export function deleteItem(tableName,id) {
 			firstName: "Jane",
 		},
 	});
+}
+
+export function softtradePodatki() {
+	const result = db.query(
+			`SELECT ean,
+				blagovna_znamka,
+				ime_izdelka,
+				nabavna_cena,
+				ppc,
+				kategorija,
+				komponenta,
+				atribut
+			FROM IZDELEK
+				INNER JOIN
+				IZDELEK_DOBAVITELJ ON IZDELEK.ean = IZDELEK_DOBAVITELJ.izdelek_ean
+				INNER JOIN
+				KATEGORIJA ON IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija = KATEGORIJA.kategorija
+				INNER JOIN
+				KOMPONENTA ON KATEGORIJA.kategorija = KOMPONENTA.KATEGORIJA_kategorija
+				INNER JOIN
+				ATRIBUT ON IZDELEK.ean = ATRIBUT.izdelek_ean AND
+				KOMPONENTA.komponenta = ATRIBUT.KOMPONENTA_komponenta`)
+		.then(data => {
+			console.log(data)
+		});
 }

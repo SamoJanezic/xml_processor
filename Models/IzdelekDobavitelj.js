@@ -48,6 +48,9 @@ export const IzdelekDobavitelj = db.define(
         ppc: {
             type: DataTypes.FLOAT,
         },
+        zaloga: {
+            type: DataTypes.STRING,
+        }
     },
     {
         indexes: [

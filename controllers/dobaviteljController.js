@@ -26,6 +26,7 @@ export default class Dobavitelj {
 		"kategorija",
 		"eprel_id",
 		"dobavitelj",
+		"zaloga"
 	];
 	allData = [];
 	komponenta = null;
@@ -108,7 +109,8 @@ export default class Dobavitelj {
 				kratki_opis_izdelka: el.kratki_opis,
 				nabavna_cena: el.cena_nabavna,
 				dealer_cena: el.dealer_cena,
-				ppc: el.ppc
+				ppc: el.ppc,
+				zaloga: el.zaloga,
 			}
 		});
 

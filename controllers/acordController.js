@@ -24,6 +24,7 @@ export class acordController extends dobaviteljController {
 		"kategorija",
 		"eprel",
 		"dobavitelj",
+		"dobava"
 	];
 
 	exceptions(param) {
