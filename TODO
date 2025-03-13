@@ -15,15 +15,14 @@ Xml imports:
   ☐ dodaj BSH
 
 Database:
-  ☐ dodaj zalogo in/ali dobavljivost
+  ✔ dodaj zalogo in/ali dobavljivost @done(25-03-13 16:02)
   ☐ dodaj maržo
 
 Features:
-  ☐ Exportiraj xml
+  ✔ Exportiraj xml @done(25-03-13 16:02)
   ☐ skuži nekaj z eprel in euro nalepkami
   ☐ možnost da sprožiš skripto čez server
   ☐ spremeni maržo glede na kategorijo
-  ☐ dodaj kontroler za napake (errorController)
   ✔ Sequelize vse sql stavke @done(25-02-21 11:52)
 
 Epreli:
