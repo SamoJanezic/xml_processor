@@ -55,7 +55,7 @@ export class acordController extends dobaviteljController {
 			"Računalniške mize",
 			"Polnilci",
 		];
-		if (param["EAN"] === "" || param["EAN"].toString().length < 5) {
+		if (param["EAN"] === "" || param["EAN"].toString().length < 5 || param["EAN"].toString().includes(" ")) {
 			return true;
 		}
 		if (ignoreCategory.includes(param["kategorija"]["#text"])) {
