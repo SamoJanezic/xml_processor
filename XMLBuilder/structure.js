@@ -1,45 +1,33 @@
-import * as fs from 'fs';
+// import * as fs from 'fs';
+import fsp from 'fs/promises';
+import { getIzdelekInfo, getAtributInfo } from '../db/sql.js';
 
 
 
-let info = [{
-    id: 123,
-    izdelekId: 321,
-    ean: "3322444111",
-    izdelek_ime: "logitech miška",
-    opis: "navadna miška",
-    ppc: 19.22,
-    nabavnaCena: 15.44,
-    dc: 16.12,
-    blagovna_znamka: "Logitech",
-    davcna_stopnja: 22,
-    kategorija: "miške",
-    slika_mala: "http:slikaMala",
-    slika_velika: "http:slikaVelika",
-    dobava: "na zalogi",
-    dodatneLastnosti: "bla"
-}];
+async function createBody(el) {
+  let dodatneLastnosti = ``;
+  const izdelekId = `softT${el.id}`;
+  const slika_mala = 'https://png.pngtree.com/png-vector/20191121/ourmid/pngtree-blue-bird-vector-or-color-illustration-png-image_2013004.jpg'
+  const atributInfo = await getAtributInfo(el.ean);
+  atributInfo[0].forEach((el, idx)=> {
+      if(idx === atributInfo[0].length - 1) {
+        dodatneLastnosti += `        <lastnost naziv="${el.komponenta.replace('"', '')}" id="${el.komponenta_id}"><![CDATA[${el.atribut}]]></lastnost>`;
+      } else {
+        dodatneLastnosti += `        <lastnost naziv="${el.komponenta.replace('"', '')}" id="${el.komponenta_id}"><![CDATA[${el.atribut}]]></lastnost>\r\n`;
+      }
+  });
 
-const head = `<?xml version="1.0" encoding="UTF-8"?>
-<podjetje id="Acord 92, Ljubljana" storitev="BSMAGE/xml-export" uporabnik="prodaja@softtrade.si" ts="05.03.2025 09:12:48" opis_storitve="https://www.pcplus.si/catalog-export/">
-  <izdelki>
-    `
 
-const foot = `  </izdelki>
-</podjetje>`
-
-function createBody(el) {
-
-return `<izdelek id="${el.id}">
-      <izdelekID>${el.izdelekId}</izdelekID>
+  return `  <izdelek id="${el.id}">
+      <izdelekID>${izdelekId}</izdelekID>
       <EAN>${el.ean}</EAN>
-      <izdelekIme><![CDATA[${el.izdelek_ime}]]></izdelekIme>
+      <izdelekIme><![CDATA[${el.ime_izdelka}]]></izdelekIme>
       <url/>
-      <opis><![CDATA[${el.opis}]]></opis>
+      <opis><![CDATA[${el.opis_izdelka}]]></opis>
       <PPC>${el.ppc}</PPC>
       <cenaAkcijska></cenaAkcijska>
       <nabavnaCena>${el.nabavnaCena}</nabavnaCena>
-      <DC>${el.dc}</DC>
+      <DC>${el.dealer_cena}</DC>
       <DRabat>0</DRabat>
       <blagovnaZnamka id="${el.blagovna_znamka}"><![CDATA[${el.blagovna_znamka}]]></blagovnaZnamka>
       <dimenzijePaketa kratekZapisVCm="xx">
@@ -50,32 +38,52 @@ return `<izdelek id="${el.id}">
         <netWeight unitOfMeasure="KG">/</netWeight>
       </dimenzijePaketa>
       <davcnaStopnja>${el.davcna_stopnja}</davcnaStopnja>
-      <kategorija id="${el.kategorijaId}">${el.kategorija}</kategorija>
-      <slikaMala><![CDATA[${el.slika_mala}]]></slikaMala>
-      <slikaVelika><![CDATA[${el.slika_velika}]]></slikaVelika>
-      <dobava id="el.dobava_id">${el.dobava}</dobava>
+      <kategorija id="${el.kategorija_id}">${el.kategorija}</kategorija>
+      <slikaMala><![CDATA[${slika_mala}]]></slikaMala>
+      <slikaVelika><![CDATA[${slika_mala}]]></slikaVelika>
+      <dobava id="1">${el.zaloga}</dobava>
       <spletnaStranProizvajalca></spletnaStranProizvajalca>
       <dodatneLastnosti>
-      ${el.dodatneLastnosti}
+${dodatneLastnosti}
       </dodatneLastnosti>
     </izdelek>
-`
+  `
 }
 
-const file = `${process.cwd()}/../xml/softtrade.xml`;
+export async function build() {
+  const file = `xml/softtrade.xml`;
+  const izdelekInfo = await getIzdelekInfo();
 
-export function build($file) {
-    fs.writeFileSync($file, head, (err) => {
-        if (err) throw err;
-        console.log('Head saved!');
-    });
+  const head = `<?xml version="1.0" encoding="UTF-8"?>
+<podjetje id="Acord 92, Ljubljana" storitev="BSMAGE/xml-export" uporabnik="prodaja@softtrade.si" ts="05.03.2025 09:12:48" opis_storitve="https://www.pcplus.si/catalog-export/">
+  <izdelki>
+    `;
+  const foot = `</izdelki>
+</podjetje>`;
 
-    fs.appendFileSync($file, createBody(info[0]), (err) => {
-        if (err) throw err;
-        console.log('Body saved!');
-    });
+  try {
+    await fsp.writeFile(file, head);
+    console.log("File created & head written...");
+  } catch (err) {
+    console.error(err.message);
+  }
 
-    fs.appendFileSync($file, foot);
+  try {
+    for (const el of izdelekInfo[0]) {
+      const body = await createBody(el);
+      await fsp.appendFile(file, body);
+    }
+    console.log("Body added...");
+  } catch (err) {
+    console.error(err.message);
+  }
+
+  try {
+    await fsp.appendFile(file, foot);
+    console.log(`Writing of ${file} Finished!`);
+  } catch (err) {
+    console.error(err.message);
+  }
 }
 
-build(file);
+build();
