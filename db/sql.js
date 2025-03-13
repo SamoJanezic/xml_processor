@@ -73,27 +73,42 @@ export function deleteItem(tableName,id) {
 	});
 }
 
-export function softtradePodatki() {
-	const result = db.query(
-			`SELECT ean,
-				blagovna_znamka,
-				ime_izdelka,
-				nabavna_cena,
-				ppc,
-				kategorija,
-				komponenta,
-				atribut
-			FROM IZDELEK
-				INNER JOIN
-				IZDELEK_DOBAVITELJ ON IZDELEK.ean = IZDELEK_DOBAVITELJ.izdelek_ean
-				INNER JOIN
-				KATEGORIJA ON IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija = KATEGORIJA.kategorija
-				INNER JOIN
-				KOMPONENTA ON KATEGORIJA.kategorija = KOMPONENTA.KATEGORIJA_kategorija
-				INNER JOIN
-				ATRIBUT ON IZDELEK.ean = ATRIBUT.izdelek_ean AND
-				KOMPONENTA.komponenta = ATRIBUT.KOMPONENTA_komponenta`)
-		.then(data => {
-			console.log(data)
-		});
+export async function getIzdelekInfo() {
+	return await db.query(
+		`SELECT IZDELEK_DOBAVITELJ.id,
+			ean,
+			ime_izdelka,
+			opis_izdelka,
+			ppc,
+			nabavna_cena,
+			dealer_cena,
+			blagovna_znamka,
+			davcna_stopnja,
+			kategorija_id,
+			kategorija,
+			zaloga
+		FROM IZDELEK
+			INNER JOIN
+			IZDELEK_DOBAVITELJ ON IZDELEK.ean = IZDELEK_DOBAVITELJ.izdelek_ean
+			INNER JOIN
+			KATEGORIJA ON IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija = KATEGORIJA.kategorija`
+	)
 }
+
+export async function getAtributInfo(ean) {
+	return await db.query(
+		`SELECT komponenta_id,
+			komponenta,
+			atribut
+		FROM KATEGORIJA
+			INNER JOIN
+			KOMPONENTA ON KATEGORIJA.kategorija = KOMPONENTA.KATEGORIJA_kategorija
+			INNER JOIN
+			ATRIBUT ON KOMPONENTA.komponenta = ATRIBUT.KOMPONENTA_komponenta
+			INNER JOIN
+			IZDELEK_DOBAVITELJ ON ATRIBUT.izdelek_ean = IZDELEK_DOBAVITELJ.izdelek_ean AND
+				IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija = KATEGORIJA.kategorija
+		WHERE IZDELEK_DOBAVITELJ.izdelek_ean = ${ean}`
+	)
+}
+
