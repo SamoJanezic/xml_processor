@@ -17,9 +17,13 @@ export const Slika = db.define(
             },
             allowNull: false,
         },
-        slika: {
+        slika_url: {
             type: DataTypes.STRING,
             allowNull: false,
-        }
+        },
+        tip: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
     }
 );
