@@ -1,6 +1,4 @@
-
 import dobaviteljController from "./dobaviteljController.js";
-// import { formatKeys } from "./kategorijeController.js";
 
 export class acordController extends dobaviteljController {
 	name = "acord";
