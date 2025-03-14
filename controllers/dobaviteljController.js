@@ -7,6 +7,7 @@ import { Kategorija } from "../Models/Kategorija.js";
 import { DobaviteljTabela } from "../Models/Dobavitelj.js"
 import { Komponenta } from "../Models/Komponenta.js";
 import { Atribut } from "../Models/Atribut.js";
+import { Slika } from "../Models/Slika.js";
 
 export default class Dobavitelj {
 	vrstice = [
@@ -26,11 +27,12 @@ export default class Dobavitelj {
 		"kategorija",
 		"eprel_id",
 		"dobavitelj",
-		"zaloga"
+		"zaloga",
 	];
 	allData = [];
 	komponenta = null;
 	atribut = null;
+	slika = null;
 
 	getData() {
 		if (typeof(this.file) === "object") {
@@ -49,6 +51,7 @@ export default class Dobavitelj {
 		}
 
 		getData.forEach((product) => {
+			// console.log(product)
 			let newObj = {};
 
 			if (this.exceptions(product)) {
@@ -117,6 +120,7 @@ export default class Dobavitelj {
 		const kategorijaData = this.allData.map(el => {
 			return {kategorija: el.kategorija};
 		});
+		// process.exit();
 
 		db.sync({alter: true});
 		insertIntoTable(DobaviteljTabela, {dobavitelj: this.name});

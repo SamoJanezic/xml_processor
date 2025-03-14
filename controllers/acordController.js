@@ -172,15 +172,11 @@ export class acordController extends dobaviteljController {
 				case "Dodatna oprema za omare":
 					el.kategorija = "POS in dodatki";
 					break;
-				// default:
-				// 		console.log(el.kategorija);
 			}
-			
 		});
 	};
 
 	parseObject(obj) {
-		// let str = "";
 		if (obj.dodatnaSlika1) {
 			return obj.dodatnaSlika1;
 		}
@@ -205,18 +201,6 @@ export class acordController extends dobaviteljController {
 		this.atribut = lastnosti.map(el => { return {izdelek_ean: el.ean, KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}});
 	}
 
-	getEprel(key) {
-		// if (product[key] !== undefined) {
-		// 	obj[vrstica[idx]] = product[key].match(/[0-9]+/g)[0];
-		// } else {
-		// 	obj[vrstica[idx]] = null;
-		// }
-		if (key !== undefined) {
-			return key.match(/[0-9]+/g)[0];
-		} else {
-			return null;
-		}
-	};
 
 	executeAll() {
 		this.createDataObject();

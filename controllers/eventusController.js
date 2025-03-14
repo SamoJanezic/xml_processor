@@ -21,6 +21,7 @@ export class eventusController extends dobaviteljController {
 		"kategorija",
 		"niPodatka",
 		"dobavitelj",
+		"zaloga",
 	];
 
 	exceptions(param) {
@@ -178,9 +179,19 @@ export class eventusController extends dobaviteljController {
 		this.atribut = lastnosti.map(el => { return {izdelek_ean: el.ean, KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}});
 	}
 
-	getEprel() {
-		return null;
+	getEprel(key) {
+		// if (product[key] !== undefined) {
+		// 	obj[vrstica[idx]] = product[key].match(/[0-9]+/g)[0];
+		// } else {
+		// 	obj[vrstica[idx]] = null;
+		// }
+		if (key !== undefined) {
+			return key.match(/[0-9]+/g)[0];
+		} else {
+			return null;
+		}
 	};
+
 
 	executeAll() {
 		this.createDataObject();
