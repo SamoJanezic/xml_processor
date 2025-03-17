@@ -12,27 +12,28 @@ export function createTable(tableName) {
 		});
 }
 
-export function insertIntoTable(tableName, obj) {
-	if (obj.length) {
+export function insertIntoTable(tableName, data) {
+	if (data.length) {
 		tableName
-			.bulkCreate(obj, {ignoreDuplicates: true})
+			.bulkCreate(data, { ignoreDuplicates: true })
 			.then(() => {
 				console.log(
-					`Successfully inserted ${obj.length} entries into ${tableName}`
+					`Successfully inserted ${data.length} entries into ${tableName}`
 				);
 			})
 			.catch((err) => {
 				console.error(err);
 			});
+	} else {
+		tableName
+			.create(data)
+			.then(() => {
+				console.log(`Successfully inserted entry into ${tableName}`);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	}
-	tableName
-		.create(obj)
-		.then(() => {
-			console.log(`Successfully inserted entry into ${tableName}`);
-		})
-		.catch((err) => {
-			console.error(err);
-		});
 }
 
 export function clearTable(tableName) {
@@ -65,7 +66,7 @@ export function updateItem(tableName, id, pairs) {
 		});
 }
 
-export function deleteItem(tableName,id) {
+export function deleteItem(tableName, id) {
 	tableName.destroy({
 		where: {
 			firstName: "Jane",
@@ -92,7 +93,7 @@ export async function getIzdelekInfo() {
 			IZDELEK_DOBAVITELJ ON IZDELEK.ean = IZDELEK_DOBAVITELJ.izdelek_ean
 			INNER JOIN
 			KATEGORIJA ON IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija = KATEGORIJA.kategorija`
-	)
+	);
 }
 
 export async function getAtributInfo(ean) {
@@ -109,6 +110,11 @@ export async function getAtributInfo(ean) {
 			IZDELEK_DOBAVITELJ ON ATRIBUT.izdelek_ean = IZDELEK_DOBAVITELJ.izdelek_ean AND
 				IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija = KATEGORIJA.kategorija
 		WHERE IZDELEK_DOBAVITELJ.izdelek_ean = ${ean}`
-	)
+	);
 }
 
+export async function getSlikaInfo(ean, tip) {
+	return await db.query(
+		`SELECT slika_url FROM SLIKA WHERE izdelek_ean = ${ean} AND tip = "${tip}"`
+	);
+}

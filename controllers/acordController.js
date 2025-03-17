@@ -17,12 +17,13 @@ export class acordController extends dobaviteljController {
 		"davcnaStopnja",
 		"slikaMala",
 		"slikaVelika",
+		"dodatneSlike",
 		"dodatneLastnosti",
 		"blagovnaZnamka",
 		"kategorija",
 		"eprel",
 		"dobavitelj",
-		"dobava"
+		"dobava",
 	];
 
 	exceptions(param) {
@@ -53,13 +54,17 @@ export class acordController extends dobaviteljController {
 			"Računalniške mize",
 			"Polnilci",
 		];
-		if (param["EAN"] === "" || param["EAN"].toString().length < 5 || param["EAN"].toString().includes(" ")) {
+		if (
+			param["EAN"] === "" ||
+			param["EAN"].toString().length < 5 ||
+			param["EAN"].toString().includes(" ")
+		) {
 			return true;
 		}
 		if (ignoreCategory.includes(param["kategorija"]["#text"])) {
 			return true;
 		}
-	};
+	}
 
 	sortCategories() {
 		this.allData.forEach((el) => {
@@ -174,11 +179,11 @@ export class acordController extends dobaviteljController {
 					break;
 			}
 		});
-	};
+	}
 
 	parseObject(obj) {
 		if (obj.dodatnaSlika1) {
-			return obj.dodatnaSlika1;
+			return Object.values(obj);
 		}
 		if (!obj.hasOwnProperty("lastnost")) {
 			return obj["#text"];
@@ -186,27 +191,88 @@ export class acordController extends dobaviteljController {
 		if (obj.lastnost) {
 			return obj;
 		}
-	};
-
-	splitDodatneLastnosti() {
-		const ignore = ["EAN koda:", "EAN koda", "Proizvajalčeva koda", ' ', '/']
-		let lastnosti = [];
-		this.allData.forEach(data => data.dodatne_lastnosti.lastnost.forEach(el => {
-			if(ignore.includes(el['@_naziv'] || ignore.includes(el['#text']))) {
-				return;
-			}
-			lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el['@_naziv'], lastnostVrednost: el['#text']})
-		}));
-		this.komponenta = lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}});
-		this.atribut = lastnosti.map(el => { return {izdelek_ean: el.ean, KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}});
 	}
 
+	splitDodatneLastnosti() {
+		const ignore = [
+			"EAN koda:",
+			"EAN koda",
+			"Proizvajalčeva koda",
+			" ",
+			"/",
+		];
+		let lastnosti = [];
+		this.allData.forEach((data) => {
+			data.dodatne_lastnosti.lastnost.forEach((el) => {
+				if (
+					ignore.includes(el["@_naziv"]) ||
+					ignore.includes(el["#text"])
+				) {
+					return;
+				}
+				lastnosti.push({
+					ean: data.ean,
+					kategorija: data.kategorija,
+					lastnostNaziv: el["@_naziv"],
+					lastnostVrednost: el["#text"],
+				});
+			});
+		});
+		this.komponenta = lastnosti.map((el) => {
+			return {
+				KATEGORIJA_kategorija: el.kategorija,
+				komponenta: el.lastnostNaziv,
+			};
+		});
+		this.atribut = lastnosti.map((el) => {
+			return {
+				izdelek_ean: el.ean,
+				KOMPONENTA_komponenta: el.lastnostNaziv,
+				atribut: el.lastnostVrednost,
+			};
+		});
+	}
+
+	splitSlike() {
+		let slike = [];
+		this.allData.forEach((data) => {
+			slike.push({
+				izdelek_ean: data.ean,
+				slika_url: data.slika_mala,
+				tip: "mala",
+			});
+			slike.push({
+				izdelek_ean: data.ean,
+				slika_url: data.slika_velika,
+				tip: "velika",
+			});
+			if (data.dodatne_slike) {
+				data.dodatne_slike.forEach((el) => {
+					slike.push({
+						izdelek_ean: data.ean,
+						slika_url: el,
+						tip: "dodatna",
+					});
+				});
+			}
+		});
+		this.slika = slike;
+	}
+
+	getEprel(key) {
+		if (key !== undefined) {
+			return key.match(/[0-9]+/g)[0];
+		} else {
+			return null;
+		}
+	}
 
 	executeAll() {
 		this.createDataObject();
 		this.sortCategories();
 		this.addKratki_opis();
+		this.splitSlike();
 		this.splitDodatneLastnosti();
 		this.insertDataIntoDb();
-	};
-};
+	}
+}

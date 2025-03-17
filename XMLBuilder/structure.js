@@ -1,24 +1,34 @@
 // import * as fs from 'fs';
-import fsp from 'fs/promises';
-import { getIzdelekInfo, getAtributInfo } from '../db/sql.js';
-
-
+import fsp from "fs/promises";
+import { getIzdelekInfo, getAtributInfo, getSlikaInfo } from "../db/sql.js";
 
 async function createBody(el) {
-  let dodatneLastnosti = ``;
-  const izdelekId = `softT${el.id}`;
-  const slika_mala = 'https://png.pngtree.com/png-vector/20191121/ourmid/pngtree-blue-bird-vector-or-color-illustration-png-image_2013004.jpg'
-  const atributInfo = await getAtributInfo(el.ean);
-  atributInfo[0].forEach((el, idx)=> {
-      if(idx === atributInfo[0].length - 1) {
-        dodatneLastnosti += `        <lastnost naziv="${el.komponenta.replace('"', '')}" id="${el.komponenta_id}"><![CDATA[${el.atribut}]]></lastnost>`;
-      } else {
-        dodatneLastnosti += `        <lastnost naziv="${el.komponenta.replace('"', '')}" id="${el.komponenta_id}"><![CDATA[${el.atribut}]]></lastnost>\r\n`;
-      }
-  });
+	let dodatneLastnosti = ``;
+	let dodatneSlike = ``;
+	const izdelekId = `softT${el.id}`;
+	const atributInfo = await getAtributInfo(el.ean);
+	const slikaMala = await getSlikaInfo(el.ean, "mala");
+	const slikaVelika = await getSlikaInfo(el.ean, "velika");
+	const slikaDodatna = await getSlikaInfo(el.ean, "dodatna");
+	atributInfo[0].forEach((el, idx) => {
+		if (idx === atributInfo[0].length - 1) {
+			dodatneLastnosti += `        <lastnost naziv="${el.komponenta.replace('"',"")}" id="${el.komponenta_id}"><![CDATA[${el.atribut}]]></lastnost>`;
+		} else {
+			dodatneLastnosti += `        <lastnost naziv="${el.komponenta.replace('"',"")}" id="${el.komponenta_id}"><![CDATA[${el.atribut}]]></lastnost>\r\n`;
+		}
+	});
 
+	let count = 1;
+	slikaDodatna[0].forEach((el, idx) => {
+		if (idx === slikaDodatna[0].length - 1) {
+			dodatneSlike += `        <dodatnaSlika${count}><![CDATA[${el.slika_url}]]></dodatnaSlika${count}>`;
+		} else {
+			dodatneSlike += `        <dodatnaSlika${count}><![CDATA[${el.slika_url}]]></dodatnaSlika${count}>\r\n`;
+		}
+		count++;
+	});
 
-  return `  <izdelek id="${el.id}">
+	return `  <izdelek id="${el.id}">
       <izdelekID>${izdelekId}</izdelekID>
       <EAN>${el.ean}</EAN>
       <izdelekIme><![CDATA[${el.ime_izdelka}]]></izdelekIme>
@@ -26,7 +36,7 @@ async function createBody(el) {
       <opis><![CDATA[${el.opis_izdelka}]]></opis>
       <PPC>${el.ppc}</PPC>
       <cenaAkcijska></cenaAkcijska>
-      <nabavnaCena>${el.nabavnaCena}</nabavnaCena>
+      <nabavnaCena>${el.nabavna_cena}</nabavnaCena>
       <DC>${el.dealer_cena}</DC>
       <DRabat>0</DRabat>
       <blagovnaZnamka id="${el.blagovna_znamka}"><![CDATA[${el.blagovna_znamka}]]></blagovnaZnamka>
@@ -39,51 +49,64 @@ async function createBody(el) {
       </dimenzijePaketa>
       <davcnaStopnja>${el.davcna_stopnja}</davcnaStopnja>
       <kategorija id="${el.kategorija_id}">${el.kategorija}</kategorija>
-      <slikaMala><![CDATA[${slika_mala}]]></slikaMala>
-      <slikaVelika><![CDATA[${slika_mala}]]></slikaVelika>
+      <slikaMala><![CDATA[${slikaMala[0][0].slika_url}]]></slikaMala>
+      <slikaVelika><![CDATA[${slikaVelika[0][0].slika_url}]]></slikaVelika>
       <dobava id="1">${el.zaloga}</dobava>
       <spletnaStranProizvajalca></spletnaStranProizvajalca>
       <dodatneLastnosti>
 ${dodatneLastnosti}
       </dodatneLastnosti>
+      <dodatneSlike>
+${dodatneSlike}
+      </dodatneSlike>
     </izdelek>
-  `
+  `;
 }
 
 export async function build() {
-  const file = `xml/softtrade.xml`;
-  const izdelekInfo = await getIzdelekInfo();
+	const file = `xml/softtrade.xml`;
+	const izdelekInfo = await getIzdelekInfo();
 
-  const head = `<?xml version="1.0" encoding="UTF-8"?>
+	const head = `<?xml version="1.0" encoding="UTF-8"?>
 <podjetje id="Acord 92, Ljubljana" storitev="BSMAGE/xml-export" uporabnik="prodaja@softtrade.si" ts="05.03.2025 09:12:48" opis_storitve="https://www.pcplus.si/catalog-export/">
   <izdelki>
     `;
-  const foot = `</izdelki>
+	const foot = `</izdelki>
 </podjetje>`;
 
-  try {
-    await fsp.writeFile(file, head);
-    console.log("File created & head written...");
-  } catch (err) {
-    console.error(err.message);
-  }
+	try {
+		await fsp.writeFile(file, head);
+		console.log("File created & head written...");
+	} catch (err) {
+		console.error(err.message);
+	}
 
-  try {
-    for (const el of izdelekInfo[0]) {
-      const body = await createBody(el);
-      await fsp.appendFile(file, body);
-    }
-    console.log("Body added...");
-  } catch (err) {
-    console.error(err.message);
-  }
+	try {
+		for (let i = 15; i < 25; i++) {
+			const body = await createBody(izdelekInfo[0][i]);
+			await fsp.appendFile(file, body);
+		}
+		console.log("Body added...");
+	} catch (err) {
+		console.error(err.message);
+	}
 
-  try {
-    await fsp.appendFile(file, foot);
-    console.log(`Writing of ${file} Finished!`);
-  } catch (err) {
-    console.error(err.message);
-  }
+	// try {
+	//   for (const el of izdelekInfo[0]) {
+	//     const body = await createBody(el);
+	//     await fsp.appendFile(file, body);
+	//   }
+	//   console.log("Body added...");
+	// } catch (err) {
+	//   console.error(err.message);
+	// }
+
+	try {
+		await fsp.appendFile(file, foot);
+		console.log(`Writing of ${file} Finished!`);
+	} catch (err) {
+		console.error(err.message);
+	}
 }
 
 build();
