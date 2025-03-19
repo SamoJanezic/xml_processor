@@ -1,5 +1,5 @@
-import { Sequelize } from "sequelize";
 import { db } from "./db.js";
+import { Slika } from "../Models/Slika.js";
 
 export function createTable(tableName) {
 	tableName
@@ -113,8 +113,18 @@ export async function getAtributInfo(ean) {
 	);
 }
 
-export async function getSlikaInfo(ean, tip) {
-	return await db.query(
-		`SELECT slika_url FROM SLIKA WHERE izdelek_ean = ${ean} AND tip = "${tip}"`
-	);
+// export async function getSlikaInfo(ean, tip) {
+// 	return await db.query(
+// 		`SELECT slika_url FROM SLIKA WHERE izdelek_ean = ${ean} AND tip = "${tip}"`
+// 	);
+// }
+
+export async function getSlikaInfo(ean) {
+	return await Slika.findAll({
+		attributes: ["slika_url", "tip"],
+		where: {
+			izdelek_ean: ean,
+		},
+		raw: true
+	})
 }
