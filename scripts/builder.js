@@ -56,8 +56,8 @@ async function createBody(el) {
       </dimenzijePaketa>
       <davcnaStopnja>${el.davcna_stopnja}</davcnaStopnja>
       <kategorija id="${el.kategorija_id}">${el.kategorija}</kategorija>
-      <slikaMala><![CDATA[${slikaMala[0][0].slika_url}]]></slikaMala>
-      <slikaVelika><![CDATA[${slikaVelika[0][0].slika_url}]]></slikaVelika>
+      <slikaMala><![CDATA[${slikaMala}]]></slikaMala>
+      <slikaVelika><![CDATA[${slikaVelika}]]></slikaVelika>
       <dobava id="1">${el.zaloga}</dobava>
       <spletnaStranProizvajalca></spletnaStranProizvajalca>
       <dodatneLastnosti>

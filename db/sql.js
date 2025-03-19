@@ -1,5 +1,9 @@
 import { db } from "./db.js";
 import { Slika } from "../Models/Slika.js";
+import { IzdelekDobavitelj } from "../Models/IzdelekDobavitelj.js";
+import { Izdelek } from "../Models/Izdelek.js";
+import { Kategorija } from "../Models/Kategorija.js";
+import { Sequelize } from "sequelize";
 
 export function createTable(tableName) {
 	tableName
@@ -112,6 +116,44 @@ export async function getAtributInfo(ean) {
 		WHERE IZDELEK_DOBAVITELJ.izdelek_ean = ${ean}`
 	);
 }
+
+// export async function getIzdelekInfo() {
+// 	IzdelekDobavitelj.belongsTo(Izdelek, { foreignKey: 'izdelek_ean' });
+// 	IzdelekDobavitelj.belongsTo(Kategorija, { foreignKey: 'KATEGORIJA_kategorija', key: 'kategorija' });
+
+//     try {
+//         const izdelekInfo = await IzdelekDobavitelj.findAll({
+//             attributes: [
+//                 'id',
+//                 'ime_izdelka',
+//                 'opis_izdelka',
+// 				'ppc',
+// 				'nabavna_cena',
+// 				'dealer_cena',
+// 				'zaloga',
+//             ],
+//             include: [
+//                 {
+//                     model: Izdelek,
+//                     attributes: ['ean', 'davcna_stopnja', 'blagovna_znamka'],
+//                     required: true,
+//                 },
+// 				{
+// 					model: Kategorija,
+// 					attributes: ['kategorija', 'kategorija_id'],
+// 					required: true,
+// 					on: {
+//                         '$IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija$': { [Sequelize.Op.eq]: Sequelize.col('Kategorija.kategorija') }
+//                     }
+// 				}
+//             ],
+// 			raw: true
+//         });
+//         return izdelekInfo;
+//     } catch (error) {
+//         console.error('Error fetching izdelek info:', error);
+//     }
+// }
 
 // export async function getSlikaInfo(ean, tip) {
 // 	return await db.query(
