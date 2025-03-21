@@ -15,8 +15,9 @@ export class avteraController extends dobaviteljController {
 		"DC",
 		"PPC",
 		"davcnaStopnja",
-		"dodatneSlike",
+		"niPodatka",
 		"slikaVelika",
+		"dodatneSlike",
 		"dodatneLastnosti",
 		"blagovnaZnamka",
 		"kategorija",
@@ -53,6 +54,7 @@ export class avteraController extends dobaviteljController {
 			switch (el.kategorija) {
 				case "Hišni Kino":
 					el.kategorija = "Domači kino";
+					break;
 				case "Dodatki za tablice":
 				case "Elektronski bralniki in dodatki":
 				case "Torbice in ovitki za tablice":
@@ -70,7 +72,8 @@ export class avteraController extends dobaviteljController {
 					el.kategorija = "Spominske kartice in čitalci";
 					break;
 				case "LCD monitorji":
-					el.kategorija = "Monitorji"
+					el.kategorija = "Monitorji";
+					break;
 				case "Mrežna oprema":
 				case "Mrežna oprema-brezžična":
 					el.kategorija = "Mrežne kartice, antene, WIFI ojačevalci";
@@ -169,7 +172,7 @@ export class avteraController extends dobaviteljController {
 
 	parseObject(obj) {
 		if (obj.dodatnaSlika1) {
-			return obj.dodatnaSlika1;
+			return Object.values(obj);
 		}
 		if (!obj.hasOwnProperty("lastnost")) {
 			return obj["#text"];
@@ -200,10 +203,34 @@ export class avteraController extends dobaviteljController {
 		this.atribut = lastnosti.map(el => { return {izdelek_ean: el.ean, KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}});
 	};
 
+	splitSlike() {
+		let slike = [];
+		this.allData.forEach((data) => {
+			if(data.slika_velika) {
+				slike.push({
+					izdelek_ean: data.ean,
+					slika_url: data.slika_velika,
+					tip:'velika',
+				});
+			}
+			if(data.dodatne_slike) {
+				data.dodatne_slike.forEach(el => {
+					slike.push({
+						izdelek_ean: data.ean,
+						slika_url: el,
+						tip: 'dodatna',
+					});
+				});
+			}
+		});
+		this.slika = slike;
+	}
+
 	executeAll() {
 		this.createDataObject();
-		this.addKratki_opis();
 		this.sortCategories();
+		this.addKratki_opis();
+		this.splitSlike();
 		this.splitDodatneLastnosti();
 		this.insertDataIntoDb();
 	};
