@@ -124,6 +124,7 @@ export class acordController extends dobaviteljController {
 					break;
 				case "Krmilniki":
 					el.kategorija = "Pametni vrtovi";
+					break;
 				case "Interaktivna oprema":
 					el.kategorija = "Konferenčna oprema";
 					break;
