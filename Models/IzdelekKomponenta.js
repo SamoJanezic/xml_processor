@@ -1,8 +1,8 @@
 import { db } from "../db/db.js";
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from '@sequelize/core';
 
-export const IzdelekKomponenta = db.define(
-    "IZDELEK_KOMPONENTA",
+export class IzdelekKomponenta extends Model {}
+IzdelekKomponenta.init(
     {
         id: {
             primaryKey: true,
@@ -13,7 +13,7 @@ export const IzdelekKomponenta = db.define(
             type: DataTypes.STRING,
             allowNull: false,
             references: {
-                model: "IZDELEK",
+                model: Model.Izdelek,
                 key: "ean",
             }
         },
@@ -21,9 +21,47 @@ export const IzdelekKomponenta = db.define(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: "KOMPONENTA",
+                model: Model.komponenta,
                 key: "id",
             }
-        },
+        }
+    },
+    {
+        sequelize: db,
+        modelName: 'IZDELEK_KOMPONENTA',
+        tableName: 'IZDELEK_KOMPONENTA',
+        timestamps: false,
     }
-);
+)
+
+// export const IzdelekKomponenta = db.define(
+//     {
+//         id: {
+//             primaryKey: true,
+//             autoIncrement: true,
+//             type: DataTypes.INTEGER,
+//         },
+//         izdelek_id: {
+//             type: DataTypes.STRING,
+//             allowNull: false,
+//             references: {
+//                 model: Model.Izdelek,
+//                 key: "ean",
+//             }
+//         },
+//         komponenta_id: {
+//             type: DataTypes.INTEGER,
+//             allowNull: false,
+//             references: {
+//                 model: Model.komponenta,
+//                 key: "id",
+//             }
+//         },
+//     },
+//     {
+//         sequelize: db,
+//         modelName: 'IZDELEK_KOMPONENTA',
+//         tableName: 'IZDELEK_KOMPONENTA',
+//         timestamps: false,
+//     }
+// );
