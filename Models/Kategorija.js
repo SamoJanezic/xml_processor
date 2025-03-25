@@ -1,13 +1,12 @@
 import { db } from "../db/db.js";
-import { DataTypes, Model } from '@sequelize/core';
+import { DataTypes } from "sequelize";
 
-export class Kategorija extends Model {}
-Kategorija.init(
+export const Kategorija = db.define(
+    "KATEGORIJA",
     {
         kategorija_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
         },
         kategorija: {
             type: DataTypes.STRING,
@@ -15,25 +14,4 @@ Kategorija.init(
             unique: true
         }
     },
-    {
-        sequelize: db,
-        modelName: 'KATEGORIJA',
-        tableName: 'KATEGORIJA',
-        timestamps: false,
-    }
-)
-
-// export const Kategorija = db.define(
-//     "KATEGORIJA",
-//     {
-//         kategorija_id: {
-//             type: DataTypes.INTEGER,
-//             primaryKey: true,
-//         },
-//         kategorija: {
-//             type: DataTypes.STRING,
-//             allowNull: false,
-//             unique: true
-//         }
-//     },
-// );
+);

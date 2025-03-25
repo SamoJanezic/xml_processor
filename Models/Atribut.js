@@ -1,9 +1,8 @@
 import { db } from "../db/db.js";
-import { DataTypes, Model } from "@sequelize/core";
+import { DataTypes } from "sequelize";
 
-
-export class Atribut extends Model {}
-Atribut.init(
+export const Atribut = db.define(
+	"ATRIBUT",
 	{
 		id: {
 			type: DataTypes.INTEGER,
@@ -13,7 +12,7 @@ Atribut.init(
 		izdelek_ean: {
 			type: DataTypes.STRING,
 			references: {
-				model: Model.Izdelek,
+				model: "IZDELEK",
 				key: "ean",
 			},
 			allowNull: false,
@@ -21,19 +20,16 @@ Atribut.init(
 		KOMPONENTA_komponenta: {
 			type: DataTypes.STRING,
 			references: {
-				model: Model.Komponenta,
+				model: "KOMPONENTA",
 				key: "komponenta",
 			},
 		},
 		atribut: {
 			type: DataTypes.STRING,
+			allowNull: true,
 		},
 	},
 	{
-		sequelize: db,
-		modelName: "ATRIBUT",
-		tableName: "ATRIBUT",
-		timestamps: false,
 		indexes: [
 			{
 				unique: true,
@@ -41,41 +37,4 @@ Atribut.init(
 			},
 		],
 	}
-)
-// export const Atribut = db.define(
-// 	"ATRIBUT",
-// 	{
-// 		id: {
-// 			type: DataTypes.INTEGER,
-// 			primaryKey: true,
-// 			autoIncrement: true,
-// 		},
-// 		izdelek_ean: {
-// 			type: DataTypes.STRING,
-// 			references: {
-// 				model: "IZDELEK",
-// 				key: "ean",
-// 			},
-// 			allowNull: false,
-// 		},
-// 		KOMPONENTA_komponenta: {
-// 			type: DataTypes.STRING,
-// 			references: {
-// 				model: "KOMPONENTA",
-// 				key: "komponenta",
-// 			},
-// 		},
-// 		atribut: {
-// 			type: DataTypes.STRING,
-// 			allowNull: true,
-// 		},
-// 	},
-// 	{
-// 		indexes: [
-// 			{
-// 				unique: true,
-// 				fields: ["izdelek_ean", "atribut", "KOMPONENTA_komponenta"],
-// 			},
-// 		],
-// 	}
-// );
+);
