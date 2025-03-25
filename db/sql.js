@@ -113,7 +113,7 @@ export async function getAtributInfo(ean) {
 			INNER JOIN
 			IZDELEK_DOBAVITELJ ON ATRIBUT.izdelek_ean = IZDELEK_DOBAVITELJ.izdelek_ean AND
 				IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija = KATEGORIJA.kategorija
-		WHERE IZDELEK_DOBAVITELJ.izdelek_ean = "${ean}"`
+		WHERE IZDELEK_DOBAVITELJ.izdelek_ean = ${ean}`
 	);
 }
 
