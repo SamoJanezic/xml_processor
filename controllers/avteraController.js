@@ -170,6 +170,10 @@ export class avteraController extends dobaviteljController {
 		});
 	};
 
+	formatZaloga(zaloga) {
+		return zaloga["@_id"] === "0" ? "Na zalogi" : "Ni na zalogi";
+	}
+
 	parseObject(obj) {
 		if (obj.dodatnaSlika1) {
 			return Object.values(obj);
@@ -183,6 +187,7 @@ export class avteraController extends dobaviteljController {
 	};
 
 	splitDodatneLastnosti() {
+		const exceptions = ["EAN koda", "Proizvajalčeva koda", " ", "/", "", "brez"];
 		let lastnosti = [];
 
 		this.allData.forEach(data => {
@@ -191,9 +196,9 @@ export class avteraController extends dobaviteljController {
 					lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: data['@_naziv'], lastnostVrednost: data['#text']})
 				} else {
 					data.dodatne_lastnosti.lastnost.forEach(el => {
-					if(el['@_naziv'] === "EAN koda" || el['@_naziv'] === "Proizvajalčeva koda" || el['#text'] === ' ' || el['#text'] === '/') {
+					if(exceptions.includes(el['@_naziv']) || exceptions.includes(el['#text']) || el['@_naziv'].includes('dodatno')) {
 						return;
-						}
+					}
 						lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el['@_naziv'], lastnostVrednost: el['#text']})
 					})
 				}

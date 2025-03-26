@@ -194,6 +194,10 @@ export class acordController extends dobaviteljController {
 		}
 	}
 
+	formatZaloga(zaloga) {
+		return zaloga["@_id"] === "1" ? "Na zalogi" : "Ni na zalogi";
+	}
+
 	splitDodatneLastnosti() {
 		const ignore = [
 			"EAN koda:",
@@ -222,13 +226,13 @@ export class acordController extends dobaviteljController {
 		this.komponenta = lastnosti.map((el) => {
 			return {
 				KATEGORIJA_kategorija: el.kategorija,
-				komponenta: el.lastnostNaziv,
+				komponenta: el.lastnostNaziv.replace(":", ""),
 			};
 		});
 		this.atribut = lastnosti.map((el) => {
 			return {
 				izdelek_ean: el.ean,
-				KOMPONENTA_komponenta: el.lastnostNaziv,
+				KOMPONENTA_komponenta: el.lastnostNaziv.replace(":", ""),
 				atribut: el.lastnostVrednost,
 			};
 		});

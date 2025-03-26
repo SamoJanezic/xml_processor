@@ -72,6 +72,8 @@ export default class Dobavitelj {
 			obj[vrstica[idx]] = this.name;
 		} else if (key === "eprel") {
 			obj[vrstica[idx]] = this.getEprel(product[key]);
+		} else if (vrstica[idx] === "zaloga") {
+			obj[vrstica[idx]] = this.formatZaloga(product[key]);
 		} else if (
 			key === "niPodatka" ||
 			product[key] === "" ||
@@ -112,11 +114,11 @@ export default class Dobavitelj {
 		const izdelekDobaviteljData = this.allData.map((el) => {
 			return {
 				izdelek_ean: el.ean,
-				ime_izdelka: el.izdelek_ime,
+				izdelek_ime: el.izdelek_ime,
 				KATEGORIJA_kategorija: el.kategorija,
 				DOBAVITELJ_dobavitelj: el.dobavitelj,
-				opis_izdelka: el.opis,
-				kratki_opis_izdelka: el.kratki_opis,
+				izdelek_opis: el.opis,
+				izdelek_kratki_opis: el.kratki_opis,
 				nabavna_cena: el.cena_nabavna,
 				dealer_cena: el.dealer_cena,
 				ppc: el.ppc,
