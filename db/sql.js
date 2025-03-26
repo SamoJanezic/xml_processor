@@ -40,10 +40,6 @@ export function insertIntoTable(tableName, data) {
 	}
 }
 
-export function clearTable(tableName) {
-	tableName.truncate();
-}
-
 export function selectAll(tableName, cols) {
 	tableName
 		.findAll({
@@ -70,20 +66,12 @@ export function updateItem(tableName, id, pairs) {
 		});
 }
 
-export function deleteItem(tableName, id) {
-	tableName.destroy({
-		where: {
-			firstName: "Jane",
-		},
-	});
-}
-
 export async function getIzdelekInfo() {
 	return await db.query(
-		`SELECT IZDELEK_DOBAVITELJ.id,
-			ean,
-			ime_izdelka,
-			opis_izdelka,
+		`SELECT MIN(izdelek_ean) AS	ean,
+			id,
+			izdelek_ime,
+			izdelek_opis,
 			ppc,
 			nabavna_cena,
 			dealer_cena,
@@ -96,7 +84,8 @@ export async function getIzdelekInfo() {
 			INNER JOIN
 			IZDELEK_DOBAVITELJ ON IZDELEK.ean = IZDELEK_DOBAVITELJ.izdelek_ean
 			INNER JOIN
-			KATEGORIJA ON IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija = KATEGORIJA.kategorija`
+			KATEGORIJA ON IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija = KATEGORIJA.kategorija
+			GROUP BY ean`
 	);
 }
 
@@ -113,9 +102,21 @@ export async function getAtributInfo(ean) {
 			INNER JOIN
 			IZDELEK_DOBAVITELJ ON ATRIBUT.izdelek_ean = IZDELEK_DOBAVITELJ.izdelek_ean AND
 				IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija = KATEGORIJA.kategorija
-		WHERE IZDELEK_DOBAVITELJ.izdelek_ean = ${ean}`
+		WHERE IZDELEK_DOBAVITELJ.izdelek_ean = "${ean}"
+		GROUP BY komponenta`
 	);
 }
+
+export async function getSlikaInfo(ean) {
+	return await Slika.findAll({
+		attributes: ["slika_url", "tip"],
+		where: {
+			izdelek_ean: ean,
+		},
+		raw: true
+	})
+}
+
 
 // export async function getIzdelekInfo() {
 // 	IzdelekDobavitelj.belongsTo(Izdelek, { foreignKey: 'izdelek_ean' });
@@ -125,7 +126,7 @@ export async function getAtributInfo(ean) {
 //         const izdelekInfo = await IzdelekDobavitelj.findAll({
 //             attributes: [
 //                 'id',
-//                 'ime_izdelka',
+//                 'izdelek_ime',
 //                 'opis_izdelka',
 // 				'ppc',
 // 				'nabavna_cena',
@@ -160,13 +161,3 @@ export async function getAtributInfo(ean) {
 // 		`SELECT slika_url FROM SLIKA WHERE izdelek_ean = ${ean} AND tip = "${tip}"`
 // 	);
 // }
-
-export async function getSlikaInfo(ean) {
-	return await Slika.findAll({
-		attributes: ["slika_url", "tip"],
-		where: {
-			izdelek_ean: ean,
-		},
-		raw: true
-	})
-}

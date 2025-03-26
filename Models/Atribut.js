@@ -33,7 +33,7 @@ export const Atribut = db.define(
 		indexes: [
 			{
 				unique: true,
-				fields: ["izdelek_ean", "atribut", "KOMPONENTA_komponenta"],
+				fields: ["izdelek_ean", "KOMPONENTA_komponenta"],
 			},
 		],
 	}

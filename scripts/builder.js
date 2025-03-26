@@ -38,9 +38,9 @@ async function createBody(el) {
 	return `  <izdelek id="${el.id}">
       <izdelekID>${izdelekId}</izdelekID>
       <EAN>${el.ean}</EAN>
-      <izdelekIme><![CDATA[${el.ime_izdelka}]]></izdelekIme>
+      <izdelekIme><![CDATA[${el.izdelek_ime}]]></izdelekIme>
       <url/>
-      <opis><![CDATA[${el.opis_izdelka}]]></opis>
+      <opis><![CDATA[${el.izdelek_opis}]]></opis>
       <PPC>${el.ppc}</PPC>
       <cenaAkcijska></cenaAkcijska>
       <nabavnaCena>${el.nabavna_cena}</nabavnaCena>
@@ -58,7 +58,7 @@ async function createBody(el) {
       <kategorija id="${el.kategorija_id}">${el.kategorija}</kategorija>
       <slikaMala><![CDATA[${slikaMala}]]></slikaMala>
       <slikaVelika><![CDATA[${slikaVelika}]]></slikaVelika>
-      <dobava id="1">${el.zaloga}</dobava>
+      <dobava id="${el.zaloga === 'Na zalogi' ? 1 : 0}">${el.zaloga}</dobava>
       <spletnaStranProizvajalca></spletnaStranProizvajalca>
       <dodatneLastnosti>
 ${dodatneLastnosti}

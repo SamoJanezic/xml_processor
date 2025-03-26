@@ -30,13 +30,13 @@ export const IzdelekDobavitelj = db.define(
                 key: "kategorija",
             }
         },
-        ime_izdelka: {
+        izdelek_ime: {
             type: DataTypes.STRING,
         },
-        opis_izdelka: {
+        izdelek_opis: {
             type: DataTypes.TEXT,
         },
-        kratki_opis_izdelka: {
+        izdelek_kratki_opis: {
             type: DataTypes.TEXT,
         },
         dealer_cena: {
