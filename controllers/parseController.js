@@ -7,7 +7,10 @@ export function parser(file, nodes, encoding = 'utf8') {
     encoding === 'windows1250' ? xmlFile = windows1250.decode(readFileSync(`${process.cwd()}/xml/${file}`)) : xmlFile = readFileSync(`${process.cwd()}/xml/${file}`, encoding);
     const options = {
         ignoreAttributes: false,
-        attributeNamePrefix : "@_"
+        attributeNamePrefix : "@_",
+        numberParseOptions: {
+            leadingZeros: false,
+        }
     };
     const parser = new XMLParser(options);
     const json = parser.parse(xmlFile);
