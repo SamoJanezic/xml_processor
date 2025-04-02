@@ -130,14 +130,14 @@ export default class Dobavitelj {
 			return { kategorija: el.kategorija };
 		});
 
-		// process.exit();
-
 		db.sync({ alter: true });
 		insertIntoTable(DobaviteljTabela, { dobavitelj: this.name });
 		insertIntoTable(Izdelek, izdelekData);
 		insertIntoTable(IzdelekDobavitelj, izdelekDobaviteljData);
 		insertIntoTable(Kategorija, kategorijaData);
-		insertIntoTable(Slika, this.slika);
+		if(this.slika) {
+			insertIntoTable(Slika, this.slika);
+		}
 		if (this.komponenta && this.atribut) {
 			insertIntoTable(Komponenta, this.komponenta);
 			insertIntoTable(Atribut, this.atribut);
