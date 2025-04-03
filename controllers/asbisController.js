@@ -280,18 +280,17 @@ export class asbisController extends dobaviteljController {
 	}
 
 	parseObject(obj) {
-		if (typeof obj.element === "string") {
-			return obj.element;
-		}
+		// if (typeof obj.element === "string") {
+		// 	return obj.element;
+		// }
 		// if (obj.element && obj.element.length) {
 		// 	console.log(obj.element)
 		// }
-		if (obj.element) {
-			return obj;
-		}
+		return Object.values(obj);
 	}
 
 	formatZaloga(zaloga) {
+
 	}
 
 	splitDodatneLastnosti() {
@@ -319,21 +318,34 @@ export class asbisController extends dobaviteljController {
 	splitSlike() {
 		let slike = [];
 		this.allData.forEach((data) => {
-			if(data.slika_velika) {
-				slike.push({
-					izdelek_ean: data.ean,
-					slika_url: data.slika_velika,
-					tip:'velika',
-				});
-			}
-			if(data.dodatne_slike) {
-				data.dodatne_slike.forEach(el => {
-					slike.push({
-						izdelek_ean: data.ean,
-						slika_url: el,
-						tip: 'dodatna',
+			slike.push({
+				izdelek_ean: data.ean,
+				slika_url: data.slika_mala,
+				tip: "mala",
+			});
+			slike.push({
+				izdelek_ean: data.ean,
+				slika_url: data.slika_velika,
+				tip: "velika",
+			});
+			if(data.dodatne_slike && data.dodatne_slike[0]) {
+				if(typeof(data.dodatne_slike[0]) === 'object') {
+					data.dodatne_slike[0].forEach(el => {
+						slike.push({
+							izdelek_ean: data.ean,
+							slika_url: el,
+							tip: 'dodatna',
+						});
 					});
-				});
+				} else {
+					data.dodatne_slike.forEach(el => {
+						slike.push({
+							izdelek_ean: data.ean,
+							slika_url: el,
+							tip: 'dodatna',
+						});
+					});
+				}
 			}
 		});
 		this.slika = slike;
