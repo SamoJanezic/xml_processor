@@ -50,7 +50,17 @@ export const IzdelekDobavitelj = db.define(
         },
         zaloga: {
             type: DataTypes.STRING,
-        }
+        },
+        aktiven: {
+            type: DataTypes.BOOLEAN,
+            default: 0,
+            allowNull: false
+        },
+        spremenjen_na: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+            allowNull: false
+        },
     },
     {
         indexes: [

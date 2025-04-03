@@ -123,12 +123,15 @@ export default class Dobavitelj {
 				dealer_cena: el.dealer_cena,
 				ppc: el.ppc,
 				zaloga: el.zaloga,
+				aktiven: el.zaloga === "Na zalogi" ? 1 : 0
 			};
 		});
 
 		const kategorijaData = this.allData.map((el) => {
 			return { kategorija: el.kategorija };
 		});
+
+		process.exit()
 
 		db.sync({ alter: true });
 		insertIntoTable(DobaviteljTabela, { dobavitelj: this.name });
