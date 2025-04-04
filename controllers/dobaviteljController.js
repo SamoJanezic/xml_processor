@@ -90,9 +90,6 @@ export default class Dobavitelj {
 
 	addKratki_opis() {
 		this.allData.forEach((el) => {
-			// if (el['eprel_id']) {
-			// 	el['eprel_id'] = this.removeHTMLTags(el['eprel_id']);
-			// }
 			if (el["opis"] !== null) {
 				el["kratki_opis"] =
 					el["opis"].substring(0, 100).replace(/(<([^>]+)>)/gi, "") +
@@ -131,7 +128,9 @@ export default class Dobavitelj {
 			return { kategorija: el.kategorija };
 		});
 
-		process.exit()
+		// console.log(this.atribut);
+
+		// process.exit()
 
 		db.sync({ alter: true });
 		insertIntoTable(DobaviteljTabela, { dobavitelj: this.name });

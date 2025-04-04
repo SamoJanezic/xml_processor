@@ -12,14 +12,14 @@ acord.executeAll();
 const avtera = new avteraController();
 avtera.executeAll();
 
-const colby = new colbyController();
-colby.executeAll();
-
-const elkotex = new elkotexController();
-elkotex.executeAll();
-
 const eventus = new eventusController();
 eventus.executeAll();
 
-// const asbis = new asbisController();
-// asbis.executeAll();
+const asbis = new asbisController();
+asbis.executeAll();
+
+// const colby = new colbyController();
+// colby.executeAll();
+
+const elkotex = new elkotexController();
+elkotex.executeAll();
