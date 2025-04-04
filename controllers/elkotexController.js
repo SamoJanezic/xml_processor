@@ -15,12 +15,14 @@ export class elkotexController extends dobaviteljController {
 		"mpc",
 		"davek",
 		"niPodatka",
+		"niPodatka",
 		"slike",
 		"niPodatka",
 		"znamkaId",
 		"podkategorijaNaziv",
 		"niPodatka",
 		"dobavitelj",
+		"zaloga",
 	];
 
 	exceptions(param) {
@@ -299,21 +301,14 @@ export class elkotexController extends dobaviteljController {
 		});
 	};
 
+	formatZaloga(zaloga) {
+		return zaloga > 0 ? "Na zalogi" : "Ni na zalogi";
+	}
+
 	parseObject(obj) {
-		let str = "";
-		if (obj.dodatnaSlika1) {
-			return obj.dodatnaSlika1;
+		if (obj.slika) {
+			return Object.values(obj);
 		}
-		if (!obj.hasOwnProperty("lastnost")) {
-			return obj["#text"];
-		}
-		if (!obj.lastnost.length) {
-			return (str += obj.lastnost["@_naziv"] + ": " + obj.lastnost["#text"]);
-		}
-		obj.lastnost.forEach((el) => {
-			str += el["@_naziv"].replace(":", "") + ": " + el["#text"] + " | ";
-		});
-		return str;
 	};
 
 	getEprel() {
@@ -331,10 +326,34 @@ export class elkotexController extends dobaviteljController {
 		// console.log(extractedNumber)
 	}
 
+	splitSlike() {
+		let slike = [];
+		this.allData.forEach((data) => {
+			if(typeof(data.dodatne_slike[0]) === 'object') {
+				data.dodatne_slike[0].forEach(el => {
+					slike.push({
+						izdelek_ean: data.ean,
+						slika_url: el,
+						tip: "dodatna",
+					});
+				})
+			} else {
+				slike.push({
+					izdelek_ean: data.ean,
+					slika_url: data.dodatne_slike[0],
+					tip: "dodatna",
+				});
+			}
+		});
+		this.slika = slike;
+	}
+
 
 	executeAll() {
 		this.createDataObject();
 		this.sortCategory();
+		this.addKratki_opis();
+		this.splitSlike();
 		this.insertDataIntoDb();
 	};
 };
