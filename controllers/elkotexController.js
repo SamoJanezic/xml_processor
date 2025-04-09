@@ -21,7 +21,6 @@ export class elkotexController extends dobaviteljController {
 		"znamkaId",
 		"podkategorijaNaziv",
 		"niPodatka",
-		"dobavitelj",
 		"zaloga",
 	];
 

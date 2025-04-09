@@ -23,7 +23,6 @@ export class asbisController extends dobaviteljController {
 		"Vendor",
 		"ProductType",
 		"niPodatka",
-		"dobavitelj",
 		"AVAIL",
 	];
 
@@ -382,16 +381,16 @@ export class asbisController extends dobaviteljController {
 	}
 
 	getEprel(str) {
-		if (str.length < 15) {
-			return str;
-		} else {
-			const decodedStr = str
-				.replace(/&lt;/g, "<")
-				.replace(/&gt;/g, ">")
-				.replace(/&quot;/g, '"');
-			const match = decodedStr.match(/<a[^>]*>(\d+)<\/a>/);
-			return match[1];
-		}
+		// if (str.length < 15) {
+		// 	return str;
+		// } else {
+		// 	const decodedStr = str
+		// 		.replace(/&lt;/g, "<")
+		// 		.replace(/&gt;/g, ">")
+		// 		.replace(/&quot;/g, '"');
+		// 	const match = decodedStr.match(/<a[^>]*>(\d+)<\/a>/);
+		// 	return match[1];
+		// }
 	}
 
 	executeAll() {

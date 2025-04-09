@@ -22,7 +22,6 @@ export class avteraController extends dobaviteljController {
 		"blagovnaZnamka",
 		"kategorija",
 		"EprelID",
-		"dobavitelj",
 		"dobava",
 	];
 
@@ -229,6 +228,10 @@ export class avteraController extends dobaviteljController {
 			}
 		});
 		this.slika = slike;
+	}
+
+	getEprel(key) {
+
 	}
 
 	executeAll() {

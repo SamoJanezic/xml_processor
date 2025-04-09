@@ -21,7 +21,6 @@ export class eventusController extends dobaviteljController {
 		"blagovnaZnamka",
 		"kategorija",
 		"niPodatka",
-		"dobavitelj",
 		"dobava",
 	];
 

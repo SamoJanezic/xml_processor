@@ -27,7 +27,6 @@ export default class Dobavitelj {
 		"blagovna_znamka",
 		"kategorija",
 		"eprel_id",
-		"dobavitelj",
 		"zaloga",
 	];
 	allData = [];
@@ -68,9 +67,7 @@ export default class Dobavitelj {
 	}
 
 	keyRules(obj, product, key, idx, vrstica) {
-		if (key === "dobavitelj") {
-			obj[vrstica[idx]] = this.name;
-		} else if (key === "eprel") {
+		if (vrstica[idx] === "eprel_id") {
 			obj[vrstica[idx]] = this.getEprel(product[key]);
 		} else if (vrstica[idx] === "zaloga") {
 			obj[vrstica[idx]] = this.formatZaloga(product[key]);
@@ -99,6 +96,7 @@ export default class Dobavitelj {
 	}
 
 	async insertDataIntoDb() {
+		// console.log(this.allData)
 		const izdelekData = this.allData.map((el) => {
 			return {
 				ean: el.ean,
@@ -113,14 +111,14 @@ export default class Dobavitelj {
 				izdelek_ean: el.ean,
 				izdelek_ime: el.izdelek_ime,
 				KATEGORIJA_kategorija: el.kategorija,
-				DOBAVITELJ_dobavitelj: el.dobavitelj,
+				DOBAVITELJ_dobavitelj: this.name,
 				izdelek_opis: el.opis,
 				izdelek_kratki_opis: el.kratki_opis,
 				nabavna_cena: el.cena_nabavna,
 				dealer_cena: el.dealer_cena,
 				ppc: el.ppc,
 				zaloga: el.zaloga,
-				aktiven: el.zaloga === "Na zalogi" ? 1 : 0
+				aktiven: el.zaloga === "Na zalogi" ? 1 : 0,
 			};
 		});
 
@@ -128,16 +126,16 @@ export default class Dobavitelj {
 			return { kategorija: el.kategorija };
 		});
 
-		// console.log(this.atribut);
+		// console.log(this.slika);
 
-		// process.exit()
+		// process.exit();
 
 		db.sync({ alter: true });
 		insertIntoTable(DobaviteljTabela, { dobavitelj: this.name });
 		insertIntoTable(Izdelek, izdelekData);
 		insertIntoTable(IzdelekDobavitelj, izdelekDobaviteljData);
 		insertIntoTable(Kategorija, kategorijaData);
-		if(this.slika) {
+		if (this.slika) {
 			insertIntoTable(Slika, this.slika);
 		}
 		if (this.komponenta && this.atribut) {

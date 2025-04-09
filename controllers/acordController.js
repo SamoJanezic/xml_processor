@@ -22,7 +22,6 @@ export class acordController extends dobaviteljController {
 		"blagovnaZnamka",
 		"kategorija",
 		"eprel",
-		"dobavitelj",
 		"dobava",
 	];
 
