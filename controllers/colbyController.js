@@ -14,13 +14,14 @@ export class colbyController extends dobaviteljController {
 		"niPodatka",
 		"PPCcena",
 		"davcnaStopnja",
-		"SlikaSkatla",
+		"slikaMala",
 		"slikaVelika",
+		"dodatneSlike",
 		"dodatneLastnosti",
 		"blagovnaZnamka",
 		"kategorija",
 		"niPodatka",
-		"dobavitelj",
+		"zaloga",
 	];
 
 	exceptions(param) {
@@ -66,11 +67,13 @@ export class colbyController extends dobaviteljController {
 			"Drugo",
 			"Podstavki",
 			"Kuhinjski pripomočki",
+			"Kabli",
+			"Adapterji"
 		];
 		if (ignoreCategory.includes(param["kategorija"]["#text"])) {
 			return true;
 		}
-	};
+	}
 
 	sortCategory() {
 		this.allData.forEach((el) => {
@@ -118,6 +121,7 @@ export class colbyController extends dobaviteljController {
 				case "Xbox Series X & Xbox One":
 					el.kategorija = "Igre";
 					break;
+				case "VR očala in dodatki":
 				case "Polnilna postaja":
 				case "Stojala":
 				case "Dodatki":
@@ -160,7 +164,38 @@ export class colbyController extends dobaviteljController {
 		// 	}
 		// });
 		// console.table(arr);
-	};
+	}
+
+	formatZaloga(zaloga) {
+		return zaloga > 0 ? "Na zalogi" : "Ni na zalogi";
+	}
+
+	splitSlike() {
+		let slike = [];
+		this.allData.forEach((data) => {
+			// console.log(data.dodatne_slike)
+			slike.push({
+				izdelek_ean: data.ean,
+				slika_url: data.slika_mala,
+				tip: "mala",
+			});
+			slike.push({
+				izdelek_ean: data.ean,
+				slika_url: data.slika_velika,
+				tip: "velika",
+			});
+			if (data.dodatne_slike) {
+				data.dodatne_slike.forEach((el) => {
+					slike.push({
+						izdelek_ean: data.ean,
+						slika_url: el,
+						tip: "dodatna",
+					});
+				});
+			}
+		});
+		this.slika = slike;
+	}
 
 	cleanOpis() {
 		this.allData.forEach((el) => {
@@ -168,34 +203,23 @@ export class colbyController extends dobaviteljController {
 				el["opis"] = el["opis"].replace(/(<([^>]+)>)/gi, "");
 			}
 		});
-	};
+	}
 
 	parseObject(obj) {
-		let str = "";
-		if (obj.dodatnaSlika1) {
-			return obj.dodatnaSlika1;
+		if(obj.dodatnaSlika.length > 15) {
+			console.log(obj.dodatnaSlika)
 		}
-		if (!obj.hasOwnProperty("lastnost")) {
-			return obj["#text"];
-		}
-		if (!obj.lastnost.length) {
-			return (str += obj.lastnost["@_naziv"] + ": " + obj.lastnost["#text"]);
-		}
-		obj.lastnost.forEach((el) => {
-			str += el["@_naziv"].replace(":", "") + ": " + el["#text"] + " | ";
-		});
-		return str;
-	};
+	}
 
 	getEprel() {
 		return null;
-	};
-
+	}
 
 	executeAll() {
 		this.createDataObject();
 		this.cleanOpis();
 		this.addKratki_opis();
+		this.splitSlike();
 		this.sortCategory();
 		this.insertDataIntoDb();
 	}
