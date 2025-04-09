@@ -85,6 +85,7 @@ export async function getIzdelekInfo() {
 			IZDELEK_DOBAVITELJ ON IZDELEK.ean = IZDELEK_DOBAVITELJ.izdelek_ean
 			INNER JOIN
 			KATEGORIJA ON IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija = KATEGORIJA.kategorija
+			WHERE aktiven = 1
 			GROUP BY ean`
 	);
 }
