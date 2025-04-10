@@ -373,10 +373,6 @@ export class alsoController extends dobaviteljController {
 		// console.log(arr);
 	}
 
-	parseObject(obj) {
-		console.log(obj);
-	}
-
 	formatZaloga(zaloga) {
 		return zaloga !== "0 kos" ? "Na zalogi" : "Ni na zalogi";
 	}
@@ -429,18 +425,18 @@ export class alsoController extends dobaviteljController {
 					if (idx === 0) {
 						slike.push({
 							izdelek_ean: data.ean,
-							slika: el["@_link"],
+							slika_url: el["@_link"],
 							tip: "mala",
 						});
 						slike.push({
 							izdelek_ean: data.ean,
-							slika: el["@_link"],
+							slika_url: el["@_link"],
 							tip: "velika",
 						});
 					}
 					slike.push({
 						izdelek_ean: data.ean,
-						slika: el["@_link"],
+						slika_url: el["@_link"],
 						tip: "dodatna",
 					});
 				});
@@ -448,8 +444,6 @@ export class alsoController extends dobaviteljController {
 		});
 		this.slika = slike;
 	}
-
-	getEprel(key) {}
 
 	executeAll() {
 		this.createDataObject();
