@@ -6,7 +6,6 @@ export class alsoController extends dobaviteljController {
 	file = "also.xml";
 	encoding = "utf8";
 	keys = [
-		"product['@_id']",
 		"product.idents.ident[2]['@_value']",
 		"product.base.name",
 		"product.base.longname",
@@ -378,29 +377,19 @@ export class alsoController extends dobaviteljController {
 	}
 
 	splitDodatneLastnosti() {
-		const ignore = [
-			"EAN koda:",
-			"EAN koda",
-			"Proizvajalčeva koda",
-			" ",
-			"/",
-		];
+
 		let lastnosti = [];
 		this.allData.forEach((data) => {
-			data.dodatne_lastnosti.lastnost.forEach((el) => {
-				if (
-					ignore.includes(el["@_naziv"]) ||
-					ignore.includes(el["#text"])
-				) {
-					return;
-				}
-				lastnosti.push({
-					ean: data.ean,
-					kategorija: data.kategorija,
-					lastnostNaziv: el["@_naziv"],
-					lastnostVrednost: el["#text"],
+			if(data.dodatne_lastnosti) {
+				data.dodatne_lastnosti.forEach(el => {
+					lastnosti.push({
+						ean: data.ean,
+						kategorija: data.kategorija,
+						lastnostNaziv: el["@_name"],
+						lastnostVrednost: el["#text"],
+					});
 				});
-			});
+			}
 		});
 		this.komponenta = lastnosti.map((el) => {
 			return {
@@ -449,6 +438,7 @@ export class alsoController extends dobaviteljController {
 		this.createDataObject();
 		this.sortCategories();
 		this.splitSlike();
+		this.splitDodatneLastnosti();
 		this.insertDataIntoDb();
 	}
 }

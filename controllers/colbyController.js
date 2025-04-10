@@ -5,7 +5,6 @@ export class colbyController extends dobaviteljController {
 	nodes = "json.podjetje.izdelek";
 	file = "colby.xml";
 	keys = [
-		"produktnakoda",
 		"izdelekEAN",
 		"izdelekIme",
 		"niPodatka",

@@ -7,7 +7,6 @@ export class asbisController extends dobaviteljController {
 		{ fileName: "asbis2.xml", node: "json.CONTENT.PRICES.PRICE" },
 	];
 	keys = [
-		"ProductCode",
 		"EAN",
 		"ProductDescription",
 		"niPodatka",

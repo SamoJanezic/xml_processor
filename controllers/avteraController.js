@@ -6,7 +6,6 @@ export class avteraController extends dobaviteljController {
 	file = "avtera.xml";
 	encoding = "windows1250";
 	keys = [
-		"izdelekID",
 		"EAN",
 		"izdelekIme",
 		"niPodatka",

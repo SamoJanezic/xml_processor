@@ -5,7 +5,6 @@ export class elkotexController extends dobaviteljController {
 	nodes = "json.items.item";
 	file = "elkotex.xml";
 	keys = [
-		"ident",
 		"ean",
 		"naziv",
 		"niPodatka",

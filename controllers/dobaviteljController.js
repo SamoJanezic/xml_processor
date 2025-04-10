@@ -11,7 +11,6 @@ import { Slika } from "../Models/Slika.js";
 
 export default class Dobavitelj {
 	vrstice = [
-		"izdelek_id",
 		"ean",
 		"izdelek_ime",
 		"kratki_opis",
@@ -125,8 +124,6 @@ export default class Dobavitelj {
 		const kategorijaData = this.allData.map((el) => {
 			return { kategorija: el.kategorija };
 		});
-
-		// console.log(this.slika);
 
 		// process.exit();
 

@@ -6,7 +6,6 @@ export class acordController extends dobaviteljController {
 	file = "acord.xml";
 	encoding = "utf8";
 	keys = [
-		"izdelekID",
 		"EAN",
 		"izdelekIme",
 		"niPodatka",
