@@ -12,6 +12,10 @@ export const Kategorija = db.define(
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
+        },
+        marza: {
+            type: DataTypes.FLOAT,
+            allowNull: false,
         }
     },
 );

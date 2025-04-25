@@ -122,7 +122,7 @@ export default class Dobavitelj {
 		});
 
 		const kategorijaData = this.allData.map((el) => {
-			return { kategorija: el.kategorija };
+			return { kategorija: el.kategorija, marza: 0 };
 		});
 
 		// process.exit();
