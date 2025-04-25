@@ -118,6 +118,8 @@ export class colbyController extends dobaviteljController {
 				case "XBSX":
 				case "Xbox One & Xbox Series X":
 				case "Xbox Series X & Xbox One":
+				case "Nintendo Switch 2":
+				case "Nintendo Switch 2 Edition":
 					el.kategorija = "Igre";
 					break;
 				case "VR očala in dodatki":
@@ -140,7 +142,9 @@ export class colbyController extends dobaviteljController {
 				case "Evercade":
 				case "Igralni ploščki":
 				case "Volani":
+				case "Igralni ploščki,,Vrsta izdelka":
 				case "Xbox dodatki":
+				case "EVERCADE":
 				case "Igralne palice in ploščki":
 					el.kategorija = "Igralni pripomočki";
 					break;
@@ -156,13 +160,13 @@ export class colbyController extends dobaviteljController {
 			}
 		});
 
-		// const arr = [];
-		// this.allData.forEach((el) => {
-		// 	if (!arr.includes(el.kategorija)) {
-		// 		arr.push(el.kategorija);
-		// 	}
-		// });
-		// console.table(arr);
+		const arr = [];
+		this.allData.forEach((el) => {
+			if (!arr.includes(el.kategorija)) {
+				arr.push(el.kategorija);
+			}
+		});
+		console.table(arr);
 	}
 
 	formatZaloga(zaloga) {
@@ -205,8 +209,10 @@ export class colbyController extends dobaviteljController {
 	}
 
 	parseObject(obj) {
-		if(obj.dodatnaSlika.length > 15) {
-			console.log(obj.dodatnaSlika)
+		if (obj.dodatna_slika) {
+			return obj
+		} else {
+			return obj ['#text'];
 		}
 	}
 
@@ -216,9 +222,9 @@ export class colbyController extends dobaviteljController {
 
 	executeAll() {
 		this.createDataObject();
-		this.cleanOpis();
-		this.addKratki_opis();
-		this.splitSlike();
+		// this.cleanOpis();
+		// this.addKratki_opis();
+		// this.splitSlike();
 		this.sortCategory();
 		this.insertDataIntoDb();
 	}
