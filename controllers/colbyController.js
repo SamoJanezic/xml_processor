@@ -98,6 +98,7 @@ export class colbyController extends dobaviteljController {
 				case "Ohišje":
 					el.kategorija = "Ohišja";
 					break;
+				case undefined:
 				case "PC":
 				case "Outright Games":
 				case "PS4":
@@ -160,13 +161,13 @@ export class colbyController extends dobaviteljController {
 			}
 		});
 
-		const arr = [];
-		this.allData.forEach((el) => {
-			if (!arr.includes(el.kategorija)) {
-				arr.push(el.kategorija);
-			}
-		});
-		console.table(arr);
+		// const arr = [];
+		// this.allData.forEach((el) => {
+		// 	if (!arr.includes(el.kategorija)) {
+		// 		arr.push(el.kategorija);
+		// 	}
+		// });
+		// console.table(arr);
 	}
 
 	formatZaloga(zaloga) {
