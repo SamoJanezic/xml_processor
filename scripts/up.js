@@ -7,11 +7,29 @@ import { Komponenta } from "../Models/Komponenta.js";
 import { Atribut } from "../Models/Atribut.js";
 import { Slika } from "../Models/Slika.js";
 
+const tables = [
+  Izdelek,
+  IzdelekDobavitelj,
+  Kategorija,
+  DobaviteljTabela,
+  Komponenta,
+  Atribut,
+  Slika,
+];
 
-createTable(Izdelek);
-createTable(IzdelekDobavitelj);
-createTable(Kategorija);
-createTable(DobaviteljTabela);
-createTable(Komponenta);
-createTable(Atribut);
-createTable(Slika);
+
+export function up() {
+	tables.forEach((table) => {
+	  createTable(table);
+	});
+}
+
+// up()
+
+// createTable(Izdelek);
+// createTable(IzdelekDobavitelj);
+// createTable(Kategorija);
+// createTable(DobaviteljTabela);
+// createTable(Komponenta);
+// createTable(Atribut);
+// createTable(Slika);
