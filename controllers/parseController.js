@@ -14,6 +14,12 @@ export function parser(file, nodes, encoding = 'utf8') {
     };
     const parser = new XMLParser(options);
     const json = parser.parse(xmlFile);
-    const output = eval(nodes);
+    const output = getValue(json, nodes);
     return output;
+}
+
+function getValue(obj, path) {
+    if (!path) return obj;
+    const properties = path.split('.');
+    return getValue(obj[properties.shift()], properties.join('.'))
 }

@@ -2,7 +2,7 @@ import dobaviteljController from "./dobaviteljController.js";
 
 export class acordController extends dobaviteljController {
 	name = "acord";
-	nodes = "json.podjetje.izdelki.izdelek";
+	nodes = "podjetje.izdelki.izdelek";
 	file = "acord.xml";
 	encoding = "utf8";
 	keys = [

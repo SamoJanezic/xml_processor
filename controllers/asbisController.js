@@ -3,8 +3,8 @@ import dobaviteljController from "./dobaviteljController.js";
 export class asbisController extends dobaviteljController {
 	name = "asbis";
 	file = [
-		{ fileName: "asbis1.xml", node: "json.ProductCatalog.Product" },
-		{ fileName: "asbis2.xml", node: "json.CONTENT.PRICES.PRICE" },
+		{ fileName: "asbis1.xml", node: "ProductCatalog.Product" },
+		{ fileName: "asbis2.xml", node: "CONTENT.PRICES.PRICE" },
 	];
 	keys = [
 		"EAN",

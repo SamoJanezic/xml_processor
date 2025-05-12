@@ -2,7 +2,7 @@ import dobaviteljController from "./dobaviteljController.js";
 
 export class colbyController extends dobaviteljController {
 	name = "colby";
-	nodes = "json.podjetje.izdelek";
+	nodes = "podjetje.izdelek";
 	file = "colby.xml";
 	keys = [
 		"izdelekEAN",

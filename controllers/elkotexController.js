@@ -2,7 +2,7 @@ import dobaviteljController from "./dobaviteljController.js";
 
 export class elkotexController extends dobaviteljController {
 	name = "elkotex";
-	nodes = "json.items.item";
+	nodes = "items.item";
 	file = "elkotex.xml";
 	keys = [
 		"ean",

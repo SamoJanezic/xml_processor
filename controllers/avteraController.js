@@ -2,7 +2,7 @@ import dobaviteljController from "./dobaviteljController.js";
 
 export class avteraController extends dobaviteljController {
 	name = "avtera";
-	nodes = "json.podjetje.izdelki.izdelek";
+	nodes = "podjetje.izdelki.izdelek";
 	file = "avtera.xml";
 	encoding = "windows1250";
 	keys = [

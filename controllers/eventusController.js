@@ -2,7 +2,7 @@ import dobaviteljController from "./dobaviteljController.js";
 
 export class eventusController extends dobaviteljController {
 	name = "eventus";
-	nodes = "json.podjetje.izdelki.izdelek";
+	nodes = "podjetje.izdelki.izdelek";
 	file = "eventus.xml";
 	keys = [
 		"EAN",

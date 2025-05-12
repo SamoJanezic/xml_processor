@@ -2,7 +2,7 @@ import dobaviteljController from "./dobaviteljController.js";
 
 export class alsoController extends dobaviteljController {
 	name = "also";
-	nodes = "json.xmlData.product";
+	nodes = "xmlData.product";
 	file = "also.xml";
 	encoding = "utf8";
 	keys = [
