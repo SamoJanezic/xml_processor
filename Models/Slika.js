@@ -9,11 +9,11 @@ export const Slika = db.define(
             primaryKey: true,
             autoIncrement: true,
         },
-        izdelek_id: {
-            type: DataTypes.INTEGER,
+        izdelek_ean: {
+            type: DataTypes.STRING,
             references: {
                 model: 'IZDELEK_DOBAVITELJ',
-                key: 'id',
+                key: 'izdelek_ean',
             },
             allowNull: false,
         },

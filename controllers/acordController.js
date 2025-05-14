@@ -1,4 +1,5 @@
 import dobaviteljController from "./dobaviteljController.js";
+import { AttributeController } from "./attributeController.js";
 
 export class acordController extends dobaviteljController {
 	name = "acord";
@@ -204,15 +205,18 @@ export class acordController extends dobaviteljController {
 			" ",
 			"/",
 		];
+
 		let lastnosti = [];
 		this.allData.forEach((data) => {
 			data.dodatne_lastnosti.lastnost.forEach((el) => {
-				if (
-					ignore.includes(el["@_naziv"]) ||
-					ignore.includes(el["#text"])
-				) {
-					return;
-				}
+				const attributeController = new AttributeController(
+					this.name,
+					data.kategorija,
+					el["@_naziv"],
+					el["#text"]
+				);
+				attributeController.listAttributes();
+
 				lastnosti.push({
 					ean: data.ean,
 					kategorija: data.kategorija,

@@ -94,8 +94,7 @@ export default class Dobavitelj {
 		});
 	}
 
-	async insertDataIntoDb() {
-		// console.log(this.allData)
+	prepareDbData() {
 		const izdelekData = this.allData.map((el) => {
 			return {
 				ean: el.ean,
@@ -104,7 +103,6 @@ export default class Dobavitelj {
 				blagovna_znamka: el.blagovna_znamka,
 			};
 		});
-
 		const izdelekDobaviteljData = this.allData.map((el) => {
 			return {
 				izdelek_ean: el.ean,
@@ -117,15 +115,27 @@ export default class Dobavitelj {
 				dealer_cena: el.dealer_cena,
 				ppc: el.ppc,
 				zaloga: el.zaloga,
-				aktiven: el.zaloga === "Na zalogi" ? 1 : 0,
+				aktiven: 1,
 			};
 		});
-
 		const kategorijaData = this.allData.map((el) => {
 			return { kategorija: el.kategorija, marza: 0 };
 		});
 
-		// process.exit();
+		return {
+			izdelekData: izdelekData,
+			izdelekDobaviteljData: izdelekDobaviteljData,
+			kategorijaData: kategorijaData,
+		}
+	}
+
+	async insertDataIntoDb() {
+
+		const izdelekData = this.prepareDbData().izdelekData
+		const izdelekDobaviteljData = this.prepareDbData().izdelekDobaviteljData
+		const kategorijaData = this.prepareDbData().kategorijaData
+
+		process.exit();
 
 		db.sync({ alter: true });
 		insertIntoTable(DobaviteljTabela, { dobavitelj: this.name });

@@ -22,9 +22,9 @@ async function createBody(el) {
 
 	slike.forEach((el, idx) => {
 		if(el.tip === "mala") {
-			slikaMala = el.slika_url;
+			slikaMala = el.slika_url ? el.slika_url : '';
 		} else if (el.tip === "velika") {
-			slikaVelika = el.slika_url;
+			slikaVelika = el.slika_url ? el.slika_url : '';
 		} else if (el.tip === "dodatna") {
 			if (idx === slike.length - 1) {
 				dodatneSlike += `        <dodatnaSlika${count}><![CDATA[${el.slika_url}]]></dodatnaSlika${count}>`;
