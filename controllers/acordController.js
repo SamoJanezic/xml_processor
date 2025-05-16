@@ -1,5 +1,5 @@
 import dobaviteljController from "./dobaviteljController.js";
-import { AttributeController } from "./attributeController.js";
+import { AcordAttributes } from "./attriburteControllers/AcordAttributes.js";
 
 export class acordController extends dobaviteljController {
 	name = "acord";
@@ -27,6 +27,7 @@ export class acordController extends dobaviteljController {
 
 	exceptions(param) {
 		const ignoreCategory = [
+			"Kolutni podaljški",
 			"Žarnice",
 			"Zunanja svetila",
 			"Namizna svetila",
@@ -52,6 +53,10 @@ export class acordController extends dobaviteljController {
 			"LED zasloni",
 			"Računalniške mize",
 			"Polnilci",
+			"Napajalni adapterji",
+			"Zunanje naprave",
+			"Orodje",
+			'Optične enote'
 		];
 		if (
 			param["EAN"] === "" ||
@@ -106,10 +111,6 @@ export class acordController extends dobaviteljController {
 					break;
 				case "Kamere":
 					el.kategorija = "Spletne kamere";
-					break;
-				case "Napajalni adapterji":
-				case "Zunanje naprave":
-					el.kategorija = "Dodatki za prenosnike";
 					break;
 				case "Spominske kartice":
 					el.kategorija = "Spominske kartice in čitalci";
@@ -198,32 +199,33 @@ export class acordController extends dobaviteljController {
 	}
 
 	splitDodatneLastnosti() {
-		const ignore = [
-			"EAN koda:",
-			"EAN koda",
-			"Proizvajalčeva koda",
-			" ",
-			"/",
-		];
-
 		let lastnosti = [];
 		this.allData.forEach((data) => {
-			data.dodatne_lastnosti.lastnost.forEach((el) => {
-				const attributeController = new AttributeController(
-					this.name,
-					data.kategorija,
-					el["@_naziv"],
-					el["#text"]
-				);
-				attributeController.listAttributes();
+			const Attributes = new AcordAttributes(
+				data.kategorija,
+				data.dodatne_lastnosti.lastnost,
+			);
 
-				lastnosti.push({
-					ean: data.ean,
-					kategorija: data.kategorija,
-					lastnostNaziv: el["@_naziv"],
-					lastnostVrednost: el["#text"],
-				});
-			});
+
+			if(Attributes.formatAttributes().length > 0) {
+				console.log(Attributes.formatAttributes());
+				// Attributes.formatAttributes().forEach((el) => {
+				// 	lastnosti.push({
+				// 		ean: data.ean,
+				// 		kategorija: data.kategorija,
+				// 		lastnostNaziv: el.lastnostNaziv.replace(":", ""),
+				// 		lastnostVrednost: el.lastnostVrednost,
+				// 	});
+				// });
+			}
+			// data.dodatne_lastnosti.lastnost.forEach((el) => {
+			// 	lastnosti.push({
+			// 		ean: data.ean,
+			// 		kategorija: data.kategorija,
+			// 		lastnostNaziv: el["@_naziv"],
+			// 		lastnostVrednost: el["#text"],
+			// 	});
+			// });
 		});
 		this.komponenta = lastnosti.map((el) => {
 			return {
