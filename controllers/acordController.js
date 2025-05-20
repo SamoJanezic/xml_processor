@@ -54,9 +54,15 @@ export class acordController extends dobaviteljController {
 			"Računalniške mize",
 			"Polnilci",
 			"Napajalni adapterji",
+			//TODO
 			"Zunanje naprave",
 			"Orodje",
-			'Optične enote'
+			'Optične enote',
+			"Stikala",
+			"Senzorji",
+			"Dodatna oprema za omare",
+			"Igračarski pripomočki",
+			
 		];
 		if (
 			param["EAN"] === "" ||
@@ -205,38 +211,29 @@ export class acordController extends dobaviteljController {
 				data.kategorija,
 				data.dodatne_lastnosti.lastnost,
 			);
-
-
 			if(Attributes.formatAttributes().length > 0) {
-				console.log(Attributes.formatAttributes());
-				// Attributes.formatAttributes().forEach((el) => {
-				// 	lastnosti.push({
-				// 		ean: data.ean,
-				// 		kategorija: data.kategorija,
-				// 		lastnostNaziv: el.lastnostNaziv.replace(":", ""),
-				// 		lastnostVrednost: el.lastnostVrednost,
-				// 	});
-				// });
+				Attributes.formatAttributes().forEach((el) => {
+					const key = Object.keys(el)[0];
+					const value = Object.values(el)[0];
+					lastnosti.push({
+						ean: data.ean,
+						kategorija: data.kategorija,
+						lastnostNaziv: key,
+						lastnostVrednost: value,
+					});
+				});
 			}
-			// data.dodatne_lastnosti.lastnost.forEach((el) => {
-			// 	lastnosti.push({
-			// 		ean: data.ean,
-			// 		kategorija: data.kategorija,
-			// 		lastnostNaziv: el["@_naziv"],
-			// 		lastnostVrednost: el["#text"],
-			// 	});
-			// });
 		});
 		this.komponenta = lastnosti.map((el) => {
 			return {
 				KATEGORIJA_kategorija: el.kategorija,
-				komponenta: el.lastnostNaziv.replace(":", ""),
+				komponenta: el.lastnostNaziv,
 			};
 		});
 		this.atribut = lastnosti.map((el) => {
 			return {
 				izdelek_ean: el.ean,
-				KOMPONENTA_komponenta: el.lastnostNaziv.replace(":", ""),
+				KOMPONENTA_komponenta: el.lastnostNaziv,
 				atribut: el.lastnostVrednost,
 			};
 		});
