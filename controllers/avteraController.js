@@ -1,4 +1,5 @@
 import dobaviteljController from "./dobaviteljController.js";
+import { AvteraAttributes } from "./attriburteControllers/AvteraAttributes.js";
 
 export class avteraController extends dobaviteljController {
 	name = "avtera";
@@ -37,6 +38,16 @@ export class avteraController extends dobaviteljController {
 			"Poslovni telefoni",
 			"Dodatki za telefone",
 			"ReproMS",
+			"Pripomočki za male živali",
+			"Daljnogledi",
+			"Diktafoni in dodatki",
+			//TODO
+			"Dodatki za fotoaparate",
+			"Dodatki za tiskalnike",
+			"Domači kino",
+			"Fotoaparati",
+			"Tiskalniški strežniki",
+			"Grafične kartice"
 		];
 		if (param["EAN"] === "" || param["EAN"].toString().length < 5) {
 			return true;
@@ -50,12 +61,13 @@ export class avteraController extends dobaviteljController {
 		let count = 0;
 		this.allData.forEach((el) => {
 			switch (el.kategorija) {
+				case "LED hotelski televizorji":
+					el.kategorija = 'Televizije';
+					break;
 				case "Hišni Kino":
 					el.kategorija = "Domači kino";
 					break;
-				case "Dodatki za tablice":
 				case "Elektronski bralniki in dodatki":
-				case "Torbice in ovitki za tablice":
 					el.kategorija = "Tablični računalniki";
 					break;
 				case "Hladilne skrinje":
@@ -74,7 +86,7 @@ export class avteraController extends dobaviteljController {
 					break;
 				case "Mrežna oprema":
 				case "Mrežna oprema-brezžična":
-					el.kategorija = "Mrežne kartice, antene, WIFI ojačevalci";
+					el.kategorija = "Usmerjevalniki, stikala in AP";
 					break;
 				case "Bobni":
 					el.kategorija = "Potrošni material";
@@ -90,6 +102,8 @@ export class avteraController extends dobaviteljController {
 					el.kategorija = "POS in dodatki";
 					break;
 				case "Dodatki za računalnike":
+				case "Torbice in ovitki za tablice":
+				case "Dodatki za tablice":
 					el.kategorija = "Dodatki za prenosnike";
 					break;
 				case "Čitalniki":
@@ -105,7 +119,7 @@ export class avteraController extends dobaviteljController {
 					el.kategorija = "Optične enote";
 					break;
 				case "SSD":
-					el.kategorija = "Trdi diski"
+					el.kategorija = "Trdi diski";
 					break;
 				case "Digitalni fotoaparati":
 					el.kategorija = "Fotoaparati";
@@ -122,6 +136,7 @@ export class avteraController extends dobaviteljController {
 				case "Video konferenčni sistemi":
 					el.kategorija = "Konferenčna oprema";
 					break;
+				case "Consumer AIO":
 				case "Računalniki - All in One":
 					el.kategorija = "AIO";
 					break;
@@ -185,25 +200,20 @@ export class avteraController extends dobaviteljController {
 	};
 
 	splitDodatneLastnosti() {
-		const exceptions = ["EAN koda", "Proizvajalčeva koda", " ", "/", "", "brez"];
 		let lastnosti = [];
 
 		this.allData.forEach(data => {
-			if (data.dodatne_lastnosti && data.dodatne_lastnosti.lastnost) {
-				if(!data.dodatne_lastnosti.lastnost.length) {
-					lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: data['@_naziv'], lastnostVrednost: data['#text']})
-				} else {
-					data.dodatne_lastnosti.lastnost.forEach(el => {
-					if(exceptions.includes(el['@_naziv']) || exceptions.includes(el['#text']) || el['@_naziv'].includes('dodatno')) {
-						return;
-					}
-						lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el['@_naziv'], lastnostVrednost: el['#text']})
-					})
+			lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: 'Proizvajalec', lastnostVrednost: data.blagovna_znamka});
+			const Attributes = new AvteraAttributes(data.kategorija, data.dodatne_lastnosti);
+			let attrs = Attributes.formatAttributes()
+			if (attrs !== null && Object.keys(attrs).length !== 0) {
+				for (const el in attrs) {
+					lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el, lastnostVrednost: attrs[el]});
 				}
 			}
+			this.komponenta = lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}});
+			this.atribut = lastnosti.map(el => { return {izdelek_ean: el.ean, KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}});
 		});
-		this.komponenta = lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}});
-		this.atribut = lastnosti.map(el => { return {izdelek_ean: el.ean, KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}});
 	};
 
 	splitSlike() {
