@@ -4,8 +4,6 @@ export class AvteraAttributes {
 		this.attribute = attribute;
 	}
 
-	newCategory = ''
-
 	formatAttributes() {
 		let match;
 		const attributes = {};
@@ -190,7 +188,7 @@ export class AvteraAttributes {
 			this.attribute.lastnost.forEach((el) => {
 				switch(el['@_naziv']) {
 					case 'Velikost pomnilnika':
-						attributes['Kapaciteta pomnilnika'] = el['#text']
+						attributes['Kapaciteta pomnilnika'] = el['#text'].replace(' ','')
 						break;
 					case 'Vrsta pomnilnika':
 						attributes['Vrsta pomnilnika'] = el['#text']

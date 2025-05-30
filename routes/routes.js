@@ -42,7 +42,7 @@ router.put("/update_kategorija", (req, res) => {
 
 router.put("/update_izdelek", (req, res) => {
 	const data = req.body;
-	
+
 	IzdelekDobavitelj.update(
 		{
 			KATEGORIJA_kategorija: data.KATEGORIJA_kategorija,
@@ -65,6 +65,25 @@ router.put("/update_izdelek", (req, res) => {
 	}).catch((err) => {
 		console.error(err);
 	});
+})
+
+router.put("/upsert", (req, res) => {
+
+	console.log(req.body);
+
+	
+	
+	IzdelekDobavitelj.upsert(
+    {
+      name: username,
+      results: surveyData,
+    },
+    { name: username }
+  )
+    .then(data => console.log(data));
+    .catch(err => console.log(err));
+});
+
 })
 
 export default router;

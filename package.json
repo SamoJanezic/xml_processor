@@ -13,6 +13,7 @@
     "up": "node scripts/up",
     "build": "node scripts/builder",
     "app": "node ./app.js",
-    "update": "node xml-downloader/app.js"
+    "update": "node xml-downloader/app.js",
+    "test": "node scripts/test.js"
   }
 }
