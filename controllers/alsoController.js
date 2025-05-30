@@ -1,4 +1,5 @@
 import dobaviteljController from "./dobaviteljController.js";
+import { AlsoAttributes } from "./attriburteControllers/AlsoAttributes.js";
 
 export class alsoController extends dobaviteljController {
 	name = "also";
@@ -381,14 +382,10 @@ export class alsoController extends dobaviteljController {
 		let lastnosti = [];
 		this.allData.forEach((data) => {
 			if(data.dodatne_lastnosti) {
-				data.dodatne_lastnosti.forEach(el => {
-					lastnosti.push({
-						ean: data.ean,
-						kategorija: data.kategorija,
-						lastnostNaziv: el["@_name"],
-						lastnostVrednost: el["#text"],
-					});
-				});
+				const Attributes = new AlsoAttributes(data.kategorija, data.dodatne_lastnosti);
+				const attrs = Attributes.formatAttributes()
+
+				console.log(attrs);
 			}
 		});
 		this.komponenta = lastnosti.map((el) => {
@@ -405,6 +402,37 @@ export class alsoController extends dobaviteljController {
 			};
 		});
 	}
+
+
+	// splitDodatneLastnosti() {
+
+	// 	let lastnosti = [];
+	// 	this.allData.forEach((data) => {
+	// 		if(data.dodatne_lastnosti) {
+	// 			data.dodatne_lastnosti.forEach(el => {
+	// 				lastnosti.push({
+	// 					ean: data.ean,
+	// 					kategorija: data.kategorija,
+	// 					lastnostNaziv: el["@_name"],
+	// 					lastnostVrednost: el["#text"],
+	// 				});
+	// 			});
+	// 		}
+	// 	});
+	// 	this.komponenta = lastnosti.map((el) => {
+	// 		return {
+	// 			KATEGORIJA_kategorija: el.kategorija,
+	// 			komponenta: el.lastnostNaziv.replace(":", ""),
+	// 		};
+	// 	});
+	// 	this.atribut = lastnosti.map((el) => {
+	// 		return {
+	// 			izdelek_ean: el.ean,
+	// 			KOMPONENTA_komponenta: el.lastnostNaziv.replace(":", ""),
+	// 			atribut: el.lastnostVrednost,
+	// 		};
+	// 	});
+	// }
 
 	splitSlike() {
 		let slike = [];
