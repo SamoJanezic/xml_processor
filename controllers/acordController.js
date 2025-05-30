@@ -206,36 +206,18 @@ export class acordController extends dobaviteljController {
 
 	splitDodatneLastnosti() {
 		let lastnosti = [];
+
 		this.allData.forEach((data) => {
-			const Attributes = new AcordAttributes(
-				data.kategorija,
-				data.dodatne_lastnosti.lastnost,
-			);
-			if(Attributes.formatAttributes().length > 0) {
-				Attributes.formatAttributes().forEach((el) => {
-					const key = Object.keys(el)[0];
-					const value = Object.values(el)[0];
-					lastnosti.push({
-						ean: data.ean,
-						kategorija: data.kategorija,
-						lastnostNaziv: key,
-						lastnostVrednost: value,
-					});
-				});
+			lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: 'Proizvajalec', lastnostVrednost: data.blagovna_znamka});
+			const Attributes = new AcordAttributes(data.kategorija, data.dodatne_lastnosti);
+			let attrs = Attributes.formatAttributes()
+			if (attrs !== null && Object.keys(attrs).length !== 0) {
+				for (const el in attrs) {
+					lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el, lastnostVrednost: attrs[el]});
+				}
 			}
-		});
-		this.komponenta = lastnosti.map((el) => {
-			return {
-				KATEGORIJA_kategorija: el.kategorija,
-				komponenta: el.lastnostNaziv,
-			};
-		});
-		this.atribut = lastnosti.map((el) => {
-			return {
-				izdelek_ean: el.ean,
-				KOMPONENTA_komponenta: el.lastnostNaziv,
-				atribut: el.lastnostVrednost,
-			};
+			this.komponenta = lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}});
+			this.atribut = lastnosti.map(el => { return {izdelek_ean: el.ean, KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}});
 		});
 	}
 
