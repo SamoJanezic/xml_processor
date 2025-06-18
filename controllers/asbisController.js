@@ -59,6 +59,13 @@ export class asbisController extends dobaviteljController {
 			"Network Management Module",
 			"Network Interface Card",
 			"Networking - Range Extender",
+			"PC Barebone",
+			"PC NetTop",
+			"Server Desktop",
+			"Main Board Server",
+			"Acc - Dental care",
+			"Ščetke za zobe",
+			""
 		];
 		if (ignoreCategory.includes(product.ProductType)) {
 			return true;
@@ -88,11 +95,23 @@ export class asbisController extends dobaviteljController {
 				case "Networking - Range Extender":
 					el.kategorija = "Mrežne kartice, antene, WIFI ojačevalci";
 					break;
-				case "Networking - Wireless Outdoor Access Point":
 				case "Networking - Router":
+					if(el.dodatne_lastnosti) {
+						el.dodatne_lastnosti.push({"@_Name": 'Vrsta', "@_Value": 'Usmerjevalnik'});
+					}
 				case "Networking - Transceiver":
+					if(el.dodatne_lastnosti) {
+						el.dodatne_lastnosti.push({"@_Name": 'Vrsta', "@_Value": 'Usmerjevalnik'});
+					}
+				case "Networking - Wireless Outdoor Access Point":
 				case "Networking - Wireless Access Point":
+					if(el.dodatne_lastnosti) {
+						el.dodatne_lastnosti.push({"@_Name": 'Vrsta', "@_Value": 'Dostopna točka'});
+					}
 				case "Network Switch":
+					if(el.dodatne_lastnosti) {
+						el.dodatne_lastnosti.push({"@_Name": 'Vrsta', "@_Value": 'Stikalo'});
+					}
 					el.kategorija = "Usmerjevalniki, stikala in AP";
 					break;
 				case "Security - Surveillance Video Recorder":
@@ -108,7 +127,7 @@ export class asbisController extends dobaviteljController {
 				case "NAS Accessories":
 				case "Desktop NAS":
 				case "Rack NAS":
-					el.kategorija = "NAS Sistemi";
+					el.kategorija = "NAS sistemi";
 					break;
 				case "Acc - Blenders":
 				case "Hand Blender":
@@ -196,6 +215,7 @@ export class asbisController extends dobaviteljController {
 					break;
 				case "Power Supply Unit":
 					el.kategorija = "Napajalniki";
+					break;
 				case "PC Chassis":
 					el.kategorija = "Ohišja";
 					break;
@@ -205,12 +225,14 @@ export class asbisController extends dobaviteljController {
 					break;
 				case "Cooling System":
 					el.kategorija = "Hlajenje";
+					break;
 				case "Input Devices - Mouse Box":
 				case "Input Devices - Mouse":
 				case "Input Devices - Pointing Device Box":
 				case "Gaming Mouse":
 				case "Gaming Mousepads":
 					el.kategorija = "Miške";
+					break;
 				case "Input Devices - Keyboard Box":
 				case "Input Devices - Keyboard":
 				case "Gaming Keyboard":
@@ -228,6 +250,7 @@ export class asbisController extends dobaviteljController {
 				case "Acc - Air Purifiers":
 				case "Čistilci zraka":
 					el.kategorija = "Razvlažilci zraka";
+					break;
 				case "Mouse Pad":
 					el.kategorija = "Podloge";
 					break;
@@ -244,6 +267,7 @@ export class asbisController extends dobaviteljController {
 				case "Security - Surveillance System Accessories":
 				case "IP Camera":
 					el.kategorija = "Kamere";
+					break;
 				case "LED TV":
 					el.kategorija = "Televizije";
 					break;
@@ -272,8 +296,10 @@ export class asbisController extends dobaviteljController {
 				case "Sous-Vide":
 				case "Kuhalniki na paro":
 					el.kategorija = "Kuhalniki";
+					break;
 				case "Kuhinjske tehtnice":
 					el.kategorija = "Tehtnice";
+					break;
 				case "Plates and ovens":
 				case "Otroška ura":
 				case "Pametna ura":
@@ -301,14 +327,10 @@ export class asbisController extends dobaviteljController {
 				}
 			});
 		});
-		// console.log(combinedData);
 		return combinedData;
 	}
 
 	parseObject(obj) {
-		// if (typeof obj.element === "string") {
-		// 	return obj.element;
-		// }
 		if (obj.element && obj.element.length) {
 			return obj.element;
 		}
@@ -323,69 +345,18 @@ export class asbisController extends dobaviteljController {
 		let lastnosti = [];
 
 		this.allData.forEach((data) => {
-			if (data.dodatne_lastnosti && data.dodatne_lastnosti.length) {
-				const Attributes = new AsbisAttributes(data.kategorija,	data.dodatne_lastnosti);
-				const attrs = Attributes.formatAttributes();
-				// console.log(attrs)
-			}
-		});
-
-		this.komponenta = lastnosti.map((el) => {
-			return {
-				KATEGORIJA_kategorija: el.kategorija,
-				komponenta: el.lastnostNaziv.replace(":", ""),
-			};
-		});
-		this.atribut = lastnosti.map((el) => {
-			return {
-				izdelek_ean: el.izdelek_ean,
-				KOMPONENTA_komponenta: el.lastnostNaziv.replace(":", ""),
-				atribut: el.lastnostVrednost,
-			};
-		});
+					lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: 'Proizvajalec', lastnostVrednost: data.blagovna_znamka});
+					const Attributes = new AsbisAttributes(data.kategorija, data.dodatne_lastnosti);
+					const attrs = Attributes.formatAttributes()
+					if (attrs !== null && Object.keys(attrs).length !== 0) {
+						for (const el in attrs) {
+							lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el, lastnostVrednost: attrs[el]});
+						}
+					}
+					this.komponenta = lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}});
+					this.atribut = lastnosti.map(el => { return {izdelek_ean: el.ean, KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}});
+				});
 	}
-
-	// splitDodatneLastnosti() {
-	// 	const exceptions = [
-	// 		"EAN koda",
-	// 		"Proizvajalčeva koda",
-	// 		" ",
-	// 		"/",
-	// 		"",
-	// 		"brez",
-	// 	];
-	// 	let lastnosti = [];
-
-	// 	this.allData.forEach((data) => {
-	// 		if (data.dodatne_lastnosti && data.dodatne_lastnosti.length) {
-	// 			data.dodatne_lastnosti.forEach((el, idx) => {
-	// 				if (el["@_Name"] === "EPREL") {
-	// 					this.allData[idx]["eprel_id"] = this.getEprel(el["@_Value"]);
-	// 				}
-	// 				lastnosti.push({
-	// 					izdelek_ean: data.ean,
-	// 					kategorija: data.kategorija,
-	// 					lastnostNaziv: el["@_Name"],
-	// 					lastnostVrednost: el["@_Value"],
-	// 				});
-	// 			});
-	// 		}
-	// 	});
-
-	// 	this.komponenta = lastnosti.map((el) => {
-	// 		return {
-	// 			KATEGORIJA_kategorija: el.kategorija,
-	// 			komponenta: el.lastnostNaziv.replace(":", ""),
-	// 		};
-	// 	});
-	// 	this.atribut = lastnosti.map((el) => {
-	// 		return {
-	// 			izdelek_ean: el.izdelek_ean,
-	// 			KOMPONENTA_komponenta: el.lastnostNaziv.replace(":", ""),
-	// 			atribut: el.lastnostVrednost,
-	// 		};
-	// 	});
-	// }
 
 	splitSlike() {
 		let slike = [];

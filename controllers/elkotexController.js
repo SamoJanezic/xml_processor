@@ -1,4 +1,5 @@
 import dobaviteljController from "./dobaviteljController.js";
+import ElkotexAttributes from "./attriburteControllers/ElkotexAttributes.js";
 
 export class elkotexController extends dobaviteljController {
 	name = "elkotex";
@@ -16,7 +17,7 @@ export class elkotexController extends dobaviteljController {
 		"niPodatka",
 		"niPodatka",
 		"slike",
-		"niPodatka",
+		"opis",
 		"znamkaId",
 		"podkategorijaNaziv",
 		"niPodatka",
@@ -47,75 +48,104 @@ export class elkotexController extends dobaviteljController {
 			"Čistilniki zraka",
 			"Baterije in polnilci",
 			"Polnilne postaje, agregati",
-			'Pohištvo',
-			'Solarni paneli',
-			'Namizne svetilke',
-			'Dodatki',
-			'Sit-stand mize, podstavki in nosilci',
-			'Koši za odpadke',
+			"Pohištvo",
+			"Solarni paneli",
+			"Namizne svetilke",
+			"Dodatki",
+			"Sit-stand mize, podstavki in nosilci",
+			"Koši za odpadke",
 			"Ostalo",
-			"Rezervni deli"
+			"Rezervni deli",
+			"Rezervni deli in dodatki",
+			"Napajalniki za prenosnike",
+			"Video adapterji",
+			"Zvočni adapterji",
+			"Priključni kabli in adapterji",
+			"Kabli",
+			"Podaljški, razdelilci",
+			"Video kabli",
+			"Mrežni kabli",
+			"Mrežni adapterji",
+			"Video kabli",
+			"Urejanje kablov",
+			"Avto polnilci",
+			"Zvočni kabli",
+			"Kabli in adapterji",
+			"Hlajenje za prenosnike",
+			"Rezervni deli za skiroje",
+			"Torbe in nahrbtniki za prosti čas",
+			"Rezervni deli in dodatki za sesalnike",
+			"Nega telesa",
+			"Domofoni",
+			"Vremenske postaje",
+			"Kuhinjski organizatorji",
+			"Kuhinjski pripomočki",
+ 			"Priprava hrane",
+			"Pametne naprave",
+			"Čistila",
 		];
 		if (ignoreCategory.includes(param["podkategorijaNaziv"])) {
 			return true;
 		}
-	};
+	}
 
 	sortCategory() {
 		this.allData.forEach((el) => {
 			switch (el.kategorija) {
-				case 'Razširitvene kartice':
+				case "Razširitvene kartice":
 					el.kategorija = "Komponenta";
 					break;
-				case "Likaniki":
+				case "Likalniki":
+				case "Likalniki in likalne mize":
 					el.kategorija = "Likalniki";
-				case 'Nega zob':
+					break;
+				case "Nega zob":
 					el.kategorija = "Ustna nega";
 					break;
-				case 'Nega telesa':
+				case "Nega telesa":
 					el.kategorija = "Pripomočki za osebno nego";
 					break;
-				case 'Pisarniška tehnika':
-				case 'Uničevalci dokumentov':
-				case 'Organizatorji in dodatki':
-				case 'Organizatorji in dodatki':
+				case "Pisarniška tehnika":
+				case "Uničevalci dokumentov":
+				case "Organizatorji in dodatki":
+				case "Organizatorji in dodatki":
 					el.kategorija = "POS in dodatki";
 					break;
-				case 'Laserski tiskalniki':
+				case "Laserski tiskalniki":
 					el.kategorija = "Tiskalniki";
 					break;
 				case "Bluetooth":
 					el.kategorija = "Mediji";
 					break;
-				case 'Ojačevalniki brezžičnega omrežja':
-				case 'PoE':
-				case 'Mrežne kartice':
+				case "Ojačevalniki brezžičnega omrežja":
+				case "PoE":
+				case "Mrežne kartice":
 					el.kategorija = "Mrežne kartice, antene, WIFI ojačevalci";
 					break;
-				case 'Difuzorji':
+				case "Difuzorji":
 					el.kategorija = "Vlažilci zraka";
 					break;
-				case 'Torbe in nahrbtniki za fotoaparate in drone':
+				case "Torbe in nahrbtniki za fotoaparate in drone":
 					el.kategorija = "Fotoaparati";
 					break;
-				case 'Pametne ure':
-					el.kategorija = 'Športne ure';
+				case "Pametne ure":
+					el.kategorija = "Športne ure";
 					break;
-				case 'Klasični in ročni sesalniki':
-				case 'Pokončni sesalniki':
-				case 'Parni čistilniki':
+				case "Klasični in ročni sesalniki":
+				case "Pokončni sesalniki":
+				case "Parni čistilniki":
 					el.kategorija = "Sesalniki";
 					break;
-				case 'Prenosni zvočniki':
+				case "Prenosni zvočniki":
 					el.kategorija = "HI-FI in Prenosni zvočniki";
 					break;
-				case 'Domofoni':
-				case 'Vremenske postaje':
+				case "Domofoni":
+				case "Vremenske postaje":
 					el.kategorija = "Naprave za pametni dom";
 					break;
 				case "Krmilniki in stikala":
-				case 'Stikala':
-				case 'Usmerjevalniki':
+				case "Stikala":
+				case "Usmerjevalniki":
 					el.kategorija = "Usmerjevalniki, stikala in AP";
 					break;
 				case "Ventilatorji in dodatki":
@@ -124,47 +154,33 @@ export class elkotexController extends dobaviteljController {
 				case "Mini-micro-barebone (NUC)":
 					el.kategorija = "Mini";
 					break;
-				case 'Napajalniki za prenosnike':
 				case "Torbe za prenosnike":
 				case "Nahrbtniki za prenosnike":
-				case 'Hlajenje za prenosnike':
+				case "Hlajenje za prenosnike":
+				case "Dodatki za tablične računalnike":
 					el.kategorija = "Dodatki za prenosnike";
 					break;
 				case "Oljni radiatorji":
 				case "Konvekcijski radiatorji":
 					el.kategorija = "Radiatorji";
 				case "Slušalke in mikrofoni":
-				case 'Naglavne slušalke':
-				case 'True Wireless slušalke':
-				case 'In-Ear slušalke':
+				case "Naglavne slušalke":
+				case "True Wireless slušalke":
+				case "In-Ear slušalke":
 					el.kategorija = "Slušalke";
 					break;
 				case "USB hubi in priklopne postaje":
-				case 'Centralne nadzorne enote (HUB)':
+				case "Centralne nadzorne enote (HUB)":
 					el.kategorija = "Zunanje naprave";
-					break;
-				case "Video adapterji":
-				case 'Zvočni adapterji':
-				case "Priključni kabli in adapterji":
-				case "Kabli":
-				case 'Podaljški, razdelilci':
-				case 'Video kabli':
-				case 'Mrežni kabli':
-				case 'Mrežni adapterji':
-				case 'Video kabli':
-				case 'Urejanje kablov':
-				case 'Avto polnilci':
-				case 'Zvočni kabli':
-					el.kategorija = "Kabli in adapterji";
 					break;
 				case "Kuhinjsko orodje":
 				case "Kuhinjski organizatorji":
-				case 'Kuhinjski pripomočki':
-				case 'Priprava hrane':
+				case "Kuhinjski pripomočki":
+				case "Priprava hrane":
 					el.kategorija = "Mali gospodinjski aparati";
 					break;
 				case "Zvočni sistemi za domači kino":
-				case 'Medijski predvajalniki':
+				case "Medijski predvajalniki":
 					el.kategorija = "Domači kino";
 					break;
 				case "Tablični računalniki in e-Bralniki":
@@ -180,8 +196,8 @@ export class elkotexController extends dobaviteljController {
 				case "MP3/MP4 predvajalniki":
 				case "Pametne zapestnice":
 				case "Pametni telefoni":
-				case 'Nosilci za telefone':
-				case 'Prenosne baterije / Powerbank':
+				case "Nosilci za telefone":
+				case "Prenosne baterije / Powerbank":
 					el.kategorija = "Pametne naprave";
 					break;
 				case "Dodatki za skiroje":
@@ -192,8 +208,8 @@ export class elkotexController extends dobaviteljController {
 				case "IR grelniki":
 				case "Hladilci zraka":
 				case "Kaloriferji, stenski grelniki":
-				case 'Kamini':
-				case 'Solarni paneli':
+				case "Kamini":
+				case "Solarni paneli":
 					el.kategorija = "Hlajenje in gretje";
 					break;
 				case "Microsoft Windows":
@@ -220,7 +236,7 @@ export class elkotexController extends dobaviteljController {
 					el.kategorija = "Trdi diski";
 					break;
 				case "Tonerji in črnila":
-				case 'Papir':
+				case "Papir":
 					el.kategorija = "Potrošni material";
 					break;
 				case "Spominske kartice":
@@ -263,9 +279,9 @@ export class elkotexController extends dobaviteljController {
 				case "Vrtno orodje":
 				case "Ročno orodje":
 				case "Hišni polnilci":
-				case 'Čiščenje okolice':
-				case 'Oprema za delavnice, skladišča':
-				case 'Senčniki in paviljoni':
+				case "Čiščenje okolice":
+				case "Oprema za delavnice, skladišča":
+				case "Senčniki in paviljoni":
 				case "Oprema vrta in okolice":
 					el.kategorija = "Dom in vrt";
 					break;
@@ -273,11 +289,11 @@ export class elkotexController extends dobaviteljController {
 					el.kategorija = "Radio in budilke";
 					break;
 				case "Kamp žari":
-				case 'Žari in kurišča':
+				case "Žari in kurišča":
 					el.kategorija = "Žari";
 					break;
-				case 'Prenosne svetilke':
-				case 'Termovke':
+				case "Prenosne svetilke":
+				case "Termovke":
 				case "Kamp dodatki in ostalo":
 				case "Kamp hladilne skrinje in torbe":
 				case "Kamp svetilke in komarniki":
@@ -291,13 +307,16 @@ export class elkotexController extends dobaviteljController {
 				case "Robotski sesalniki":
 				case "Robotske kosilnice":
 				case "Pametni dom":
-				case 'Pametne vtičnice':
-				case 'Senzorji':
+				case "Pametne vtičnice":
+				case "Senzorji":
 					el.kategorija = "Naprave za pametni dom";
+					break;
+				case "Brezprekinitvena napajanja":
+					el.kategorija = "Brezprekinitveni napajalniki";
 					break;
 			}
 		});
-	};
+	}
 
 	formatZaloga(zaloga) {
 		return zaloga > 0 ? "Na zalogi" : "Ni na zalogi";
@@ -307,7 +326,7 @@ export class elkotexController extends dobaviteljController {
 		if (obj.slika) {
 			return Object.values(obj);
 		}
-	};
+	}
 
 	getEprel() {
 		return null;
@@ -316,10 +335,10 @@ export class elkotexController extends dobaviteljController {
 		// 	const match = str.match(regex);
 		// 	return match ? match[1] : null;
 		// }
-		
+
 		// const inputString = `<p><strong>diagonala zaslona</strong>: 86,36 cm/34"<br /> <strong>tip zaslona</strong>: VA<br /> <strong>format zaslona</strong>: 21:9<br /> <strong>največja ločljivost</strong>: 3440x1440 @ 100Hz<br /> <strong>odzivni čas</strong>: 4ms<br /> <strong>kontrast</strong>: 3000:1<br /> <strong>svetilnost</strong>: 500cd/<span style="line-height: 17.12px; font-size: 16px; color: #333333;">m&sup2;</span><br /> <strong>vidni kot&nbsp;</strong>(horizontalno/vertikalno): 178&deg;/178&deg;<br /> <strong>priključki</strong>: 1x HDMI 2.0, 1x DisplayPort 1.4, 1x USB-C 3.2 z PD 90W; signalni izhod DisplayPort ( DP, USB-C)<br /> <strong>zvočniki</strong>: 2x 5W<br /> <strong>poraba</strong>: On: 34,1 W, Standby: 0,5 W<br /> <strong>barva</strong>: črna<br /> <strong>dodatno</strong>: vgrajena priključna postaja USB-C za prenosnik, premaz proti ble&scaron;čanju, izhod za slu&scaron;alke, <span>Ethernet LAN do 1 Gbs, prebujanje prek omrežja LAN, spletna k<span>amera FullHD z 2,0 milijona slikovnih pik, mikrofonom in LED-indikatorjem (za Windows 10 Hello). n<span>ačin prikaza slike PIP/PBP, 180mm nastavljiv po vi&scaron;ini, -180&deg;/+180&deg;vrtljiv, HDR 400<br /></span></span></span></p>
 		// <p><span><span><span>Povezava do informacijskega lista: <a href="https://eprel.ec.europa.eu/fiches/electronicdisplays/Fiche_416787_SL.pdf">https://eprel.ec.europa.eu/fiches/electronicdisplays/Fiche_416787_SL.pdf</a><br />Povezava do energetske nalepke: <a href="https://eprel.ec.europa.eu/labels/electronicdisplays/Label_416787.svg">https://eprel.ec.europa.eu/labels/electronicdisplays/Label_416787.svg</a><br /><br /></span></span></span></p>]]`;
-		
+
 		// const extractedNumber = extractNumber(inputString);
 		// console.log(extractedNumber)
 	}
@@ -327,14 +346,14 @@ export class elkotexController extends dobaviteljController {
 	splitSlike() {
 		let slike = [];
 		this.allData.forEach((data) => {
-			if(typeof(data.dodatne_slike[0]) === 'object') {
-				data.dodatne_slike[0].forEach(el => {
+			if (typeof data.dodatne_slike[0] === "object") {
+				data.dodatne_slike[0].forEach((el) => {
 					slike.push({
 						izdelek_ean: data.ean,
 						slika_url: el,
 						tip: "dodatna",
 					});
-				})
+				});
 			} else {
 				slike.push({
 					izdelek_ean: data.ean,
@@ -346,12 +365,48 @@ export class elkotexController extends dobaviteljController {
 		this.slika = slike;
 	}
 
+	extractLastnosti(desc) {
+		const html = desc.replaceAll("&scaron;", "š").replaceAll("&nbsp;", " ");
+		const clean = html.replace(/<[^>]+>/g, "\n"); // Remove HTML tags, replace with newlines
+		const preprocessed = clean.replace(/([a-z0-9])([A-ZČŠŽĆĐ])/g, '$1\n$2');
+		const regex = /([A-Za-zČčŠšŽžĆćĐđč\s\/\-,\(\)0-9&;]+):\s*([^<\n]+)/g;
+
+		let match;
+		const attributes = {};
+		while ((match = regex.exec(preprocessed)) !== null) {
+			const key = match[1]
+				.trim()
+				.replace(/&[a-z]+;/gi, "")
+				.replaceAll("\n", ""); // Optionally clean HTML entities
+			const value = match[2].trim().replaceAll("\n", "");
+			attributes[key] = value;
+		}
+
+		return attributes;
+	}
+
+	splitDodatneLastnosti() {
+		let lastnosti = [];
+
+		this.allData.forEach((data) => {
+			const lastnosti = this.extractLastnosti(data.opis);
+			const Attributes = new ElkotexAttributes(
+				data.kategorija,
+				lastnosti
+			);
+			const attrs = Attributes.formatAttributes();
+			if (Object.keys(attrs).length) {
+				console.log(attrs);
+			}
+		});
+	}
 
 	executeAll() {
 		this.createDataObject();
 		this.sortCategory();
 		this.addKratki_opis();
 		this.splitSlike();
+		this.splitDodatneLastnosti();
 		this.insertDataIntoDb();
-	};
-};
+	}
+}
