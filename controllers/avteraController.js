@@ -138,7 +138,7 @@ export class avteraController extends dobaviteljController {
 					break;
 				case "Consumer AIO":
 				case "Računalniki - All in One":
-					el.kategorija = "AIO";
+					el.kategorija = "All in one";
 					break;
 				case "Plinske kuhane plošče":
 				case "Električne kuhalne plošče":

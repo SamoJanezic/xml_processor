@@ -1,4 +1,5 @@
 import dobaviteljController from "./dobaviteljController.js";
+import EventusAttributes from "./attriburteControllers/EventusAttributes.js";
 
 export class eventusController extends dobaviteljController {
 	name = "eventus";
@@ -60,9 +61,6 @@ export class eventusController extends dobaviteljController {
 				case "Športna elektronika":
 					el.kategorija = "Športne ure";
 					break;
-				case "Prenapetostna zaščita":
-					el.kategorija = "UPS";
-					break;
 				case "Prenosni monitorji":
 					el.kategorija = "Monitorji";
 					break;
@@ -95,7 +93,7 @@ export class eventusController extends dobaviteljController {
 					el.kategorija = "Monitorji";
 					break;
 				case "Prenosniki in dodatki":
-					el.kategorija = "Prenosniki";
+					el.kategorija = "Dodatki za Prenosnike";
 					break;
 				case "Podloge za miške":
 					el.kategorija = "Podloge";
@@ -133,7 +131,8 @@ export class eventusController extends dobaviteljController {
 					el.kategorija = "HI-FI in Prenosni zvočniki";
 					break;
 				case "UPS naprave":
-					el.kategorija = "UPS";
+				case "Prenapetostna zaščita":
+					el.kategorija = "Brezprekinitveni napajalnikii";
 					break;
 				case "Grafične tablice in dodatki":
 				case "Grafični zasloni":
@@ -166,27 +165,10 @@ export class eventusController extends dobaviteljController {
 
 		this.allData.forEach((data) => {
 			if (data.dodatne_lastnosti && data.dodatne_lastnosti.lastnost) {
-				if (!data.dodatne_lastnosti.lastnost.length) {
-					lastnosti.push({
-						ean: data.ean,
-						kategorija: data.kategorija,
-						lastnostNaziv: data["@_naziv"],
-						lastnostVrednost: data["#text"],
-					});
-				} else {
-					data.dodatne_lastnosti.lastnost.forEach((el, idx) => {
-						if (el["@_naziv"] === "EPREL Id") {
-							this.allData[idx]["eprel_id"] = el["#text"];
-							// console.log(this.allData.eprel_id);
-						}
-						lastnosti.push({
-							ean: data.ean,
-							kategorija: data.kategorija,
-							lastnostNaziv: el["@_naziv"],
-							lastnostVrednost: el["#text"],
-						});
-					});
-				}
+				const Attributes = new EventusAttributes(data.kategorija, data.dodatne_lastnosti.lastnost);
+				const attrs = Attributes.formatAttributes();
+
+				// console.log(attrs);
 			}
 		});
 		this.komponenta = lastnosti.map((el) => {

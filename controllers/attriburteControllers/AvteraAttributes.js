@@ -48,6 +48,7 @@ export class AvteraAttributes {
 						attributes['Operacijski sistem'] = el['#text']
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			})
@@ -85,11 +86,12 @@ export class AvteraAttributes {
 						attributes['Vhodi'] = el['#text']
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			})
 		}
-		if (this.category === 'AIO') {
+		if (this.category === 'All in one') {
 			this.attribute.lastnost.forEach((el) => {
 				switch(el['@_naziv']) {
 					case 'Vrsta procesorja':
@@ -125,6 +127,7 @@ export class AvteraAttributes {
 						attributes['Operacijski sistem'] = el['#text']
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			})
@@ -148,6 +151,7 @@ export class AvteraAttributes {
 						attributes['Operacijski sistem'] = el['#text']
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			})
@@ -180,6 +184,7 @@ export class AvteraAttributes {
 						attributes['Operacijski sistem'] = el['#text']
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			})
@@ -194,6 +199,7 @@ export class AvteraAttributes {
 						attributes['Vrsta pomnilnika'] = el['#text']
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			})
@@ -216,6 +222,7 @@ export class AvteraAttributes {
 						attributes['Vmesnik'] = el['#text']
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			})
@@ -233,6 +240,7 @@ export class AvteraAttributes {
 						attributes['Hitrost tiskanja'] = el['#text']
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			})
@@ -248,6 +256,7 @@ export class AvteraAttributes {
 						attributes['Vrsta'] = 'Papir'
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			})
@@ -277,6 +286,7 @@ export class AvteraAttributes {
 						attributes['Vrsta Zaslona'] = el['#text']
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			})
@@ -300,6 +310,7 @@ export class AvteraAttributes {
 						attributes['Globokotonski zvočnik'] = el['#text']
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			})
@@ -323,6 +334,7 @@ export class AvteraAttributes {
 						attributes['Tehnologija'] = el['#text']
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			})
@@ -343,6 +355,7 @@ export class AvteraAttributes {
 						attributes['Inverter motor'] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			});
@@ -363,6 +376,7 @@ export class AvteraAttributes {
 						attributes['Inverter motor'] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			});
@@ -386,6 +400,7 @@ export class AvteraAttributes {
 						attributes['Centrifuga'] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			});
@@ -417,6 +432,7 @@ export class AvteraAttributes {
 						attributes['Energijski razred'] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			});
@@ -440,6 +456,7 @@ export class AvteraAttributes {
 						attributes['Višina'] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			});
@@ -470,6 +487,7 @@ export class AvteraAttributes {
 						}
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			});
@@ -496,6 +514,7 @@ export class AvteraAttributes {
 						attributes['Način čiščenja'] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			});
@@ -516,6 +535,7 @@ export class AvteraAttributes {
 						attributes['Širina'] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			});
@@ -536,6 +556,7 @@ export class AvteraAttributes {
 						}
 						break;
 					default:
+						attributes[el['@_naziv']] = el['#text']
 						break;
 				}
 			});

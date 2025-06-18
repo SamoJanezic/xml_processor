@@ -7,7 +7,6 @@ export class AcordAttributes {
 	formatAttributes() {
 		let match;
 		const attributes= [];
-
 		if(!this.attribute || !this.attribute.length) {
 			return null;
 		}
@@ -38,11 +37,12 @@ export class AcordAttributes {
 						attributes["Operacijski sistem"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
 		}
-		if (this.category === 'AIO') {
+		if (this.category === 'All in one') {
 			this.attribute.forEach((el) => {
 				switch(el['@_id']) {
 					case 'procesor':
@@ -53,7 +53,7 @@ export class AcordAttributes {
 						attributes["Kapaciteta pomnilnika"] = `${match[1]} ${match[2]}`;
 						break;
 					case 'zaslon':
-						attributes["Velikost zaslona"] = el['#text'].match(/^\d+(\.\d+)?/) ? el['#text'].match(/^\d+(\.\d+)?/)[0] + '\"' : el['#text'];
+						attributes["Velikost zaslona"] = el['#text'].match(/^\s?\d+(\.\d+)?/) ? el['#text'].match(/^\s?\d+(\.\d+)?/)[0] + '\"' : 'Ni navedeno';
 						attributes["Ločljivost"] = el['#text'].match(/\b\d{3,4}\s?x\s?\d{3,4}\b/i)[0];
 						break;
 					case 'trdi_disk':
@@ -67,6 +67,7 @@ export class AcordAttributes {
 						attributes["Operacijski sistem"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -132,6 +133,7 @@ export class AcordAttributes {
 						attributes["Operacijski sistem"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -161,11 +163,12 @@ export class AcordAttributes {
 						attributes["Operacijski sistem"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
 		}
-		if (this.category === 'NAS') {
+		if (this.category === 'NAS sistemi') {
 			this.attribute.forEach((el) => {
 				switch(el['@_id']) {
 					case 'sto_procesor':
@@ -185,6 +188,7 @@ export class AcordAttributes {
 					case 'sto_reze_za_diske':
 						attributes["Število diskov"] = el['#text'];
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -216,6 +220,7 @@ export class AcordAttributes {
 						attributes["Zvočniki"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -236,6 +241,7 @@ export class AcordAttributes {
 						attributes["Pomnilniške reže"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -250,6 +256,7 @@ export class AcordAttributes {
 						attributes["Podnožje"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -264,6 +271,7 @@ export class AcordAttributes {
 						attributes["Kapaciteta pomnilnika"] = el['#text'].replace(' ','');
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -290,6 +298,7 @@ export class AcordAttributes {
 						attributes["Velikost diska"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -304,6 +313,7 @@ export class AcordAttributes {
 						attributes["Napajalnik"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -321,6 +331,7 @@ export class AcordAttributes {
 						attributes["Modulani"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -338,6 +349,7 @@ export class AcordAttributes {
 						attributes["Grafični pomnilnik"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -349,6 +361,7 @@ export class AcordAttributes {
 						attributes["Vrsta hlajenja"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -365,6 +378,7 @@ export class AcordAttributes {
 						}
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -382,6 +396,7 @@ export class AcordAttributes {
 						attributes["Ločljivost"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -396,6 +411,7 @@ export class AcordAttributes {
 						attributes["Mikrofon"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -441,6 +457,7 @@ export class AcordAttributes {
 						attributes["Hitrost"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -465,6 +482,7 @@ export class AcordAttributes {
 						attributes["Hitrost"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -479,6 +497,7 @@ export class AcordAttributes {
 						attributes["Sistem"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -490,6 +509,7 @@ export class AcordAttributes {
 						attributes["Ločljivost"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -504,6 +524,7 @@ export class AcordAttributes {
 						attributes["Hitrost"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -527,11 +548,12 @@ export class AcordAttributes {
 						attributes["Čitalec"] = "Da";
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
 		}
-		if (this.category === 'UPS') {
+		if (this.category === 'Brezprekinitveni napajalniki') {
 			this.attribute.forEach((el) => {
 				switch(el['@_id']) {
 					case 'izhodna_moc_w':
@@ -541,6 +563,7 @@ export class AcordAttributes {
 						attributes["Postavitev"] = el['#text'];
 						break;
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})
@@ -549,6 +572,7 @@ export class AcordAttributes {
 			this.attribute.forEach((el) => {
 				switch(el['@_id']) {
 					default:
+						attributes[el['@_naziv']] = el ['#text'];
 						break;
 				}
 			})

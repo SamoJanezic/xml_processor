@@ -65,6 +65,12 @@ export class alsoController extends dobaviteljController {
 			"Avdio, video, monitorji & TV / Dodatki / Filtri zasebnosti",
 			"Avdio, video, monitorji & TV / Dodatki / Avdio & video dodatki",
 			"Avdio, video, monitorji & TV / Dodatki / Kamere, Droni, Spletne kamere - Baterije",
+			"Komponente / Dodatki za komponente / Dodatki za shranjevanje",
+			"Tiskanje, optično branje & potrošni mat. / Tiskalniki velikega formata (LFP) / Dodatna oprema za velike formate",
+			"Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Stojala",
+			"Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Dodatki za matrične tiskalnike",
+			"Tiskanje, optično branje & potrošni mat. / Kopiranje & faks / Oprema za kopiranje in telefaks",
+			"Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Napajalniki",
 		];
 		if (
 			(param.prices.price[0]["@_value"] ||
@@ -114,18 +120,12 @@ export class alsoController extends dobaviteljController {
 				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki & multifunkcijske naprave / Tiskalniki nalepk":
 				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki & multifunkcijske naprave / Večnamenski laserski barvni tiskalniki":
 				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki & multifunkcijske naprave / Ink tiskalniki":
-				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki velikega formata (LFP) / Dodatna oprema za velike formate":
 				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki & multifunkcijske naprave / Večnamenski laserski tiskalniki":
-				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki & multifunkcijske naprave / Tiskalniki nalepk":
 				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki & multifunkcijske naprave / Večnamenski laserski barvni tiskalniki":
 				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki & multifunkcijske naprave / Ink tiskalniki":
-				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Stojala":
-				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Dodatki za matrične tiskalnike":
 				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki & multifunkcijske naprave / Tiskalniki - mobilni":
 				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki & multifunkcijske naprave / Foto tiskalniki":
 				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki & multifunkcijske naprave / Večnamenski ink tiskalniki":
-				case "Tiskanje, optično branje & potrošni mat. / Kopiranje & faks / Oprema za kopiranje in telefaks":
-				case "Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Napajalniki":
 					el.kategorija = "Tiskalniki";
 					break;
 				case "Tiskanje, optično branje & potrošni mat. / Optični bralniki / Optični bralniki dokumentov":
@@ -162,7 +162,7 @@ export class alsoController extends dobaviteljController {
 				case "Strežniki, diskovna polja & UPS / Brezprekinitveno napajanje (UPS) / Off Line UPS":
 				case "Strežniki, diskovna polja & UPS / Brezprekinitveno napajanje (UPS) / Online Rack mounts":
 				case "Strežniki, diskovna polja & UPS / Brezprekinitveno napajanje (UPS) / Online Towers":
-					el.kategorija = "UPS";
+					el.kategorija = "Brezprekinitveni napajalniki";
 					break;
 				case "Programska oprema & oblak / Pisarniška programska oprema / Zbirke officeovih aplikacij":
 				case "Programska oprema & oblak / Strežniška programska oprema & licence / Strežniško programsko opremo":
@@ -223,6 +223,8 @@ export class alsoController extends dobaviteljController {
 					el.kategorija = "Televizije";
 					break;
 				case "Avdio, video, monitorji & TV / Zvočniki / PC zvočniki & Sound Bar":
+					el.kategorija = "Domači kino";
+					break;
 				case "Avdio, video, monitorji & TV / Zvočniki / Prenosni & brezžični zvočniki":
 				case "Avdio, video, monitorji & TV / Avdio & video sistemi / Digitalni AV sistemi":
 					el.kategorija = "HI-FI in prenosni zvočniki";
@@ -265,7 +267,6 @@ export class alsoController extends dobaviteljController {
 				case "Komponente / Shranjevanje podatkov / Zunanji diski (HDD)":
 				case "Komponente / Shranjevanje podatkov / Notranji diski (SSD)":
 				case "Komponente / Shranjevanje podatkov / Zunanji diski (SSD)":
-				case "Komponente / Dodatki za komponente / Dodatki za shranjevanje":
 					el.kategorija = "Trdi diski";
 					break;
 				case "Komponente / Dodatki za komponente / Dodatki za komponente - drugo":
@@ -294,6 +295,7 @@ export class alsoController extends dobaviteljController {
 				case "Komponente / Pomnilnik / USB pomnilnik":
 					el.kategorija = "USB ključki";
 					break;
+				case "Gaming / Gaming računalniki / Gaming prenosniki":
 				case "Prenosniki, PC & Tablični računalniki / Osebni računalniki (PC) / Delovne postaje":
 				case "Prenosniki, PC & Tablični računalniki / Osebni računalniki (PC) / Terminali & Tanki odjemalci":
 				case "Prenosniki, PC & Tablični računalniki / Prenosniki / Poslovni prenosniki":
@@ -306,7 +308,7 @@ export class alsoController extends dobaviteljController {
 					el.kategorija = "Tablični računalniki";
 					break;
 				case "Prenosniki, PC & Tablični računalniki / Osebni računalniki (PC) / All in one PC":
-					el.kategorija = "AIO";
+					el.kategorija = "All in one";
 					break;
 				case "Prenosniki, PC & Tablični računalniki / Dodatki / Priklopne postaje za prenosnike":
 				case "Periferija & dodatki / Tipkovnice / Tipkovnice - Brezžične":
@@ -330,7 +332,7 @@ export class alsoController extends dobaviteljController {
 				case "Prenosniki, PC & Tablični računalniki / Dodatki / Napajalniki za prenosne računalnike":
 				case "Prenosniki, PC & Tablični računalniki / Dodatki / Dodatki za prenosnike":
 				case "Prenosniki, PC & Tablični računalniki / Dodatki / Dodatki za tablične računalnike":
-					el.kategorija = "dodatki za prenosnike";
+					el.kategorija = "Dodatki za prenosnike";
 					break;
 				case "Periferija & dodatki / Prenapetostne zaščite / Prenapetostne zaščite":
 				case "Gaming / Gaming dodatki / Gamepads & Joysticks":
@@ -339,7 +341,6 @@ export class alsoController extends dobaviteljController {
 				case "Telefonija & Pametne naprave / Wearables / Pametna očala & VR izdelki":
 					el.kategorija = "Igralni pripomočki";
 					break;
-				case "Gaming / Gaming računalniki / Gaming prenosniki":
 				case "Gaming / Gaming računalniki / Gaming PC":
 				case "Prenosniki, PC & Tablični računalniki / Osebni računalniki (PC) / Poslovni PC":
 				case "Prenosniki, PC & Tablični računalniki / Osebni računalniki (PC) / Consumer & gaming PC":
@@ -385,7 +386,9 @@ export class alsoController extends dobaviteljController {
 				const Attributes = new AlsoAttributes(data.kategorija, data.dodatne_lastnosti);
 				const attrs = Attributes.formatAttributes()
 
-				console.log(attrs);
+				if (Object.keys(attrs).length) {
+					// console.log(attrs)
+				}
 			}
 		});
 		this.komponenta = lastnosti.map((el) => {

@@ -82,9 +82,6 @@ export class acordController extends dobaviteljController {
 				case "Avdio/Video":
 					el.kategorija = "Zvok in slika";
 					break;
-				case "UPS napajanja, inverterji, regulatorji napetosti":
-					el.kategorija = "UPS";
-					break;
 				case "Igračarski pripomočki":
 					el.kategorija = "Igralni pripomočki";
 					break;
@@ -142,13 +139,14 @@ export class acordController extends dobaviteljController {
 					el.kategorija = "Prenosniki";
 					break;
 				case "NAS strežniki":
-					el.kategorija = "NAS";
+					el.kategorija = "NAS sistemi";
 					break;
 				case "Strežniki- server":
 					el.kategorija = "Strežniki";
 					break;
+				case "UPS napajanja, inverterji, regulatorji napetosti":
 				case "Razdelilci in prenapetostna zaščita":
-					el.kategorija = "UPS";
+					el.kategorija = "Brezprekinitveni napajalniki";
 					break;
 				case "Šport in prosti čas":
 					el.kategorija = "Šport in prosti čas";
@@ -167,7 +165,7 @@ export class acordController extends dobaviteljController {
 					el.kategorija = "Gaming stoli";
 					break;
 				case "All-in-one - AIO":
-					el.kategorija = "AIO";
+					el.kategorija = "All in one";
 					break;
 				case "Hubi, čitalci, priklopne postaje":
 					el.kategorija = "Spominske kartice in čitalci";
@@ -209,8 +207,8 @@ export class acordController extends dobaviteljController {
 
 		this.allData.forEach((data) => {
 			lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: 'Proizvajalec', lastnostVrednost: data.blagovna_znamka});
-			const Attributes = new AcordAttributes(data.kategorija, data.dodatne_lastnosti);
-			let attrs = Attributes.formatAttributes()
+			const Attributes = new AcordAttributes(data.kategorija, data.dodatne_lastnosti.lastnost);
+			const attrs = Attributes.formatAttributes()
 			if (attrs !== null && Object.keys(attrs).length !== 0) {
 				for (const el in attrs) {
 					lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el, lastnostVrednost: attrs[el]});
