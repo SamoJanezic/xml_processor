@@ -135,19 +135,20 @@ export default class Dobavitelj {
 		const izdelekDobaviteljData = this.prepareDbData().izdelekDobaviteljData
 		const kategorijaData = this.prepareDbData().kategorijaData
 
-		process.exit();
+		// process.exit();
 
-		db.sync({ alter: true });
-		insertIntoTable(DobaviteljTabela, { dobavitelj: this.name });
-		insertIntoTable(Izdelek, izdelekData);
-		insertIntoTable(IzdelekDobavitelj, izdelekDobaviteljData);
-		insertIntoTable(Kategorija, kategorijaData);
+		db.sync();
+		await insertIntoTable(DobaviteljTabela, { dobavitelj: this.name });
+		await insertIntoTable(Izdelek, izdelekData);
+
+		await insertIntoTable(IzdelekDobavitelj, izdelekDobaviteljData);
+		await insertIntoTable(Kategorija, kategorijaData);
 		if (this.slika) {
-			insertIntoTable(Slika, this.slika);
+			await insertIntoTable(Slika, this.slika);
 		}
 		if (this.komponenta && this.atribut) {
-			insertIntoTable(Komponenta, this.komponenta);
-			insertIntoTable(Atribut, this.atribut);
+			await insertIntoTable(Komponenta, this.komponenta);
+			await insertIntoTable(Atribut, this.atribut);
 		}
 	}
 
