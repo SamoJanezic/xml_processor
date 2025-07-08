@@ -71,6 +71,7 @@ export class alsoController extends dobaviteljController {
 			"Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Dodatki za matrične tiskalnike",
 			"Tiskanje, optično branje & potrošni mat. / Kopiranje & faks / Oprema za kopiranje in telefaks",
 			"Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Napajalniki",
+			"Prenosniki, PC & Tablični računalniki / Dodatki / Napajalniki za prenosne računalnike",
 		];
 		if (
 			(param.prices.price[0]["@_value"] ||
@@ -310,7 +311,6 @@ export class alsoController extends dobaviteljController {
 				case "Prenosniki, PC & Tablični računalniki / Osebni računalniki (PC) / All in one PC":
 					el.kategorija = "All in one";
 					break;
-				case "Prenosniki, PC & Tablični računalniki / Dodatki / Priklopne postaje za prenosnike":
 				case "Periferija & dodatki / Tipkovnice / Tipkovnice - Brezžične":
 				case "Periferija & dodatki / Tipkovnice / Tipkovnice - Žične":
 					el.kategorija = "Tipkovnice";
@@ -332,6 +332,7 @@ export class alsoController extends dobaviteljController {
 				case "Prenosniki, PC & Tablični računalniki / Dodatki / Napajalniki za prenosne računalnike":
 				case "Prenosniki, PC & Tablični računalniki / Dodatki / Dodatki za prenosnike":
 				case "Prenosniki, PC & Tablični računalniki / Dodatki / Dodatki za tablične računalnike":
+				case "Prenosniki, PC & Tablični računalniki / Dodatki / Priklopne postaje za prenosnike":
 					el.kategorija = "Dodatki za prenosnike";
 					break;
 				case "Periferija & dodatki / Prenapetostne zaščite / Prenapetostne zaščite":
@@ -379,28 +380,29 @@ export class alsoController extends dobaviteljController {
 	}
 
 	splitDodatneLastnosti() {
-
 		let lastnosti = [];
 		this.allData.forEach((data) => {
+			lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: 'Proizvajalec', lastnostVrednost: data.blagovna_znamka});
 			if(data.dodatne_lastnosti) {
 				const Attributes = new AlsoAttributes(data.kategorija, data.dodatne_lastnosti);
 				const attrs = Attributes.formatAttributes()
-
 				if (Object.keys(attrs).length) {
-					// console.log(attrs)
+					for (const el in attrs) {
+						lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el, lastnostVrednost: attrs[el]});
+					}
 				}
 			}
 		});
 		this.komponenta = lastnosti.map((el) => {
 			return {
 				KATEGORIJA_kategorija: el.kategorija,
-				komponenta: el.lastnostNaziv.replace(":", ""),
+				komponenta: el.lastnostNaziv,
 			};
 		});
 		this.atribut = lastnosti.map((el) => {
 			return {
 				izdelek_ean: el.ean,
-				KOMPONENTA_komponenta: el.lastnostNaziv.replace(":", ""),
+				KOMPONENTA_komponenta: el.lastnostNaziv,
 				atribut: el.lastnostVrednost,
 			};
 		});
