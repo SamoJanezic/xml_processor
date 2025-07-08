@@ -18,6 +18,18 @@ export function createTable(tableName) {
 
 export function insertIntoTable(tableName, data) {
 	if (data.length) {
+		if(tableName === IzdelekDobavitelj) {
+			tableName
+				.bulkCreate(data, { updateOnDuplicate: ['dealer_cena', 'nabavna_cena', 'ppc'] })
+				.then(() => {
+					console.log(
+						`Successfully inserted ${data.length} entries into ${tableName}`
+					);
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+		}
 		tableName
 			.bulkCreate(data, { ignoreDuplicates: true })
 			.then(() => {
@@ -39,6 +51,18 @@ export function insertIntoTable(tableName, data) {
 			});
 	}
 }
+
+// export async function insertIntoTable(tableName, data) {
+//     if (Array.isArray(data)) {
+//         for (const item of data) {
+//             await tableName.upsert(item); // upsert works in MSSQL
+//         }
+//         console.log(`Successfully upserted ${data.length} entries into ${tableName.name}`);
+//     } else {
+//         await tableName.upsert(data);
+//         console.log(`Successfully upserted entry into ${tableName.name}`);
+//     }
+// }
 
 export function selectAll(tableName, cols) {
 	tableName
@@ -104,7 +128,7 @@ export async function getAtributInfo(ean) {
 			IZDELEK_DOBAVITELJ ON ATRIBUT.izdelek_ean = IZDELEK_DOBAVITELJ.izdelek_ean AND
 				IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija = KATEGORIJA.kategorija
 		WHERE IZDELEK_DOBAVITELJ.izdelek_ean = "${ean}"
-		GROUP BY komponenta`
+		ORDER BY ATRIBUT.id`
 	);
 }
 
@@ -116,6 +140,68 @@ export async function getSlikaInfo(ean) {
 		},
 		raw: true
 	})
+}
+
+// export function upsertTable(tableName, allData) {
+// 	allData.forEach(async data =>{
+// 		const [instance, created] = await tableName.findOrCreate({
+// 			where: {
+// 				izdelek_ean: data.izdelek_ean,
+// 				DOBAVITELJ_dobavitelj: data.DOBAVITELJ_dobavitelj
+// 			},
+// 			defaults: {
+// 				KATEGORIJA_kategorija: data.KATEGORIJA_kategorija,
+// 				izdelek_ime: data.izdelek_ime,
+// 				izdelek_opis: data.izdelek_opis,
+// 				izdelek_kratki_opis: data.izdelek_kratki_opis,
+// 				nabavna_cena: data.nabavna_cena,
+// 				dealer_cena: data.dealer_cena,
+// 				ppc: data.ppc,
+// 				zaloga: data.zaloga,
+// 				aktiven: data.aktiven
+// 			}
+// 		});
+
+// 		if (!created) {
+// 			await instance.update({
+// 				dealer_cena: data.dealer_cena,
+// 				nabavna_cena: data.nabavna_cena,
+// 				ppc: data.ppc,
+// 				zaloga: data.zaloga,
+// 			});
+// 		}
+// 	})
+// }
+
+export async function upsertTable(tableName, allData) {
+    for (const data of allData) {
+        const [instance, created] = await tableName.findOrCreate({
+            where: {
+                izdelek_ean: data.izdelek_ean,
+                DOBAVITELJ_dobavitelj: data.DOBAVITELJ_dobavitelj
+            },
+            defaults: {
+                KATEGORIJA_kategorija: data.KATEGORIJA_kategorija,
+                izdelek_ime: data.izdelek_ime,
+                izdelek_opis: data.izdelek_opis,
+                izdelek_kratki_opis: data.izdelek_kratki_opis,
+                nabavna_cena: data.nabavna_cena,
+                dealer_cena: data.dealer_cena,
+                ppc: data.ppc,
+                zaloga: data.zaloga,
+                aktiven: data.aktiven
+            }
+        });
+
+        if (!created) {
+            await instance.update({
+                dealer_cena: data.dealer_cena,
+                nabavna_cena: data.nabavna_cena,
+                ppc: data.ppc,
+                zaloga: data.zaloga,
+            });
+        }
+    }
 }
 
 
