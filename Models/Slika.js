@@ -12,8 +12,8 @@ export const Slika = db.define(
         izdelek_ean: {
             type: DataTypes.STRING,
             references: {
-                model: 'IZDELEK_DOBAVITELJ',
-                key: 'izdelek_ean',
+                model: 'IZDELEK',
+                key: 'ean',
             },
             allowNull: false,
         },

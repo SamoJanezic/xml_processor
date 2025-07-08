@@ -7,6 +7,7 @@ export const Kategorija = db.define(
         kategorija_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true,
         },
         kategorija: {
             type: DataTypes.STRING,

@@ -22,7 +22,7 @@ export const IzdelekKomponenta = db.define(
             allowNull: false,
             references: {
                 model: "KOMPONENTA",
-                key: "id",
+                key: "komponenta_id",
             }
         },
     }

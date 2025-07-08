@@ -11,6 +11,7 @@ export const DobaviteljTabela = db.define(
         },
         dobavitelj: {
             type: DataTypes.STRING,
+            allowNull: false,
             unique: true,
         }
     }

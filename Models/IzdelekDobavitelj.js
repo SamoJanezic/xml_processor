@@ -7,6 +7,7 @@ export const IzdelekDobavitelj = db.define(
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true,
         },
         izdelek_ean: {
             type: DataTypes.STRING,
@@ -53,7 +54,7 @@ export const IzdelekDobavitelj = db.define(
         },
         aktiven: {
             type: DataTypes.BOOLEAN,
-            default: 0,
+            defaultValue: 0,
             allowNull: false
         },
         spremenjen_na: {

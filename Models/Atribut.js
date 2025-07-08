@@ -23,6 +23,7 @@ export const Atribut = db.define(
 				model: "KOMPONENTA",
 				key: "komponenta",
 			},
+			allowNull: false,
 		},
 		atribut: {
 			type: DataTypes.STRING,

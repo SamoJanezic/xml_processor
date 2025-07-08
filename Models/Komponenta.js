@@ -7,9 +7,11 @@ export const Komponenta = db.define(
         komponenta_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true, // Recommended for MSSQL PKs
         },
         KATEGORIJA_kategorija: {
             type: DataTypes.STRING,
+            allowNull: false,
             references: {
                 model: "KATEGORIJA",
                 key: "kategorija",
@@ -23,7 +25,7 @@ export const Komponenta = db.define(
     {
         indexes: [
             {
-                unique:true,
+                unique: true,
                 fields: ['komponenta', 'KATEGORIJA_kategorija']
             }
         ]
