@@ -8,3 +8,19 @@ export const db = new Sequelize({
 		timestamps: false,
 	},
 });
+
+// export const db = new Sequelize('Softtrade', 'sam', 'admin', {
+//     host: 'localhost',         // or your SQL Server host
+//     dialect: 'mssql',
+//     port: 1433,                // default MSSQL port
+//     dialectOptions: {
+//         options: {
+//             encrypt: false,     // for Azure, set to false for local
+//             trustServerCertificate: true // change to true for local dev / self-signed certs
+//         }
+//     },
+//     define: {
+//         freezeTableName: true,
+//         timestamps: false,
+//     },
+// });

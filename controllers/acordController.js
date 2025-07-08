@@ -62,7 +62,6 @@ export class acordController extends dobaviteljController {
 			"Senzorji",
 			"Dodatna oprema za omare",
 			"Igračarski pripomočki",
-			
 		];
 		if (
 			param["EAN"] === "" ||
