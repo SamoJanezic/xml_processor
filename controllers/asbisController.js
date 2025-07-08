@@ -7,6 +7,7 @@ export class asbisController extends dobaviteljController {
 		{ fileName: "asbis1.xml", node: "ProductCatalog.Product" },
 		{ fileName: "asbis2.xml", node: "CONTENT.PRICES.PRICE" },
 	];
+	encoding = "utf8";
 	keys = [
 		"EAN",
 		"ProductDescription",
@@ -408,7 +409,6 @@ export class asbisController extends dobaviteljController {
 	}
 
 	executeAll() {
-		this.combineData();
 		this.createDataObject();
 		this.sortCategories();
 		this.splitSlike();

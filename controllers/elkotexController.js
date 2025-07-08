@@ -5,6 +5,7 @@ export class elkotexController extends dobaviteljController {
 	name = "elkotex";
 	nodes = "items.item";
 	file = "elkotex.xml";
+	encoding = "utf8";
 	keys = [
 		"ean",
 		"naziv",

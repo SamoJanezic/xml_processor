@@ -5,6 +5,7 @@ export class eventusController extends dobaviteljController {
 	name = "eventus";
 	nodes = "podjetje.izdelki.izdelek";
 	file = "eventus.xml";
+	encoding = "utf8";
 	keys = [
 		"EAN",
 		"izdelekIme",
