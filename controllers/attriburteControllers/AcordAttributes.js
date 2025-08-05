@@ -183,7 +183,9 @@ export class AcordAttributes {
 						break;
 					case 'sto_prikljucki':
 						match = el['#text'].match(/\b\d+x\sRJ-?45\b/i);
-						attributes["št. LAN priklopov"] = `${match[0].replace('-','')}`;
+						if (match) {
+							attributes["št. LAN priklopov"] = `${match[0].replace('-','')}`;
+						}
 						break;
 					case 'sto_reze_za_diske':
 						attributes["Število diskov"] = el['#text'];

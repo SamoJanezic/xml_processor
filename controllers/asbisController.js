@@ -66,7 +66,11 @@ export class asbisController extends dobaviteljController {
 			"Main Board Server",
 			"Acc - Dental care",
 			"Ščetke za zobe",
-			""
+			"Čistilci na tlak in metle",
+			"Pripomočki za osebno nego",
+			"Networked Storage Device",
+			"VC Docks",
+			"Smart Tracker",
 		];
 		if (ignoreCategory.includes(product.ProductType)) {
 			return true;
@@ -75,9 +79,7 @@ export class asbisController extends dobaviteljController {
 			product.EAN.length < 5 ||
 			!product.AVAIL ||
 			product.AVAIL === "" ||
-			product.AVAIL === " " ||
-			product.EAN === "" ||
-			product.EAN === " "
+			product.AVAIL === " "
 		) {
 			return true;
 		}
@@ -319,12 +321,14 @@ export class asbisController extends dobaviteljController {
 
 	combineData() {
 		const combinedData = [];
-		const asbis1 = this.getData()[0];
-		const asbis2 = this.getData()[1];
-		asbis1.forEach((product) => {
-			asbis2.forEach((price) => {
-				if (product.ProductCode === price.WIC) {
-					combinedData.push({ ...product, ...price });
+		const opisi = this.getData()[0];
+		const cene = this.getData()[1];
+		opisi.forEach((opis) => {
+			cene.forEach((cena) => {
+				// console.log(opis)
+				// process.exit()
+				if (opis.ProductCode === cena.WIC) {
+					combinedData.push({ ...opis, ...cena });
 				}
 			});
 		});
@@ -332,7 +336,7 @@ export class asbisController extends dobaviteljController {
 	}
 
 	parseObject(obj) {
-		if (obj.element && obj.element.length) {
+		if (obj.element?.length) {
 			return obj.element;
 		}
 		return Object.values(obj);
@@ -372,7 +376,7 @@ export class asbisController extends dobaviteljController {
 				slika_url: data.slika_velika,
 				tip: "velika",
 			});
-			if (data.dodatne_slike && data.dodatne_slike[0]) {
+			if (data.dodatne_slike?.[0]) {
 				if (typeof data.dodatne_slike[0] === "object") {
 					data.dodatne_slike[0].forEach((el) => {
 						slike.push({

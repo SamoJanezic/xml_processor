@@ -72,6 +72,14 @@ export class alsoController extends dobaviteljController {
 			"Tiskanje, optično branje & potrošni mat. / Kopiranje & faks / Oprema za kopiranje in telefaks",
 			"Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Napajalniki",
 			"Prenosniki, PC & Tablični računalniki / Dodatki / Napajalniki za prenosne računalnike",
+			"Avdio, video, monitorji & TV / Televizorji / Dodatki za televizorje",
+			"Garancije & storitve / Garancije & podpora / Garancije za tablične računalnike",
+			"Komponente / Ventilatorji & hladilni sistemi / Fanless ventilatorji & hladilniki",
+			"Izobraževanje / Predstavitev EDU / Dodatna oprema za predstavitv EDU",
+			"Strežniki, diskovna polja & UPS / Dodatki / PDU dodatke",
+			"Komponente / Krmilniki / Drugi krmilniki",
+			"Omrežje & Smart Home / Mrežna oprema / Stikala - ohišja",
+
 		];
 		if (
 			(param.prices.price[0]["@_value"] ||
@@ -273,6 +281,7 @@ export class alsoController extends dobaviteljController {
 				case "Komponente / Dodatki za komponente / Dodatki za komponente - drugo":
 				case "Komponente / Ventilatorji & hladilni sistemi / Računalniški ventilatorji":
 				case "Komponente / Ventilatorji & hladilni sistemi / Ventilatorji & hladilni sistemi":
+				case "Komponente / Ventilatorji & hladilni sistemi / Fanless ventilatorji & hladilniki":
 					el.kategorija = "Hlajenje";
 					break;
 				case "Komponente / Napajalniki (PSU) / Napajalniki za strežnike":

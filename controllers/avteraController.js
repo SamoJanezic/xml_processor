@@ -47,7 +47,10 @@ export class avteraController extends dobaviteljController {
 			"Domači kino",
 			"Fotoaparati",
 			"Tiskalniški strežniki",
-			"Grafične kartice"
+			"Grafične kartice",
+			"Zobne ščetke in prhe",
+			"Sprehajalne steze",
+			"Igralni pripomočki",
 		];
 		if (param["EAN"] === "" || param["EAN"].toString().length < 5) {
 			return true;

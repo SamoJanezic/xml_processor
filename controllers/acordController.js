@@ -62,6 +62,15 @@ export class acordController extends dobaviteljController {
 			"Senzorji",
 			"Dodatna oprema za omare",
 			"Igračarski pripomočki",
+			"Baterije",
+			"Dodatna oprema za mrežno",
+			"Dodatna oprema za projektorje",
+			"Električna mobilnost",
+			"Globinske 3D kamere",
+			"Hubi, čitalci",
+			"Mikroskopi",
+			"Interaktivni zasloni",
+			"Powerbank baterije"
 		];
 		if (
 			param["EAN"] === "" ||
@@ -80,6 +89,9 @@ export class acordController extends dobaviteljController {
 			switch (el.kategorija) {
 				case "Avdio/Video":
 					el.kategorija = "Zvok in slika";
+					break;
+				case "Vtičnice":
+					el.kategorija = "Powerline";
 					break;
 				case "Igračarski pripomočki":
 					el.kategorija = "Igralni pripomočki";
@@ -160,7 +172,7 @@ export class acordController extends dobaviteljController {
 				case "Tablični - tablet":
 					el.kategorija = "Tablični računalniki";
 					break;
-				case "Gaming":
+				case "Gaming stoli in mize":
 					el.kategorija = "Gaming stoli";
 					break;
 				case "All-in-one - AIO":
