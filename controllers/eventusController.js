@@ -41,6 +41,7 @@ export class eventusController extends dobaviteljController {
 			"Pisala, stojala in dodatki",
 			"Čistila za tehniko",
 			"Strojne denarnice",
+			"Varnostne kopije in dodatki",
 		];
 		if (ignoreCategory.includes(param["kategorija"]["#text"])) {
 			return true;
@@ -57,6 +58,7 @@ export class eventusController extends dobaviteljController {
 					el.kategorija = "Gaming stoli";
 					break;
 				case "Torbe in nahrbtniki":
+				case "Prenosniki in dodatki":
 					el.kategorija = "Dodatki za prenosnike";
 					break;
 				case "Športna elektronika":
@@ -93,9 +95,6 @@ export class eventusController extends dobaviteljController {
 				case "Monitorji in projektorji":
 					el.kategorija = "Monitorji";
 					break;
-				case "Prenosniki in dodatki":
-					el.kategorija = "Dodatki za Prenosnike";
-					break;
 				case "Podloge za miške":
 					el.kategorija = "Podloge";
 					break;
@@ -126,6 +125,7 @@ export class eventusController extends dobaviteljController {
 					break;
 				case "Ventilatorji in AIO hladilniki":
 				case "Ohišja in hlajenje":
+				case "Termalne paste in blazinice":
 					el.kategorija = "Hlajenje";
 					break;
 				case "Gramofoni":
@@ -133,7 +133,7 @@ export class eventusController extends dobaviteljController {
 					break;
 				case "UPS naprave":
 				case "Prenapetostna zaščita":
-					el.kategorija = "Brezprekinitveni napajalnikii";
+					el.kategorija = "Brezprekinitveni napajalniki";
 					break;
 				case "Grafične tablice in dodatki":
 				case "Grafični zasloni":
@@ -165,7 +165,7 @@ export class eventusController extends dobaviteljController {
 		let lastnosti = [];
 
 		this.allData.forEach((data) => {
-			if (data.dodatne_lastnosti && data.dodatne_lastnosti.lastnost) {
+			if (data.dodatne_lastnosti?.lastnost) {
 				const Attributes = new EventusAttributes(data.kategorija, data.dodatne_lastnosti.lastnost);
 				const attrs = Attributes.formatAttributes();
 
