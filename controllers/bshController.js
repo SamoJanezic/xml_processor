@@ -1,7 +1,11 @@
 import { parser } from "./parseController.js";
-import dobaviteljController from "./dobaviteljController.js";
+import DobaviteljController from "./DobaviteljController.js";
 
-export class bshController extends dobaviteljController {
+export class BshController extends DobaviteljController {
+	constructor(categoryMap, ...args) {
+		super(...args);
+		this.categoryMap = categoryMap
+	}
 	name = "BSH";
 	file = [
 		{
@@ -106,21 +110,25 @@ export class bshController extends dobaviteljController {
 				break;
 
 			case "kategorija":
-				product.PIData?.PIProperties?.PIProperty?.forEach((property) => {
-					if (property["@_description"] === "Skupina izdelkov") {
-						obj[vrstica[idx]] = property["#text"];
-					}
-				});
+				const skupina = product.PIData?.PIProperties?.PIProperty?.find(
+					(property) =>
+						property["@_description"] === "Skupina izdelkov"
+				);
+				if (skupina) {
+					obj[vrstica[idx]] = skupina["#text"];
+				}
 				break;
 
 			case "eprel_id":
 				// getEprel(product);
-				product?.PIData?.PIProperties?.PIProperty?.forEach(property => {
-					if (property["@_name"] === "QR_CODE_2017") {
-						const eprelId = property['#text'].match(/(\d+)/)
-						obj[vrstica[idx]] = eprelId[1] || null
+				product?.PIData?.PIProperties?.PIProperty?.forEach(
+					(property) => {
+						if (property["@_name"] === "QR_CODE_2017") {
+							const eprelId = property["#text"].match(/(\d+)/);
+							obj[vrstica[idx]] = eprelId[1] || null;
+						}
 					}
-				})
+				);
 				break;
 
 			case "zaloga":
@@ -144,30 +152,99 @@ export class bshController extends dobaviteljController {
 	}
 
 	exceptions(param) {
-		const ignoreCategory = [];
-		if (ignoreCategory.includes(param)) {
-			return true;
-		}
+		const ignoreCategory = [
+			"Da - vse s sprednje strani",
+			"noData",
+			"Vzporedno",
+			"Grelnik krožnikov",
+			"Pribor",
+		];
+
+		return param.PIData?.PIProperties?.PIProperty?.some((property) => {
+			return (
+				property["@_description"] === "Skupina izdelkov" &&
+				ignoreCategory.includes(property["#text"])
+			);
+		});
 	}
 
+	sortCategories() {
+		const flatCategoryMap = {};
 
-	// sortCategories() {}
+		for (const [newCategory, oldCategories] of Object.entries(this.categoryMap)) {
+			oldCategories.forEach(old => {
+				flatCategoryMap[old] = newCategory;
+			});
+		}
+
+		this.allData.forEach((el) => {
+			if (flatCategoryMap[el.kategorija]) {
+				el.kategorija = flatCategoryMap[el.kategorija];
+			}
+		});
+	}
 
 	splitDodatneLastnosti() {
 		let lastnosti = [];
 
 		this.allData.forEach((data) => {
-			console.log(data)
-			lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: 'Proizvajalec', lastnostVrednost: data.blagovna_znamka});
+			if (data.dodatne_lastnosti.length) {
+				data.dodatne_lastnosti.forEach((el) => {
+					if (el["#text"] !== "noData") {
+						lastnosti.push({
+							ean: data.ean,
+							kategorija: data.kategorija,
+							lastnostNaziv: el["@_description"],
+							lastnostVrednost: el["#text"],
+						});
+					}
+				});
+			}
 
-			this.komponenta = lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}});
-			this.atribut = lastnosti.map(el => { return {izdelek_ean: el.ean, KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}});
+			this.komponenta = lastnosti.map((el) => {
+				return {
+					KATEGORIJA_kategorija: el.kategorija,
+					komponenta: el.lastnostNaziv,
+				};
+			});
+			this.atribut = lastnosti.map((el) => {
+				return {
+					izdelek_ean: el.ean,
+					KOMPONENTA_komponenta: el.lastnostNaziv,
+					atribut: el.lastnostVrednost,
+				};
+			});
 		});
 	}
 
-	// splitSlike() {}
-
-	// getEprel() {}
+	splitSlike() {
+		this.slika = [];
+		this.allData.forEach((data) => {
+			if (data.slika_mala) {
+				this.slika.push({
+					izdelek_ean: data.ean,
+					slika_url: data.slika_mala,
+					tip: "mala",
+				});
+			}
+			if (data.slika_velika) {
+				this.slika.push({
+					izdelek_ean: data.ean,
+					slika_url: data.slika_velika,
+					tip: "velika",
+				});
+			}
+			if (data.dodatne_slike.length) {
+				data.dodatne_slike.forEach((el) => {
+					this.slika.push({
+						izdelek_ean: data.ean,
+						slika_url: el,
+						tip: "dodatna",
+					});
+				});
+			}
+		});
+	}
 
 	formatZaloga(zaloga) {
 		return zaloga > 0 ? "Na zalogi" : "Ni na zalogi";
@@ -175,7 +252,9 @@ export class bshController extends dobaviteljController {
 
 	executeAll() {
 		this.createDataObject();
+		this.sortCategories();
 		this.splitDodatneLastnosti();
+		this.splitSlike();
 		this.insertDataIntoDb();
 	}
 }
