@@ -1,7 +1,12 @@
-import dobaviteljController from "./dobaviteljController.js";
+import DobaviteljController from "./DobaviteljController.js";
 import EventusAttributes from "./attriburteControllers/EventusAttributes.js";
+import eventusCategoryMap from './categoryMaps/eventusCategory.js';
 
-export class eventusController extends dobaviteljController {
+export class EventusController extends DobaviteljController {
+	constructor(categoryMap, ...args) {
+		super(...args);
+		this.categoryMap = categoryMap;
+	}
 	name = "eventus";
 	nodes = "podjetje.izdelki.izdelek";
 	file = "eventus.xml";
@@ -52,93 +57,17 @@ export class eventusController extends dobaviteljController {
 	}
 
 	sortCategory() {
+		// Build flat map
+		const flatCategoryMap = {};
+		for (const [newCategory, oldCategories] of Object.entries(eventusCategoryMap)) {
+			oldCategories.forEach(old => {
+				flatCategoryMap[old] = newCategory;
+			});
+		}
+
 		this.allData.forEach((el) => {
-			switch (el.kategorija) {
-				case "Stoli":
-					el.kategorija = "Gaming stoli";
-					break;
-				case "Torbe in nahrbtniki":
-				case "Prenosniki in dodatki":
-					el.kategorija = "Dodatki za prenosnike";
-					break;
-				case "Športna elektronika":
-					el.kategorija = "Športne ure";
-					break;
-				case "Prenosni monitorji":
-					el.kategorija = "Monitorji";
-					break;
-				case "Zasebni strežniki":
-					el.kategorija = "Strežniki";
-					break;
-				case "Ključki, kartice, čitalci":
-				case "Spominske kartice":
-					el.kategorija = "Spominske kartice in čitalci";
-					break;
-				case "Kabli":
-				case "Adapterji":
-					el.kategorija = "Kabli in adapterji";
-					break;
-				case "Antivirus":
-					el.kategorija = "Programska oprema";
-					break;
-				case "Dodatki za SSD/HDD":
-				case "Diski SSD":
-					el.kategorija = "Trdi diski";
-					break;
-				case "E-bralniki":
-				case "Oprema za tablice":
-					el.kategorija = "Tablični računalniki";
-					break;
-				case "Računalniška ohišja":
-					el.kategorija = "Ohišja";
-					break;
-				case "Monitorji in projektorji":
-					el.kategorija = "Monitorji";
-					break;
-				case "Podloge za miške":
-					el.kategorija = "Podloge";
-					break;
-				case "Stojala in nosilci":
-					el.kategorija = "Nosilci za TV";
-					break;
-				case "Slušalke in mikrofoni":
-					el.kategorija = "Slušalke";
-					break;
-				case "Bitcoin in kripto varnost":
-					el.kategorija = "Kripto svet";
-					break;
-				case "USB hubi":
-				case "Adapterji in USB naprave":
-				case "Priključne postaje":
-					el.kategorija = "Mediji";
-					break;
-				case "RAM pomnilniki":
-					el.kategorija = "Pomnilniki";
-					break;
-				case "Gaming in streaming":
-					el.kategorija = "Gaming";
-					break;
-				case "Kolesarski računalniki":
-				case "Kolesarstvo":
-				case "Kolesarske luči":
-					el.kategorija = "Kolesa in skuterji";
-					break;
-				case "Ventilatorji in AIO hladilniki":
-				case "Ohišja in hlajenje":
-				case "Termalne paste in blazinice":
-					el.kategorija = "Hlajenje";
-					break;
-				case "Gramofoni":
-					el.kategorija = "HI-FI in Prenosni zvočniki";
-					break;
-				case "UPS naprave":
-				case "Prenapetostna zaščita":
-					el.kategorija = "Brezprekinitveni napajalniki";
-					break;
-				case "Grafične tablice in dodatki":
-				case "Grafični zasloni":
-					el.kategorija = "POS in dodatki";
-					break;
+			if (flatCategoryMap[el.kategorija]) {
+				el.kategorija = flatCategoryMap[el.kategorija];
 			}
 		});
 	}

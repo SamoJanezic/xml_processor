@@ -1,9 +1,10 @@
-import dobaviteljController from "./dobaviteljController.js";
+import DobaviteljController from "./DobaviteljController.js";
 
-export class colbyController extends dobaviteljController {
+export class ColbyController extends DobaviteljController {
 	name = "colby";
 	nodes = "podjetje.izdelek";
 	file = "colby.xml";
+	encoding = "utf8";
 	keys = [
 		"izdelekEAN",
 		"izdelekIme",
@@ -75,100 +76,45 @@ export class colbyController extends dobaviteljController {
 	}
 
 	sortCategory() {
-		this.allData.forEach((el) => {
-			switch (el.kategorija) {
-				case "Električna mobilnost":
-					el.kategorija = "Kolesa in skuterji";
-					break;
-				case "Pisarniški material":
-					el.kategorija = "Potrošni material";
-					break;
-				case "Podloge za miške":
-					el.kategorija = "Podloge";
-					break;
-				case "Vse za dom":
-					el.kategorija = "Dom in vrt";
-					break;
-				case "Ure":
-					el.kategorija = "Športne ure";
-					break;
-				case "Pametni dom":
-					el.kategorija = "Naprave za pametni dom";
-					break;
-				case "Ohišje":
-					el.kategorija = "Ohišja";
-					break;
-				case undefined:
-				case "PC":
-				case "Outright Games":
-				case "PS4":
-				case "PS5":
-				case "SWITCH":
-				case "PM Studios":
-				case "XBOXONE":
-				case "XONE":
-				case "Playstation 4":
-				case "Xbox One":
-				case "Xbox One Series X":
-				case "Xbox Series X":
-				case "Playstation 5":
-				case "Nintendo Switch":
-				case "Letalski simulator":
-				case "XBOXSERIESX":
-				case "XBOX":
-				case "XBSX":
-				case "Xbox One & Xbox Series X":
-				case "Xbox Series X & Xbox One":
-				case "Nintendo Switch 2":
-				case "Nintendo Switch 2 Edition":
-					el.kategorija = "Igre";
-					break;
-				case "VR očala in dodatki":
-				case "Polnilna postaja":
-				case "Stojala":
-				case "Dodatki":
-				case "Slušalke,Vrsta izdelka":
-				case "Polnilna postaja,Vrsta izdelka":
-				case "Kabli,Vrsta izdelka":
-				case "Polnilci,Vrsta izdelka":
-				case "Kompleti,Vrsta izdelka":
-				case "Playstation dodatki":
-				case "Xbox dodatki,Vrsta izdelka":
-				case "Playstation dodatki,Vrsta izdelka":
-				case "Joy-Con,Vrsta izdelka":
-				case "Nintendo dodatki":
-				case "Igralni ploščki,Vrsta izdelka":
-				case "Gaming dodatki":
-				case "Nintendo dodatki,Vrsta izdelka":
-				case "Evercade":
-				case "Igralni ploščki":
-				case "Volani":
-				case "Igralni ploščki,,Vrsta izdelka":
-				case "Xbox dodatki":
-				case "EVERCADE":
-				case "Igralne palice in ploščki":
-					el.kategorija = "Igralni pripomočki";
-					break;
-				case "Droni":
-					el.kategorija = "Droni in dodatki";
-					break;
-				case "Stojala za slušalke":
-					el.kategorija = "Slušalke";
-					break;
-				case "Dodatki za gaming stole":
-					el.kategorija = "Gaming stoli";
-					break;
-			}
-		});
+    const categoryMap = {
+        "Kolesa in skuterji": ["Električna mobilnost"],
+        "Potrošni material": ["Pisarniški material"],
+        "Podloge": ["Podloge za miške"],
+        "Dom in vrt": ["Vse za dom"],
+        "Športne ure": ["Ure"],
+        "Naprave za pametni dom": ["Pametni dom"],
+        "Ohišja": ["Ohišje"],
+        "Igre": [
+            undefined, "PC", "Outright Games", "PS4", "PS5", "SWITCH", "PM Studios", "XBOXONE", "XONE", "Playstation 4",
+            "Xbox One", "Xbox One Series X", "Xbox Series X", "Playstation 5", "Nintendo Switch", "Letalski simulator",
+            "XBOXSERIESX", "XBOX", "XBSX", "Xbox One & Xbox Series X", "Xbox Series X & Xbox One", "Nintendo Switch 2", "Nintendo Switch 2 Edition"
+        ],
+        "Igralni pripomočki": [
+            "VR očala in dodatki", "Polnilna postaja", "Stojala", "Dodatki", "Slušalke,Vrsta izdelka", "Polnilna postaja,Vrsta izdelka",
+            "Kabli,Vrsta izdelka", "Polnilci,Vrsta izdelka", "Kompleti,Vrsta izdelka", "Playstation dodatki", "Xbox dodatki,Vrsta izdelka",
+            "Playstation dodatki,Vrsta izdelka", "Joy-Con,Vrsta izdelka", "Nintendo dodatki", "Igralni ploščki,Vrsta izdelka",
+            "Gaming dodatki", "Nintendo dodatki,Vrsta izdelka", "Evercade", "Igralni ploščki", "Volani", "Igralni ploščki,,Vrsta izdelka",
+            "Xbox dodatki", "EVERCADE", "Igralne palice in ploščki"
+        ],
+        "Droni in dodatki": ["Droni"],
+        "Slušalke": ["Stojala za slušalke"],
+        "Gaming stoli": ["Dodatki za gaming stole"]
+    };
 
-		// const arr = [];
-		// this.allData.forEach((el) => {
-		// 	if (!arr.includes(el.kategorija)) {
-		// 		arr.push(el.kategorija);
-		// 	}
-		// });
-		// console.table(arr);
-	}
+    // Build flat map
+    const flatCategoryMap = {};
+    for (const [newCategory, oldCategories] of Object.entries(categoryMap)) {
+        oldCategories.forEach(old => {
+            flatCategoryMap[old] = newCategory;
+        });
+    }
+
+    this.allData.forEach((el) => {
+        if (flatCategoryMap[el.kategorija]) {
+            el.kategorija = flatCategoryMap[el.kategorija];
+        }
+    });
+}
 
 	formatZaloga(zaloga) {
 		return zaloga > 0 ? "Na zalogi" : "Ni na zalogi";

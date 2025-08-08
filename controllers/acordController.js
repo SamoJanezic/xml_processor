@@ -1,7 +1,11 @@
-import dobaviteljController from "./dobaviteljController.js";
+import DobaviteljController from "./DobaviteljController.js";
 import { AcordAttributes } from "./attriburteControllers/AcordAttributes.js";
 
-export class acordController extends dobaviteljController {
+export class AcordController extends DobaviteljController {
+	constructor(categoryMap, ...args) {
+		super(...args);
+		this.categoryMap = categoryMap;
+	}
 	name = "acord";
 	nodes = "podjetje.izdelki.izdelek";
 	file = "acord.xml";
@@ -57,7 +61,7 @@ export class acordController extends dobaviteljController {
 			//TODO
 			"Zunanje naprave",
 			"Orodje",
-			'Optične enote',
+			"Optične enote",
 			"Stikala",
 			"Senzorji",
 			"Dodatna oprema za omare",
@@ -70,7 +74,7 @@ export class acordController extends dobaviteljController {
 			"Hubi, čitalci",
 			"Mikroskopi",
 			"Interaktivni zasloni",
-			"Powerbank baterije"
+			"Powerbank baterije",
 		];
 		if (
 			param["EAN"] === "" ||
@@ -85,116 +89,19 @@ export class acordController extends dobaviteljController {
 	}
 
 	sortCategories() {
+		const flatCategoryMap = {};
+
+		for (const [newCategory, oldCategories] of Object.entries(this.categoryMap)) {
+			oldCategories.forEach(old => {
+				flatCategoryMap[old] = newCategory;
+			});
+		}
+
 		this.allData.forEach((el) => {
-			switch (el.kategorija) {
-				case "Avdio/Video":
-					el.kategorija = "Zvok in slika";
-					break;
-				case "Vtičnice":
-					el.kategorija = "Powerline";
-					break;
-				case "Igračarski pripomočki":
-					el.kategorija = "Igralni pripomočki";
-					break;
-				case "Mrežne kartice in adapterji":
-				case "WiFi ojačevalci - extender":
-				case "Antene":
-					el.kategorija = "Mrežne kartice, antene, WIFI ojačevalci";
-					break;
-				case "Centralne enote":
-				case "Stikala - switch":
-				case "Usmerjevalniki - router":
-				case "Dostopne točke - AP":
-					el.kategorija = "Usmerjevalniki, stikala in AP";
-					break;
-				case "Razširitvene kartice":
-				case "Trdi diski in SSD":
-				case "Zunanja ohišja za diske":
-				case "Zunanji trdi diski in SSD":
-					el.kategorija = "Trdi diski";
-					break;
-				case "Pisarniški programi":
-				case "Operacijski sistemi":
-					el.kategorija = "Programska oprema";
-					break;
-				case "Vgradni - OPS":
-				case "Interaktivni - touch":
-				case "Računalniški - desktop":
-				case "Informacijski - public":
-					el.kategorija = "Monitorji";
-					break;
-				case "Kamere":
-					el.kategorija = "Spletne kamere";
-					break;
-				case "Spominske kartice":
-					el.kategorija = "Spominske kartice in čitalci";
-					break;
-				case "Stikala":
-				case "Senzorji":
-					el.kategorija = "Naprave za pametni dom";
-					break;
-				case "Čistilci zraka":
-					el.kategorija = "Razvlažilci zraka";
-					break;
-				case "Krmilniki":
-					el.kategorija = "Pametni vrtovi";
-					break;
-				case "Interaktivna oprema":
-					el.kategorija = "Konferenčna oprema";
-					break;
-				case "Namizni - desktop":
-				case "Dodatna interaktivna oprema":
-					el.kategorija = "Računalniki";
-					break;
-				case "Prenosni - notebook":
-					el.kategorija = "Prenosniki";
-					break;
-				case "NAS strežniki":
-					el.kategorija = "NAS sistemi";
-					break;
-				case "Strežniki- server":
-					el.kategorija = "Strežniki";
-					break;
-				case "UPS napajanja, inverterji, regulatorji napetosti":
-				case "Razdelilci in prenapetostna zaščita":
-					el.kategorija = "Brezprekinitveni napajalniki";
-					break;
-				case "Šport in prosti čas":
-					el.kategorija = "Šport in prosti čas";
-					break;
-				case "IP kamere":
-				case "Nadzorne kamere":
-					el.kategorija = "Kamere";
-					break;
-				case "Mini, micro, barebone":
-					el.kategorija = "Mini";
-					break;
-				case "Tablični - tablet":
-					el.kategorija = "Tablični računalniki";
-					break;
-				case "Gaming stoli in mize":
-					el.kategorija = "Gaming stoli";
-					break;
-				case "All-in-one - AIO":
-					el.kategorija = "All in one";
-					break;
-				case "Hubi, čitalci, priklopne postaje":
-					el.kategorija = "Spominske kartice in čitalci";
-					break;
-				case "Igričarski pripomočki":
-					el.kategorija = "Igralni pripomočki";
-					break;
-				case "Gaming miške in podloge":
-					el.kategorija = "Podloge";
-					break;
-				case "Čitalniki črtnih kod":
-					el.kategorija = "Optični bralniki";
-					break;
-				case "Dodatna oprema za omare":
-					el.kategorija = "POS in dodatki";
-					break;
+			if (flatCategoryMap[el.kategorija]) {
+				el.kategorija = flatCategoryMap[el.kategorija];
 			}
-		});
+		})
 	}
 
 	parseObject(obj) {
@@ -217,16 +124,40 @@ export class acordController extends dobaviteljController {
 		let lastnosti = [];
 
 		this.allData.forEach((data) => {
-			lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: 'Proizvajalec', lastnostVrednost: data.blagovna_znamka});
-			const Attributes = new AcordAttributes(data.kategorija, data.dodatne_lastnosti.lastnost);
-			const attrs = Attributes.formatAttributes()
+			lastnosti.push({
+				ean: data.ean,
+				kategorija: data.kategorija,
+				lastnostNaziv: "Proizvajalec",
+				lastnostVrednost: data.blagovna_znamka,
+			});
+			const Attributes = new AcordAttributes(
+				data.kategorija,
+				data.dodatne_lastnosti.lastnost
+			);
+			const attrs = Attributes.formatAttributes();
 			if (attrs !== null && Object.keys(attrs).length !== 0) {
 				for (const el in attrs) {
-					lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el, lastnostVrednost: attrs[el]});
+					lastnosti.push({
+						ean: data.ean,
+						kategorija: data.kategorija,
+						lastnostNaziv: el,
+						lastnostVrednost: attrs[el],
+					});
 				}
 			}
-			this.komponenta = lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}});
-			this.atribut = lastnosti.map(el => { return {izdelek_ean: el.ean, KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}});
+			this.komponenta = lastnosti.map((el) => {
+				return {
+					KATEGORIJA_kategorija: el.kategorija,
+					komponenta: el.lastnostNaziv,
+				};
+			});
+			this.atribut = lastnosti.map((el) => {
+				return {
+					izdelek_ean: el.ean,
+					KOMPONENTA_komponenta: el.lastnostNaziv,
+					atribut: el.lastnostVrednost,
+				};
+			});
 		});
 	}
 
