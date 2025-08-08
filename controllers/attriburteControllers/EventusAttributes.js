@@ -1,529 +1,208 @@
 export default class EventusAttributes {
-	constructor(category, attribute) {
-		this.attribute = attribute;
-		this.category = category;
-	}
+    constructor(category, attribute) {
+        this.attribute = attribute;
+        this.category = category;
+    }
 
-	formatAttributes() {
-		let match;
-		const attributes= [];
+    static extractCapacity(text) {
+        const match = text.match(/(\d+)\s?(GB|TB)/i);
+        return match ? `${match[1]} ${match[2]}` : text;
+    }
 
+    static extractScreenSize(text) {
+        const match = text.match(/^\d+(\.\d+)?/);
+        return match ? `${match[0]}"` : text;
+    }
 
-		// if(!this.attribute || !this.attribute.length) {
-		// 	return null;
-		// }
+    static extractResolution(text) {
+        const match = text.match(/\b\d{3,4}\s?x\s?\d{3,4}\b/i);
+        return match ? match[0].replace(/\s?x\s?/i, ' x ') : '';
+    }
 
-		// if (this.category === 'All in one') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'procesor':
-		// 				attributes["Procesor"] = el['#text'];
-		// 				break;
-		// 			case 'pomnilnik':
-		// 				match = el['#text'].match(/(\d+)\s?(GB|TB)/i);
-		// 				attributes["Kapaciteta pomnilnika"] = `${match[1]} ${match[2]}`;
-		// 				break;
-		// 			case 'zaslon':
-		// 				attributes["Velikost zaslona"] = el['#text'].match(/^\d+(\.\d+)?/) ? el['#text'].match(/^\d+(\.\d+)?/)[0] + '\"' : el['#text'];
-		// 				attributes["Ločljivost"] = el['#text'].match(/\b\d{3,4}\s?x\s?\d{3,4}\b/i)[0];
-		// 				break;
-		// 			case 'trdi_disk':
-		// 				match = el['#text'].match(/(\d+)\s?(GB|TB)/i);
-		// 				attributes["Kapaciteta diska"] = `${match[1]} ${match[2]}`;
-		// 				break;
-		// 			case 'graficna_kartica':
-		// 				attributes["Grafična kartica"] = el['#text'];
-		// 				break;
-		// 			case 'operacijski_sistem':
-		// 				attributes["Operacijski sistem"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Računalniki') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'procesor':
-		// 				attributes["Procesor"] = el['#text'];
-		// 				break;
-		// 			case 'pomnilnik':
-		// 				match = el['#text'].match(/(\d+)\s?(GB|TB)/i);
-		// 				if (match){
-		// 					attributes["Kapaciteta pomnilnika"] = `${match[1]} ${match[2]}`;
-		// 				} else {
-		// 					attributes["Kapaciteta pomnilnika"] = el['#text'];
-		// 				}
-		// 				break;
-		// 			case 'trdi_disk':
-		// 				match = el['#text'].match(/(\d+)\s?(GB|TB)/i);
-		// 				attributes["Kapaciteta diska"] = `${match[1]} ${match[2]}`;
-		// 				break;
-		// 			case 'graficna_kartica':
-		// 				attributes["Grafična kartica"] = el['#text'];
-		// 				break;
-		// 			case 'operacijski_sistem':
-		// 				attributes["Operacijski sistem"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Mini') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'procesor':
-		// 				attributes["Procesor"] = el['#text'];
-		// 				break;
-		// 			case 'pomnilnik':
-		// 				match = el['#text'].match(/(\d+)\s?(GB|TB)/i);
-		// 				if (match){
-		// 					attributes["Kapaciteta pomnilnika"] = `${match[1]} ${match[2]}`;
-		// 				} else {
-		// 					attributes["Kapaciteta pomnilnika"] = el['#text'];
-		// 				}
-		// 				break;
-		// 			case 'trdi_disk':
-		// 				match = el['#text'].match(/(\d+)\s?(GB|TB)/i);
-		// 				if (el['#text'].includes('možnost')){
-		// 					attributes["Kapaciteta diska"] = "brez";
+    static defaultHandler(el) {
+        return { [el['@_id']]: el['#text'] };
+    }
 
-		// 				} else if (match){
-		// 					attributes["Kapaciteta diska"] = `${match[1]} ${match[2]}`;
-		// 				} else {
-		// 					attributes["Kapaciteta diska"] = el['#text'];
-		// 				}
-		// 				break;
-		// 			case 'graficna_kartica':
-		// 				attributes["Grafična kartica"] = el['#text'];
-		// 				break;
-		// 			case 'operacijski_sistem':
-		// 				attributes["Operacijski sistem"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Tablični računalniki') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'procesor':
-		// 				attributes["Procesor"] = el['#text'];
-		// 				break;
-		// 			case 'pomnilnik':
-		// 				match = el['#text'].match(/(\d+)\s?(GB|TB)/i);
-		// 				attributes["Kapaciteta pomnilnika"] = `${match[1]} ${match[2]}`;
-		// 				break;
-		// 			case 'zaslon':
-		// 				attributes["Velikost zaslona"] = el['#text'].match(/^\d+(\.\d+)?/) ? el['#text'].match(/^\d+(\.\d+)?/)[0] + '\"' : el['#text'];
-		// 				attributes["Ločljivost"] = el['#text'].match(/\b\d{3,4}\s?x\s?\d{3,4}\b/i)[0].replace(/\s?x\s?/i, ' x ');
-		// 				break;
-		// 			case 'trdi_disk':
-		// 				match = el['#text'].match(/(\d+)\s?(GB|TB)/i);
-		// 				attributes["Kapaciteta diska"] = `${match[1]} ${match[2]}`;
-		// 				break;
-		// 			case 'graficna_kartica':
-		// 				attributes["Grafična kartica"] = el['#text'];
-		// 				break;
-		// 			case 'operacijski_sistem':
-		// 				attributes["Operacijski sistem"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'NAS sistemi') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'sto_procesor':
-		// 				attributes["Procesor"] = el['#text'];
-		// 				break;
-		// 			case 'tip_sto':
-		// 				attributes["Postavitev"] = el['#text'];
-		// 				break;
-		// 			case 'sto_pomnilnik':
-		// 				match = el['#text'].match(/(\d+)\s?(GB|TB)/i);
-		// 				attributes["Kapaciteta pomnilnika"] = `${match[1]} ${match[2]}`;
-		// 				break;
-		// 			case 'sto_prikljucki':
-		// 				match = el['#text'].match(/\b\d+x\sRJ-?45\b/i);
-		// 				attributes["št. LAN priklopov"] = `${match[0].replace('-','')}`;
-		// 				break;
-		// 			case 'sto_reze_za_diske':
-		// 				attributes["Število diskov"] = el['#text'];
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Monitorji') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'priklop':
-		// 				attributes["Vhodi"] = el['#text'];
-		// 				break;
-		// 			case 'mon_frekvenca_tekst':
-		// 				attributes["Osveževanje"] = el['#text'];
-		// 				break;
-		// 			case 'tip_matrike':
-		// 				attributes["Matrika"] = el['#text'];
-		// 				break;
-		// 			case 'diagonala_zaslona':
-		// 				attributes["Velikost zaslona"] = el['#text']
-		// 				break;
-		// 			case 'optimalna_locljivost':
-		// 				attributes["Ločljivost"] = el['#text'];
-		// 				break;
-		// 			case 'dodatno':
-		// 				if (el['#text'].includes('ukrivljenost')) {
-		// 					attributes["Ukrivljenost"] = 'Da';
-		// 				}
-		// 				break;
-		// 			case 'vgrajeni_zvocniki':
-		// 				attributes["Zvočniki"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Osnovne plošče') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'podnozje':
-		// 				attributes["Podnožje"] = el['#text'];
-		// 				break;
-		// 			case 'vezni_nabor':
-		// 				attributes["Vezni nabor"] = el['#text'];
-		// 				break;
-		// 			case 'format_filter_maticne':
-		// 				attributes["Format"] = el['#text'];
-		// 				break;
-		// 			case 'pomnilnik':
-		// 				attributes["Pomnilniške reže"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Procesorji') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'tip_procesorja':
-		// 				attributes["Procesor"] = el['#text'];
-		// 				break;
-		// 			case 'podnozje':
-		// 				attributes["Podnožje"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Pomnilniki') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'tip_ram':
-		// 				attributes["Vrsta pomnilnika"] = el['#text'];
-		// 				break;
-		// 			case 'kapaciteta':
-		// 				attributes["Kapaciteta pomnilnika"] = el['#text'].replace(' ','');
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Trdi diski') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'tip_hdd':
-		// 				if (el['#text'] === 'No') {
-		// 					break;
-		// 				}
-		// 				attributes["Vrsta diska"] = el['#text'];
-		// 				break;
-		// 			case 'kapaciteta_hdd_tekst':
-		// 				attributes["Kapaciteta diska"] = el['#text'];
-		// 				break;
-		// 			case 'vmesnik':
-		// 				attributes["Vmesnik"] = el['#text'];
-		// 				break;
-		// 			case 'format':
-		// 				if (el['#text'] === 'No') {
-		// 					break;
-		// 				}
-		// 				attributes["Velikost diska"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Ohišja') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'cas_tip':
-		// 				attributes["Velikost"] = el['#text'];
-		// 				break;
-		// 			case 'napajalnik':
-		// 				attributes["Napajalnik"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Napajalniki') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'moc':
-		// 				attributes["Moč"] = el['#text'];
-		// 				break;
-		// 			case 'pws_format_filter':
-		// 				attributes["Format"] = el['#text'];
-		// 				break;
-		// 			case 'pws_napetosti_tokovi':
-		// 				attributes["Modulani"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Grafične kartice') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'proizvajalec_cipovja':
-		// 				attributes["GPU"] = el['#text'];
-		// 				break;
-		// 			case 'graficni_procesor':
-		// 				attributes["Grafični procesor"] = el['#text'];
-		// 				break;
-		// 			case 'graficni_pomnilnik':
-		// 				attributes["Grafični pomnilnik"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Hlajenje') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'namembnost':
-		// 				attributes["Vrsta hlajenja"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Tipkovnice') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'povezljivost':
-		// 				attributes["Povezljivost"] = el['#text'];
-		// 				break;
-		// 			case 'drugo':
-		// 				if (el['#text'].includes('mehanske')) {
-		// 					attributes["Mehanska"] = 'Da';
-		// 				}
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Miške') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'povezljivost':
-		// 				attributes["Povezljivost"] = el['#text'];
-		// 				break;
-		// 			case 'tip_mou':
-		// 				attributes["Senzor"] = el['#text'];
-		// 				break;
-		// 			case 'mou_locljivost':
-		// 				attributes["Ločljivost"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Slušalke') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'heapho_povezljivost':
-		// 				attributes["Povezava"] = el['#text'];
-		// 				break;
-		// 			case 'heapho_mikrofon':
-		// 				attributes["Mikrofon"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Usmerjevalniki, stikala in AP') {
-		// 	let keys;
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'netswi_namestitev':
-		// 				attributes["Vrsta"] = 'Stikalo';
-		// 				break;
-		// 			case 'netapo_postavitev_filter':
-		// 				attributes["Vrsta"] = 'Dostopna točka';
-		// 				break;
-		// 			case 'antena':
-		// 				attributes["Vrsta"] = 'Usmerjevalnik';
-		// 				break;
-		// 			case 'stevilo_portov':
-		// 			case 'lan_porti':
-		// 				const numberMatch = el['#text'].match(/\b\d+x\b/i);
-		// 				const speedMatch = el['#text'].match(/\b(?:\d+(\.\d+)?(?:\/\d+)*\s?(Mbps|Gbps)|Gigabit)\b/i);
-		// 				const number = numberMatch ? numberMatch[0] : "Ni navedeno";
-		// 				const speed = speedMatch ? speedMatch[0].replace(/\s/g, '') : "Ni navedeno"
-		// 				attributes["Število LAN priklopov"] = number;
-		// 				keys = attributes.map(obj => Object.keys(obj)[0]);
-		// 				if(keys.includes('Hitrost')) {
-		// 					break;
-		// 				}
-		// 				attributes["Hitrost"] = speed;
-		// 				break;
-		// 			case 'hitrost':
-		// 				keys = attributes.map(obj => Object.keys(obj)[0]);
-		// 				if(keys.includes('Hitrost')) {
-		// 					break;
-		// 				}
-		// 				attributes["Hitrost"] = el['#text'];
-		// 				break;
-		// 			case 'brezzicna_hitrost':
-		// 				keys = attributes.map(obj => Object.keys(obj)[0]);
-		// 				if(keys.includes('Hitrost')) {
-		// 					break;
-		// 				}
-		// 				attributes["Hitrost"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Mrežne kartice, antene, WIFI ojačevalci') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'hitrost':
-		// 				attributes["Hitrost"] = el['#text'];
-		// 				break;
-		// 			case 'netcrd_povezava_filter':
-		// 				attributes["Vrsta"] = 'Mrežna kartica';
-		// 				attributes["Vrsta povezave"] = el['#text'];
-		// 				break;
-		// 			case 'netant_tip_filter':
-		// 				attributes["Vrsta"] ='Antena';
-		// 				break;
-		// 			case 'netext_tip_filter':
-		// 				attributes["Vrsta"] ='Wifi ojačevalec';
-		// 				break;
-		// 			case 'netext_hitrost':
-		// 				attributes["Hitrost"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Zvočniki') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'spk_priklop_filter':
-		// 				attributes["Povezava"] = el['#text'];
-		// 				break;
-		// 			case 'stevilo_zvocnikov':
-		// 				attributes["Sistem"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Spletne kamere') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'cam_locljivost_snemanja':
-		// 				attributes["Ločljivost"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'USB ključi') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'kapaciteta':
-		// 				attributes["Kapaciteta"] = el['#text'];
-		// 				break;
-		// 			case 'vmesnik':
-		// 				attributes["Hitrost"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Spominske kartice in čitalci') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'kapaciteta':
-		// 				attributes["Kapaciteta"] = el['#text'];
-		// 				break;
-		// 			case 'hitrost_zapisovanja':
-		// 				attributes["Hitrost zapisovanja"] = el['#text'];
-		// 				break;
-		// 			case 'hitrost_branja':
-		// 				attributes["Hitrost branja"] = el['#text'];
-		// 				break;
-		// 			case 'tip_spominske_kartice':
-		// 				attributes["Tip kartice"] = el['#text'];
-		// 				break;
-		// 			case 'tip_carrdr':
-		// 				attributes["Čitalec"] = "Da";
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if (this.category === 'Brezprekinitveni napajalniki') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			case 'izhodna_moc_w':
-		// 				attributes["Moč"] = el['#text'];
-		// 				break;
-		// 			case 'ups_rack':
-		// 				attributes["Postavitev"] = el['#text'];
-		// 				break;
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		// if(this.category ==='Konferenčna oprema') {
-		// 	this.attribute.forEach((el) => {
-		// 		switch(el['@_id']) {
-		// 			default:
-		// 				break;
-		// 		}
-		// 	})
-		// }
-		return attributes;
-	}
+    formatAttributes() {
+        if (!this.attribute || !this.attribute.length) return {};
+
+        const attributes = {};
+
+        const attributeHandlers = {
+            'All in one': {
+                procesor: el => ({ Procesor: el['#text'] }),
+                pomnilnik: el => ({ 'Kapaciteta pomnilnika': EventusAttributes.extractCapacity(el['#text']) }),
+                zaslon: el => ({
+                    'Velikost zaslona': EventusAttributes.extractScreenSize(el['#text']),
+                    'Ločljivost': EventusAttributes.extractResolution(el['#text'])
+                }),
+                trdi_disk: el => ({ 'Kapaciteta diska': EventusAttributes.extractCapacity(el['#text']) }),
+                graficna_kartica: el => ({ 'Grafična kartica': el['#text'] }),
+                operacijski_sistem: el => ({ 'Operacijski sistem': el['#text'] }),
+            },
+            Računalniki: {
+                procesor: el => ({ Procesor: el['#text'] }),
+                pomnilnik: el => ({ 'Kapaciteta pomnilnika': EventusAttributes.extractCapacity(el['#text']) }),
+                trdi_disk: el => ({ 'Kapaciteta diska': EventusAttributes.extractCapacity(el['#text']) }),
+                graficna_kartica: el => ({ 'Grafična kartica': el['#text'] }),
+                operacijski_sistem: el => ({ 'Operacijski sistem': el['#text'] }),
+            },
+            Mini: {
+                procesor: el => ({ Procesor: el['#text'] }),
+                pomnilnik: el => ({ 'Kapaciteta pomnilnika': EventusAttributes.extractCapacity(el['#text']) }),
+                trdi_disk: el => {
+                    if (el['#text'].includes('možnost')) return { 'Kapaciteta diska': 'brez' };
+                    return { 'Kapaciteta diska': EventusAttributes.extractCapacity(el['#text']) };
+                },
+                graficna_kartica: el => ({ 'Grafična kartica': el['#text'] }),
+                operacijski_sistem: el => ({ 'Operacijski sistem': el['#text'] }),
+            },
+            'Tablični računalniki': {
+                procesor: el => ({ Procesor: el['#text'] }),
+                pomnilnik: el => ({ 'Kapaciteta pomnilnika': EventusAttributes.extractCapacity(el['#text']) }),
+                zaslon: el => ({
+                    'Velikost zaslona': EventusAttributes.extractScreenSize(el['#text']),
+                    'Ločljivost': EventusAttributes.extractResolution(el['#text'])
+                }),
+                trdi_disk: el => ({ 'Kapaciteta diska': EventusAttributes.extractCapacity(el['#text']) }),
+                graficna_kartica: el => ({ 'Grafična kartica': el['#text'] }),
+                operacijski_sistem: el => ({ 'Operacijski sistem': el['#text'] }),
+            },
+            'NAS sistemi': {
+                sto_procesor: el => ({ Procesor: el['#text'] }),
+                tip_sto: el => ({ Postavitev: el['#text'] }),
+                sto_pomnilnik: el => ({ 'Kapaciteta pomnilnika': EventusAttributes.extractCapacity(el['#text']) }),
+                sto_prikljucki: el => {
+                    const match = el['#text'].match(/\b\d+x\sRJ-?45\b/i);
+                    return match ? { 'št. LAN priklopov': match[0].replace('-', '') } : {};
+                },
+                sto_reze_za_diske: el => ({ 'Število diskov': el['#text'] }),
+            },
+            Monitorji: {
+                priklop: el => ({ Vhodi: el['#text'] }),
+                mon_frekvenca_tekst: el => ({ Osveževanje: el['#text'] }),
+                tip_matrike: el => ({ Matrika: el['#text'] }),
+                diagonala_zaslona: el => ({ 'Velikost zaslona': el['#text'] }),
+                optimalna_locljivost: el => ({ 'Ločljivost': el['#text'] }),
+                dodatno: el => el['#text'].includes('ukrivljenost') ? { Ukrivljenost: 'Da' } : {},
+                vgrajeni_zvocniki: el => ({ Zvočniki: el['#text'] }),
+            },
+            'Osnovne plošče': {
+                podnozje: el => ({ Podnožje: el['#text'] }),
+                vezni_nabor: el => ({ 'Vezni nabor': el['#text'] }),
+                format_filter_maticne: el => ({ Format: el['#text'] }),
+                pomnilnik: el => ({ 'Pomnilniške reže': el['#text'] }),
+            },
+            Procesorji: {
+                tip_procesorja: el => ({ Procesor: el['#text'] }),
+                podnozje: el => ({ Podnožje: el['#text'] }),
+            },
+            Pomnilniki: {
+                tip_ram: el => ({ 'Vrsta pomnilnika': el['#text'] }),
+                kapaciteta: el => ({ 'Kapaciteta pomnilnika': el['#text'].replace(' ', '') }),
+            },
+            'Trdi diski': {
+                tip_hdd: el => el['#text'] === 'No' ? {} : { 'Vrsta diska': el['#text'] },
+                kapaciteta_hdd_tekst: el => ({ 'Kapaciteta diska': el['#text'] }),
+                vmesnik: el => ({ Vmesnik: el['#text'] }),
+                format: el => el['#text'] === 'No' ? {} : { 'Velikost diska': el['#text'] },
+            },
+            Ohišja: {
+                cas_tip: el => ({ Velikost: el['#text'] }),
+                napajalnik: el => ({ Napajalnik: el['#text'] }),
+            },
+            Napajalniki: {
+                moc: el => ({ Moč: el['#text'] }),
+                pws_format_filter: el => ({ Format: el['#text'] }),
+                pws_napetosti_tokovi: el => ({ Modulani: el['#text'] }),
+            },
+            'Grafične kartice': {
+                proizvajalec_cipovja: el => ({ GPU: el['#text'] }),
+                graficni_procesor: el => ({ 'Grafični procesor': el['#text'] }),
+                graficni_pomnilnik: el => ({ 'Grafični pomnilnik': el['#text'] }),
+            },
+            Hlajenje: {
+                namembnost: el => ({ 'Vrsta hlajenja': el['#text'] }),
+            },
+            Tipkovnice: {
+                povezljivost: el => ({ Povezljivost: el['#text'] }),
+                drugo: el => el['#text'].includes('mehanske') ? { Mehanska: 'Da' } : {},
+            },
+            Miške: {
+                povezljivost: el => ({ Povezljivost: el['#text'] }),
+                tip_mou: el => ({ Senzor: el['#text'] }),
+                mou_locljivost: el => ({ Ločljivost: el['#text'] }),
+            },
+            Slušalke: {
+                heapho_povezljivost: el => ({ Povezava: el['#text'] }),
+                heapho_mikrofon: el => ({ Mikrofon: el['#text'] }),
+            },
+            'Usmerjevalniki, stikala in AP': {
+                netswi_namestitev: el => ({ Vrsta: 'Stikalo' }),
+                netapo_postavitev_filter: el => ({ Vrsta: 'Dostopna točka' }),
+                antena: el => ({ Vrsta: 'Usmerjevalnik' }),
+                stevilo_portov: el => {
+                    const numberMatch = el['#text'].match(/\b\d+x\b/i);
+                    const speedMatch = el['#text'].match(/\b(?:\d+(\.\d+)?(?:\/\d+)*\s?(Mbps|Gbps)|Gigabit)\b/i);
+                    return {
+                        'Število LAN priklopov': numberMatch ? numberMatch[0] : 'Ni navedeno',
+                        'Hitrost': speedMatch ? speedMatch[0].replace(/\s/g, '') : 'Ni navedeno'
+                    };
+                },
+                lan_porti: el => {
+                    const numberMatch = el['#text'].match(/\b\d+x\b/i);
+                    const speedMatch = el['#text'].match(/\b(?:\d+(\.\d+)?(?:\/\d+)*\s?(Mbps|Gbps)|Gigabit)\b/i);
+                    return {
+                        'Število LAN priklopov': numberMatch ? numberMatch[0] : 'Ni navedeno',
+                        'Hitrost': speedMatch ? speedMatch[0].replace(/\s/g, '') : 'Ni navedeno'
+                    };
+                },
+                hitrost: el => ({ Hitrost: el['#text'] }),
+                brezzicna_hitrost: el => ({ Hitrost: el['#text'] }),
+            },
+            'Mrežne kartice, antene, WIFI ojačevalci': {
+                hitrost: el => ({ Hitrost: el['#text'] }),
+                netcrd_povezava_filter: el => ({ Vrsta: 'Mrežna kartica', 'Vrsta povezave': el['#text'] }),
+                netant_tip_filter: el => ({ Vrsta: 'Antena' }),
+                netext_tip_filter: el => ({ Vrsta: 'Wifi ojačevalec' }),
+                netext_hitrost: el => ({ Hitrost: el['#text'] }),
+            },
+            Zvočniki: {
+                spk_priklop_filter: el => ({ Povezava: el['#text'] }),
+                stevilo_zvocnikov: el => ({ Sistem: el['#text'] }),
+            },
+            'Spletne kamere': {
+                cam_locljivost_snemanja: el => ({ Ločljivost: el['#text'] }),
+            },
+            'USB ključi': {
+                kapaciteta: el => ({ Kapaciteta: el['#text'] }),
+                vmesnik: el => ({ Hitrost: el['#text'] }),
+            },
+            'Spominske kartice in čitalci': {
+                kapaciteta: el => ({ Kapaciteta: el['#text'] }),
+                hitrost_zapisovanja: el => ({ 'Hitrost zapisovanja': el['#text'] }),
+                hitrost_branja: el => ({ 'Hitrost branja': el['#text'] }),
+                tip_spominske_kartice: el => ({ 'Tip kartice': el['#text'] }),
+                tip_carrdr: el => ({ Čitalec: 'Da' }),
+            },
+            'Brezprekinitveni napajalniki': {
+                izhodna_moc_w: el => ({ Moč: el['#text'] }),
+                ups_rack: el => ({ Postavitev: el['#text'] }),
+            },
+            'Konferenčna oprema': {
+                // Default handler
+            }
+        };
+
+        const handlers = attributeHandlers[this.category] || {};
+
+        this.attribute.forEach(el => {
+            const id = el['@_id'];
+            const handler = handlers[id];
+            const result = handler ? handler(el) : EventusAttributes.defaultHandler(el);
+            Object.assign(attributes, result);
+        });
+
+        return attributes;
+    }
 }

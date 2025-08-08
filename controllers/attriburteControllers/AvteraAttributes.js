@@ -1,566 +1,213 @@
 export class AvteraAttributes {
-	constructor(category, attribute) {
-		this.category = category;
-		this.attribute = attribute;
-	}
+    constructor(category, attribute) {
+        this.category = category;
+        this.attribute = attribute;
+    }
 
-	formatAttributes() {
-		let match;
-		const attributes = {};
-		if(!this.attribute || !this.attribute.lastnost.length) {
-			return null;
-		}
+    static extractResolution(text) {
+        const match = text.match(/\b\d{3,4}\s?[×x]\s?\d{3,4}\b/i);
+        return match ? match[0].replace('×', 'x').replaceAll(' ', '') : text;
+    }
 
+    static extractScreenSize(text) {
+        const match = text.match(/\((\d+(?:,\d+)?)["”']?('')?\)/);
+        return match ? `${match[1].replace(',', '.').replace('.0', '')}"` : text;
+    }
 
-		if (this.category === 'Prenosniki') {
-			this.attribute.lastnost.forEach((el) => {
-				switch(el['@_naziv']) {
-					case 'Vrsta procesorja':
-						attributes['Procesor'] = el['#text']
-						break;
-					case 'Grafična kartica dodatno':
-						attributes['Grafična kartica'] = el['#text']
-						break;
-					case 'Tip prenosnika':
-						attributes['Namen uporabe'] = el['#text']
-						break;
-					case 'Diagonala zaslona':
-						match = el['#text'].match(/\((\d+(?:,\d+)?)"\)/);
-						if (match) {
-							attributes['Velikost zaslona'] = `${match[1].replace(',', '.').replace('.0', '')}\"`; // Normalize to decimal format
-						}
-						break;
-					case 'Diagonala zaslona dodatno':
-						match = el['#text'].match(/\b\d{3,4}\s?[×x]\s?\d{3,4}\b/i)
-						if (match) {
-							attributes['Ločljivost'] = match[0].replace('×', 'x').replaceAll(' ', '')
-						} else {
-							break;
-						}
-						break;
-					case 'Velikost pomnilnika':
-						attributes['Kapaciteta pomnilnika'] = el['#text']
-						break;
-					case 'SSD pogon':
-						attributes['Kapaciteta diska'] = el['#text']
-						break;
-					case 'Operacijski sistem':
-						attributes['Operacijski sistem'] = el['#text']
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			})
-		}
-		if (this.category === 'Monitorji') {
-			this.attribute.lastnost.forEach((el) => {
-				switch(el['@_naziv']) {
-					case 'Ločljivost':
-						match = el['#text'].match(/\b\d{3,4}\s?[×x]\s?\d{3,4}\b/i)
-						if (match) {
-							attributes['Ločljivost'] = match[0].replace('×', 'x').replaceAll(' ', '')
-						} else {
-							break;
-						}
-						break;
-					case 'Diagonala zaslona':
-						match = el['#text'].match(/\((\d+(?:,\d+)?)["”']?('')?\)/);
-						if (match) {
-							attributes['Velikost zaslona'] = `${match[1].replace(',', '.').replace('.0', '')}\"`; // Normalize to decimal format
-						}
-						break;
-					case 'Tip matrike':
-						attributes['Matrika'] = el['#text']
-						break;
-					case 'Hitrost osveževanja':
-						attributes['Osveževanje'] = el['#text'].replace(' ','')
-						break;
-					case 'Zvočniki':
-						attributes['Zvočniki'] = el['#text']
-						break;
-					case 'Ukrivljen zaslon':
-						attributes['Ukrivljen zaslon'] = el['#text']
-						break;
-					case 'Priključki':
-						attributes['Vhodi'] = el['#text']
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			})
-		}
-		if (this.category === 'All in one') {
-			this.attribute.lastnost.forEach((el) => {
-				switch(el['@_naziv']) {
-					case 'Vrsta procesorja':
-						attributes['Procesor'] = el['#text']
-						break;
-					case 'Grafična kartica dodatno':
-						attributes['Grafična kartica'] = el['#text']
-						break;
-					case 'Zaslon na dotik':
-						if (el['#text'] === 'Da') {
-							attributes['Vrsta zaslona'] = 'Da'
-						}
-						break;
-					case 'Diagonala zaslona':
-						match = el['#text'].match(/\((\d+(?:,\d+)?)['"]\)/);
-						if (match) {
-							attributes['Velikost zaslona'] = `${match[1].replace(',', '.').replace('.0', '')}\"`; // Normalize to decimal format
-						}
-						break;
-					case 'Diagonala zaslona dodatno':
-						match = el['#text'].match(/\b\d{3,4}\s?[×x]\s?\d{3,4}\b/i)
-						if (match) {
-							attributes['Ločljivost'] = match[0].replace('×', 'x').replaceAll(' ', '')
-						}
-						break;
-					case 'Velikost pomnilnika':
-						attributes['Kapaciteta pomnilnika'] = el['#text']
-						break;
-					case 'SSD pogon':
-						attributes['Kapaciteta diska'] = el['#text']
-						break;
-					case 'Operacijski sistem':
-						attributes['Operacijski sistem'] = el['#text']
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			})
-		}
-		if (this.category === 'Namizni računalniki') {
-			this.attribute.lastnost.forEach((el) => {
-				switch(el['@_naziv']) {
-					case 'Vrsta procesorja':
-						attributes['Procesor'] = el['#text']
-						break;
-					case 'Grafična kartica dodatno':
-						attributes['Grafična kartica'] = el['#text']
-						break;
-					case 'Velikost pomnilnika':
-						attributes['Kapaciteta pomnilnika'] = el['#text']
-						break;
-					case 'SSD pogon':
-						attributes['Kapaciteta diska'] = el['#text']
-						break;
-					case 'Operacijski sistem':
-						attributes['Operacijski sistem'] = el['#text']
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			})
-		}
-		if (this.category === 'Tablični računalniki') {
-			this.attribute.lastnost.forEach((el) => {
-				switch(el['@_naziv']) {
-					case 'Vrsta procesorja':
-						attributes['Procesor'] = el['#text']
-						break;
-					case 'Diagonala zaslona':
-						match = el['#text'].match(/\((\d+(?:,\d+)?)["”']?('')?\)/);
-						if (match) {
-							attributes['Velikost zaslona'] = `${match[1].replace(',', '.').replace('.0', '')}\"`; // Normalize to decimal format
-						}
-						break;
-					case 'Diagonala zaslona dodatno':
-						match = el['#text'].match(/\b\d{3,4}\s?[×x]\s?\d{3,4}\b/i)
-						if (match) {
-							attributes['Ločljivost'] = match[0].replace('×', 'x').replaceAll(' ', '')
-						}
-						break;
-					case 'Pomnilnik RAM':
-						attributes['Kapaciteta pomnilnika'] = el['#text']
-						break;
-					case 'Pomnilnik FLASH':
-						attributes['Kapaciteta diska'] = el['#text']
-						break;
-					case 'Operacijski sistem':
-						attributes['Operacijski sistem'] = el['#text']
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			})
-		}
-		if (this.category === 'Pomnilniki') {
-			this.attribute.lastnost.forEach((el) => {
-				switch(el['@_naziv']) {
-					case 'Velikost pomnilnika':
-						attributes['Kapaciteta pomnilnika'] = el['#text'].replace(' ','')
-						break;
-					case 'Vrsta pomnilnika':
-						attributes['Vrsta pomnilnika'] = el['#text']
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			})
-		}
-		if (this.category === 'Trdi diski') {
-			this.attribute.lastnost.forEach((el) => {
-				switch(el['@_naziv']) {
-					case 'Kapaciteta dodatno':
-						attributes['Kapaciteta diska'] = el['#text']
-							.replace(',', '.')
-							.replace(/(\d+(\.\d+)?)([A-Z]+)/, '$1 $3');
-						break;
-					case 'Vrsta diska':
-						attributes['Vrsta diska'] = el['#text']
-						break;
-					case 'Format diska':
-						attributes['Tip diska'] = el['#text']
-						break;
-					case 'Vmesnik (priklop)':
-						attributes['Vmesnik'] = el['#text']
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			})
-		}
-		if (this.category === 'Tiskalniki') {
-			this.attribute.lastnost.forEach((el) => {
-				switch(el['@_naziv']) {
-					case 'Ločljivost tiskanja':
-						attributes['Ločljivost tiska'] = el['#text']
-						break;
-					case 'Tehnologija tiskanja':
-						attributes['Tehnologija tiska'] = el['#text']
-						break;
-					case 'Hitrost tiskanja':
-						attributes['Hitrost tiskanja'] = el['#text']
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			})
-		}
-		if (this.category === 'Potrošni material') {
-			this.attribute.lastnost.forEach((el) => {
-				switch(el['@_naziv']) {
-					case 'Vrsta kartuše':
-					case 'Kompleti':
-						attributes['Vrsta'] = 'Kartuša'
-						break;
-					case 'Format papirja':
-						attributes['Vrsta'] = 'Papir'
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			})
-		}
-		if (this.category === 'Televizije') {
-			this.attribute.lastnost.forEach((el) => {
-				switch(el['@_naziv']) {
-					case 'Smart TV':
-						attributes['Smart TV'] = 'Da';
-						attributes['Operacijski sistem'] = el['#text']
-						break;
-					case 'Ločljivost zaslona':
-						match = el['#text'].match(/\b\d{3,4}\s?[×x]\s?\d{3,4}\b/i)
-						if (match) {
-							attributes['Ločljivost'] = match[0].replace('×', 'x').replaceAll(' ', '')
-						} else {
-							break;
-						}
-						break;
-					case 'Diagonala zaslona':
-						match = el['#text'].match(/\((\d+(?:,\d+)?)["”']?('')?\)/);
-						if (match) {
-							attributes['Diagonala'] = `${match[1].replace(',', '.').replace('.0', '')}\"`; // Normalize to decimal format
-						}
-						break;
-					case 'Tip  zaslona':
-						attributes['Vrsta Zaslona'] = el['#text']
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			})
-		}
-		if (this.category === 'Domači kino') {
-			this.attribute.lastnost.forEach((el) => {
-				switch(el['@_naziv']) {
-					case 'Izhodna moč zvočnika':
-						attributes['Moč'] = el['#text']
-						break;
-					case 'Povezave':
-						attributes['Priključki'] = el['#text']
-						break;
-					case 'Tip  zaslona':
-						attributes['Vrsta Zaslona'] = el['#text']
-						break;
-					case 'Zvočni sistem':
-						attributes['Zvočni sistem'] = el['#text']
-						break;
-					case 'Globokotonski zvočnik':
-						attributes['Globokotonski zvočnik'] = el['#text']
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			})
-		}
-		if (this.category === 'Projektorji') {
-			this.attribute.lastnost.forEach((el) => {
-				switch(el['@_naziv']) {
-					case 'Ločljivost':
-						attributes['Ločljivost'] = el['#text']
-						break;
-					case 'Svetilnost':
-						attributes['Svetilnost'] = el['#text']
-						break;
-					case 'Kontrast':
-						attributes['Kontrast'] = el['#text']
-						break;
-					case 'Tip projektorja':
-						attributes['Namen'] = el['#text']
-						break;
-					case 'Tehnologija':
-						attributes['Tehnologija'] = el['#text']
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			})
-		}
-		if (this.category === 'Pralni stroji') {
-			this.attribute.lastnost.forEach((el) => {
-				switch (el['@_naziv']) {
-					case 'Zmogljivost pranja':
-						attributes['Kapaciteta'] = el['#text'];
-						break;
-					case 'Razred energijske učinkovitosti pranja':
-						attributes['Energijski razred'] = el['#text'];
-						break;
-					case 'Največja hitrost ožemanja':
-						attributes['št. Obratov centrifuge'] = el['#text'];
-						break;
-					case 'Inverter motor':
-						attributes['Inverter motor'] = el['#text'];
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			});
-		}
-		if (this.category === 'Sušilni stroji') {
-			this.attribute.lastnost.forEach((el) => {
-				switch (el['@_naziv']) {
-					case 'Zmogljivost sušenja':
-						attributes['Kapaciteta'] = el['#text'];
-						break;
-					case 'Razred energijske učinkovitosti sušenja':
-						attributes['Energijski razred'] = el['#text'];
-						break;
-					case 'Toplotna črpalka':
-						attributes['Toplotna črpalka'] = el['#text'];
-						break;
-					case 'Inverter motor':
-						attributes['Inverter motor'] = el['#text'];
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			});
-		}
-		if (this.category === 'Pralno-sušilni stroji') {
-			this.attribute.lastnost.forEach((el) => {
-				switch (el['@_naziv']) {
-					case 'Zmogljivost pranja':
-						attributes['Kapaciteta pranja'] = el['#text'];
-						break;
-					case 'Zmogljivost sušenja':
-						attributes['Kapaciteta sušenja'] = el['#text'];
-						break;
-					case 'Razred energijske učinkovitosti pranja in sušenja':
-						attributes['Energijski razred pranja'] = el['#text'];
-						break;
-					case 'Inverter motor':
-						attributes['Inverter motor'] = el['#text'];
-						break;
-					case 'Največja hitrost ožemanja':
-						attributes['Centrifuga'] = el['#text'];
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			});
-		}
-		if (this.category === 'Pomivalni stroji') {
-			this.attribute.lastnost.forEach((el) => {
-				switch (el['@_naziv']) {
-					case 'Mere (Š x V x G)':
-						const dimenzije = el['#text'].match(/\d+/g);
-						if (dimenzije) {
-							attributes['Širina'] = dimenzije[0];
-							attributes['Višina'] = dimenzije[1];
-						}
-						break;
-					case 'Namestitev':
-						attributes['Tip'] = el['#text'];
-						break;
-					case 'Število pogrinjkov':
-						attributes['Število pogrinjkov'] = el['#text'];
-						break;
-					case 'Zaščita pred izlivom vode':
-						attributes['Aqua stop'] = 'Da';
-						break;
-					case 'Zlaganje pribora':
-						if(el['#text'] === 'Predal') {
-							attributes['Tretja košara'] = 'Da';
-						}
-					case 'Energetski razred':
-						attributes['Energijski razred'] = el['#text'];
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			});
-		}
-		if (this.category === 'Hladilniki') {
-			this.attribute.lastnost.forEach((el) => {
-				switch (el['@_naziv']) {
-					case 'Vrsta hladilnika':
-						attributes['Vrsta'] = el['#text'];
-						break;
-					case 'Energetski razred':
-						attributes['Energijski razred'] = el['#text'];
-						break;
-					case 'Položaj zamrzovalnika':
-						attributes['Položaj zamrzovalnika'] = el['#text'];
-						break;
-					case 'Samodejno odtajevanje':
-						attributes['No frost'] = el['#text'];
-						break;
-					case 'Višina dodatno':
-						attributes['Višina'] = el['#text'];
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			});
-		}
-		if (this.category ==='Zamrzovalniki') {
-			this.attribute.lastnost.forEach((el) => {
-				switch (el['@_naziv']) {
-					case 'Vrsta zmrzovalne skrinje':
-						attributes['Vrsta'] = el['#text'];
-						break;
-					case 'Energetski razred':
-						attributes['Energijski razred'] = el['#text'];
-						break;
-					case 'Samodejno odtajevanje':
-						attributes['No frost'] = el['#text'];
-						break;
-					case 'Višina dodatno':
-						attributes['Višina'] = el['#text'];
-						break;
-					case 'Prostornina zmrzovalnika dodatno':
-						attributes['Prostornina zmrzovalnika'] = el['#text']
-						break;
-					case 'Mere (Š x V x G)':
-						const dimenzije = el['#text'].match(/\d+/g);
-						if (dimenzije) {
-							attributes['Širina'] = dimenzije[0];
-							attributes['Višina'] = dimenzije[1];
-						}
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			});
-		}
-		if (this.category === 'Pečice') {
-			this.attribute.lastnost.forEach((el) => {
-				switch (el['@_naziv']) {
-					case 'Namestitev':
-						attributes['Tip'] = el['#text'];
-						break;
-					case 'Energetski razred':
-						attributes['Energijski razred'] = el['#text'];
-						break;
-					case 'Prostornina pečice dodatno':
-						attributes['Prostornina'] = el['#text'];
-						break;
-					case 'Mere (Š x V x G)':
-						const dimenzije = el['#text'].match(/\d+/g);
-						if (dimenzije) {
-							attributes['Višina'] = dimenzije[1];
-						}
-						break;
-					case 'Način čiščenja':
-						attributes['Način čiščenja'] = el['#text'];
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			});
-		}
-		if (this.category === 'Kuhališča') {
-			this.attribute.lastnost.forEach((el) => {
-				switch (el['@_naziv']) {
-					case 'Namestitev kuhalne plošče':
-						attributes['Tip'] = el['#text'];
-						break;
-					case 'Število kuhališč':
-						attributes['Število kuhališč'] = el['#text'];
-						break;
-					case 'Vrsta kuhalne plošče':
-						attributes['Vrsta kuhalne plošče'] = el['#text'];
-						break;
-					case 'Širina dodatno':
-						attributes['Širina'] = el['#text'];
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			});
-		}
-		if (this.category === 'Nape') {
-			this.attribute.lastnost.forEach((el) => {
-				switch (el['@_naziv']) {
-					case 'Energetski razred':
-						attributes['Energijski razred'] = el['#text'];
-						break;
-					case 'Vrsta nape':
-						attributes['Tip'] = el['#text'];
-						break;
-					case 'Mere (Š x V x G)':
-						const dimenzije = el['#text'].match(/\d+/g);
-						if (dimenzije) {
-							attributes['Širina'] = dimenzije[0];
-						}
-						break;
-					default:
-						attributes[el['@_naziv']] = el['#text']
-						break;
-				}
-			});
-		}
-		return attributes;
-	}
+    static extractCapacity(text) {
+        return text.replace(',', '.').replace(/(\d+(\.\d+)?)([A-Z]+)/, '$1 $3');
+    }
+
+    static extractDimensions(text) {
+        const dimenzije = text.match(/\d+/g);
+        return dimenzije ? { 'Širina': dimenzije[0], 'Višina': dimenzije[1] } : {};
+    }
+
+    static defaultHandler(el) {
+        return { [el['@_naziv']]: el['#text'] };
+    }
+
+    formatAttributes() {
+        if (!this.attribute || !this.attribute.lastnost.length) return null;
+        const attributes = {};
+
+        const attributeHandlers = {
+            Prenosniki: {
+                'Vrsta procesorja': el => ({ Procesor: el['#text'] }),
+                'Grafična kartica dodatno': el => ({ 'Grafična kartica': el['#text'] }),
+                'Tip prenosnika': el => ({ 'Namen uporabe': el['#text'] }),
+                'Diagonala zaslona': el => ({ 'Velikost zaslona': AvteraAttributes.extractScreenSize(el['#text']) }),
+                'Diagonala zaslona dodatno': el => {
+                    const res = AvteraAttributes.extractResolution(el['#text']);
+                    return res ? { 'Ločljivost': res } : {};
+                },
+                'Velikost pomnilnika': el => ({ 'Kapaciteta pomnilnika': el['#text'] }),
+                'SSD pogon': el => ({ 'Kapaciteta diska': el['#text'] }),
+                'Operacijski sistem': el => ({ 'Operacijski sistem': el['#text'] }),
+            },
+            Monitorji: {
+                'Ločljivost': el => {
+                    const res = AvteraAttributes.extractResolution(el['#text']);
+                    return res ? { 'Ločljivost': res } : {};
+                },
+                'Diagonala zaslona': el => ({ 'Velikost zaslona': AvteraAttributes.extractScreenSize(el['#text']) }),
+                'Tip matrike': el => ({ 'Matrika': el['#text'] }),
+                'Hitrost osveževanja': el => ({ 'Osveževanje': el['#text'].replace(' ','') }),
+                'Zvočniki': el => ({ 'Zvočniki': el['#text'] }),
+                'Ukrivljen zaslon': el => ({ 'Ukrivljen zaslon': el['#text'] }),
+                'Priključki': el => ({ 'Vhodi': el['#text'] }),
+            },
+            'All in one': {
+                'Vrsta procesorja': el => ({ Procesor: el['#text'] }),
+                'Grafična kartica dodatno': el => ({ 'Grafična kartica': el['#text'] }),
+                'Zaslon na dotik': el => el['#text'] === 'Da' ? { 'Vrsta zaslona': 'Da' } : {},
+                'Diagonala zaslona': el => ({ 'Velikost zaslona': AvteraAttributes.extractScreenSize(el['#text']) }),
+                'Diagonala zaslona dodatno': el => {
+                    const res = AvteraAttributes.extractResolution(el['#text']);
+                    return res ? { 'Ločljivost': res } : {};
+                },
+                'Velikost pomnilnika': el => ({ 'Kapaciteta pomnilnika': el['#text'] }),
+                'SSD pogon': el => ({ 'Kapaciteta diska': el['#text'] }),
+                'Operacijski sistem': el => ({ 'Operacijski sistem': el['#text'] }),
+            },
+            'Namizni računalniki': {
+                'Vrsta procesorja': el => ({ Procesor: el['#text'] }),
+                'Grafična kartica dodatno': el => ({ 'Grafična kartica': el['#text'] }),
+                'Velikost pomnilnika': el => ({ 'Kapaciteta pomnilnika': el['#text'] }),
+                'SSD pogon': el => ({ 'Kapaciteta diska': el['#text'] }),
+                'Operacijski sistem': el => ({ 'Operacijski sistem': el['#text'] }),
+            },
+            'Tablični računalniki': {
+                'Vrsta procesorja': el => ({ Procesor: el['#text'] }),
+                'Diagonala zaslona': el => ({ 'Velikost zaslona': AvteraAttributes.extractScreenSize(el['#text']) }),
+                'Diagonala zaslona dodatno': el => {
+                    const res = AvteraAttributes.extractResolution(el['#text']);
+                    return res ? { 'Ločljivost': res } : {};
+                },
+                'Pomnilnik RAM': el => ({ 'Kapaciteta pomnilnika': el['#text'] }),
+                'Pomnilnik FLASH': el => ({ 'Kapaciteta diska': el['#text'] }),
+                'Operacijski sistem': el => ({ 'Operacijski sistem': el['#text'] }),
+            },
+            Pomnilniki: {
+                'Velikost pomnilnika': el => ({ 'Kapaciteta pomnilnika': el['#text'].replace(' ','') }),
+                'Vrsta pomnilnika': el => ({ 'Vrsta pomnilnika': el['#text'] }),
+            },
+            'Trdi diski': {
+                'Kapaciteta dodatno': el => ({ 'Kapaciteta diska': AvteraAttributes.extractCapacity(el['#text']) }),
+                'Vrsta diska': el => ({ 'Vrsta diska': el['#text'] }),
+                'Format diska': el => ({ 'Tip diska': el['#text'] }),
+                'Vmesnik (priklop)': el => ({ 'Vmesnik': el['#text'] }),
+            },
+            Tiskalniki: {
+                'Ločljivost tiskanja': el => ({ 'Ločljivost tiska': el['#text'] }),
+                'Tehnologija tiskanja': el => ({ 'Tehnologija tiska': el['#text'] }),
+                'Hitrost tiskanja': el => ({ 'Hitrost tiskanja': el['#text'] }),
+            },
+            'Potrošni material': {
+                'Vrsta kartuše': el => ({ 'Vrsta': 'Kartuša' }),
+                'Kompleti': el => ({ 'Vrsta': 'Kartuša' }),
+                'Format papirja': el => ({ 'Vrsta': 'Papir' }),
+            },
+            Televizije: {
+                'Smart TV': el => ({ 'Smart TV': 'Da', 'Operacijski sistem': el['#text'] }),
+                'Ločljivost zaslona': el => {
+                    const res = AvteraAttributes.extractResolution(el['#text']);
+                    return res ? { 'Ločljivost': res } : {};
+                },
+                'Diagonala zaslona': el => ({ 'Diagonala': AvteraAttributes.extractScreenSize(el['#text']) }),
+                'Tip  zaslona': el => ({ 'Vrsta Zaslona': el['#text'] }),
+            },
+            'Domači kino': {
+                'Izhodna moč zvočnika': el => ({ 'Moč': el['#text'] }),
+                'Povezave': el => ({ 'Priključki': el['#text'] }),
+                'Tip  zaslona': el => ({ 'Vrsta Zaslona': el['#text'] }),
+                'Zvočni sistem': el => ({ 'Zvočni sistem': el['#text'] }),
+                'Globokotonski zvočnik': el => ({ 'Globokotonski zvočnik': el['#text'] }),
+            },
+            Projektorji: {
+                'Ločljivost': el => ({ 'Ločljivost': el['#text'] }),
+                'Svetilnost': el => ({ 'Svetilnost': el['#text'] }),
+                'Kontrast': el => ({ 'Kontrast': el['#text'] }),
+                'Tip projektorja': el => ({ 'Namen': el['#text'] }),
+                'Tehnologija': el => ({ 'Tehnologija': el['#text'] }),
+            },
+            'Pralni stroji': {
+                'Zmogljivost pranja': el => ({ 'Kapaciteta': el['#text'] }),
+                'Razred energijske učinkovitosti pranja': el => ({ 'Energijski razred': el['#text'] }),
+                'Največja hitrost ožemanja': el => ({ 'št. Obratov centrifuge': el['#text'] }),
+                'Inverter motor': el => ({ 'Inverter motor': el['#text'] }),
+            },
+            'Sušilni stroji': {
+                'Zmogljivost sušenja': el => ({ 'Kapaciteta': el['#text'] }),
+                'Razred energijske učinkovitosti sušenja': el => ({ 'Energijski razred': el['#text'] }),
+                'Toplotna črpalka': el => ({ 'Toplotna črpalka': el['#text'] }),
+                'Inverter motor': el => ({ 'Inverter motor': el['#text'] }),
+            },
+            'Pralno-sušilni stroji': {
+                'Zmogljivost pranja': el => ({ 'Kapaciteta pranja': el['#text'] }),
+                'Zmogljivost sušenja': el => ({ 'Kapaciteta sušenja': el['#text'] }),
+                'Razred energijske učinkovitosti pranja in sušenja': el => ({ 'Energijski razred pranja': el['#text'] }),
+                'Inverter motor': el => ({ 'Inverter motor': el['#text'] }),
+                'Največja hitrost ožemanja': el => ({ 'Centrifuga': el['#text'] }),
+            },
+            'Pomivalni stroji': {
+                'Mere (Š x V x G)': el => AvteraAttributes.extractDimensions(el['#text']),
+                'Namestitev': el => ({ 'Tip': el['#text'] }),
+                'Število pogrinjkov': el => ({ 'Število pogrinjkov': el['#text'] }),
+                'Zaščita pred izlivom vode': el => ({ 'Aqua stop': 'Da' }),
+                'Zlaganje pribora': el => el['#text'] === 'Predal' ? { 'Tretja košara': 'Da' } : {},
+                'Energetski razred': el => ({ 'Energijski razred': el['#text'] }),
+            },
+            Hladilniki: {
+                'Vrsta hladilnika': el => ({ 'Vrsta': el['#text'] }),
+                'Energetski razred': el => ({ 'Energijski razred': el['#text'] }),
+                'Položaj zamrzovalnika': el => ({ 'Položaj zamrzovalnika': el['#text'] }),
+                'Samodejno odtajevanje': el => ({ 'No frost': el['#text'] }),
+                'Višina dodatno': el => ({ 'Višina': el['#text'] }),
+            },
+            Zamrzovalniki: {
+                'Vrsta zmrzovalne skrinje': el => ({ 'Vrsta': el['#text'] }),
+                'Energetski razred': el => ({ 'Energijski razred': el['#text'] }),
+                'Samodejno odtajevanje': el => ({ 'No frost': el['#text'] }),
+                'Višina dodatno': el => ({ 'Višina': el['#text'] }),
+                'Prostornina zmrzovalnika dodatno': el => ({ 'Prostornina zmrzovalnika': el['#text'] }),
+                'Mere (Š x V x G)': el => AvteraAttributes.extractDimensions(el['#text']),
+            },
+            Pečice: {
+                'Namestitev': el => ({ 'Tip': el['#text'] }),
+                'Energetski razred': el => ({ 'Energijski razred': el['#text'] }),
+                'Prostornina pečice dodatno': el => ({ 'Prostornina': el['#text'] }),
+                'Mere (Š x V x G)': el => {
+                    const dimenzije = el['#text'].match(/\d+/g);
+                    return dimenzije ? { 'Višina': dimenzije[1] } : {};
+                },
+                'Način čiščenja': el => ({ 'Način čiščenja': el['#text'] }),
+            },
+            Kuhališča: {
+                'Namestitev kuhalne plošče': el => ({ 'Tip': el['#text'] }),
+                'Število kuhališč': el => ({ 'Število kuhališč': el['#text'] }),
+                'Vrsta kuhalne plošče': el => ({ 'Vrsta kuhalne plošče': el['#text'] }),
+                'Širina dodatno': el => ({ 'Širina': el['#text'] }),
+            },
+            Nape: {
+                'Energetski razred': el => ({ 'Energijski razred': el['#text'] }),
+                'Vrsta nape': el => ({ 'Tip': el['#text'] }),
+                'Mere (Š x V x G)': el => {
+                    const dimenzije = el['#text'].match(/\d+/g);
+                    return dimenzije ? { 'Širina': dimenzije[0] } : {};
+                },
+            },
+        };
+
+        const handlers = attributeHandlers[this.category] || {};
+
+        this.attribute.lastnost.forEach(el => {
+            const name = el['@_naziv'];
+            const handler = handlers[name];
+            const result = handler ? handler(el) : AvteraAttributes.defaultHandler(el);
+            Object.assign(attributes, result);
+        });
+
+        return attributes;
+    }
 }
