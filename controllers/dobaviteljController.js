@@ -4,12 +4,12 @@ import { insertIntoTable } from "../db/sql.js";
 import { Izdelek } from "../Models/Izdelek.js";
 import { IzdelekDobavitelj } from "../Models/IzdelekDobavitelj.js";
 import { Kategorija } from "../Models/Kategorija.js";
-import { DobaviteljTabela } from "../Models/Dobavitelj.js";
+import { Dobavitelj } from "../Models/Dobavitelj.js";
 import { Komponenta } from "../Models/Komponenta.js";
 import { Atribut } from "../Models/Atribut.js";
 import { Slika } from "../Models/Slika.js";
 
-export default class Dobavitelj {
+export default class DobaviteljController {
 	vrstice = [
 		"ean",
 		"izdelek_ime",
@@ -47,9 +47,12 @@ export default class Dobavitelj {
 		let vrstica = this.vrstice;
 		let getData = this.getData();
 
-		if (this.name === "asbis") {
+		if (typeof(this.file) === "object") {
 			getData = this.combineData();
 		}
+
+
+		// console.log("🚀 ~ Dobavitelj ~ createDataObject ~ getData:", getData)
 
 		getData.forEach((product) => {
 			let newObj = {};
@@ -58,7 +61,7 @@ export default class Dobavitelj {
 				return;
 			}
 
-			this.keys.map((key, idx) =>
+			this.keys.forEach((key, idx) =>
 				this.keyRules(newObj, product, key, idx, vrstica)
 			);
 			this.allData.push(newObj);
@@ -131,14 +134,12 @@ export default class Dobavitelj {
 
 	async insertDataIntoDb() {
 
-		const izdelekData = this.prepareDbData().izdelekData
-		const izdelekDobaviteljData = this.prepareDbData().izdelekDobaviteljData
-		const kategorijaData = this.prepareDbData().kategorijaData
+		const { izdelekData, izdelekDobaviteljData, kategorijaData } = this.prepareDbData();
 
 		// process.exit();
 
 		db.sync();
-		await insertIntoTable(DobaviteljTabela, { dobavitelj: this.name });
+		await insertIntoTable(Dobavitelj, { dobavitelj: this.name });
 		await insertIntoTable(Izdelek, izdelekData);
 
 		await insertIntoTable(IzdelekDobavitelj, izdelekDobaviteljData);
@@ -151,8 +152,4 @@ export default class Dobavitelj {
 			await insertIntoTable(Atribut, this.atribut);
 		}
 	}
-
-	// removeHTMLTags (str) {
-	// 	return str.replace(/(<([^>]+)>)/gi, "");
-	// }
 }

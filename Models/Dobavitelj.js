@@ -1,7 +1,7 @@
 import { db } from "../db/db.js";
 import { DataTypes } from "sequelize";
 
-export const DobaviteljTabela = db.define(
+export const Dobavitelj = db.define(
     "DOBAVITELJ",
     {
         dobavitelj_id: {
