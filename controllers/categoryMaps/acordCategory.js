@@ -17,7 +17,7 @@ const acordCategoryMap = {
 	"Prenosniki": ["Prenosni - notebook"],
 	"NAS sistemi": ["NAS strežniki"],
 	"Strežniki": ["Strežniki- server"],
-	"Brezprekinitveni napajalniki": ["UPS napajanja, inverterji, regulatorji napetosti", "Razdelilci in prenapetostna zaščita"],
+	"Brezprekinitveni napajalniki": ["UPS napajanja, inverterji, regulatorji napetosti", "Razdelilci in prenapetostna zaščita", "Prenapetostne zaščite"],
 	"Kamere": ["IP kamere", "Nadzorne kamere"],
 	"Mini": ["Mini, micro, barebone"],
 	"Tablični računalniki": ["Tablični - tablet"],
@@ -28,6 +28,7 @@ const acordCategoryMap = {
 	"Podloge": ["Gaming miške in podloge"],
 	"Optični bralniki": ["Čitalniki črtnih kod"],
 	"POS in dodatki": ["Dodatna oprema za omare"],
+	"Snemalniki": ["Mrežni video snemalniki"],
 }
 
 export default acordCategoryMap;
