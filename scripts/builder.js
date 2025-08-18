@@ -1,41 +1,27 @@
-// import * as fs from 'fs';
 import fsp from "fs/promises";
 import { getIzdelekInfo, getAtributInfo, getSlikaInfo } from "../db/sql.js";
 
 async function createBody(el) {
-	const izdelekId = `softT${el.id}`;
-	const atributInfo = await getAtributInfo(el.ean);
-	const slike = await getSlikaInfo(el.ean);
-	let count = 1;
-	let dodatneLastnosti = ``;
-	let dodatneSlike = ``;
-	let slikaMala;
-	let slikaVelika;
+  const izdelekId = `softT${el.id}`;
+  const atributInfo = await getAtributInfo(el.ean);
+  const slike = await getSlikaInfo(el.ean);
 
-	atributInfo[0].forEach((el, idx) => {
-		if (idx === atributInfo[0].length - 1) {
-			dodatneLastnosti += `        <lastnost naziv="${el.komponenta.replace('"',"")}" id="${el.komponenta_id}"><![CDATA[${el.atribut}]]></lastnost>`;
-		} else {
-			dodatneLastnosti += `        <lastnost naziv="${el.komponenta.replace('"',"")}" id="${el.komponenta_id}"><![CDATA[${el.atribut}]]></lastnost>\r\n`;
-		}
-	});
+  const dodatneLastnosti = atributInfo[0]
+    .map(attr =>
+      `        <lastnost naziv="${attr.komponenta.replace('"', '')}" id="${attr.komponenta_id}"><![CDATA[${attr.atribut}]]></lastnost>`
+    )
+    .join("\r\n");
 
-	slike.forEach((el, idx) => {
-		if(el.tip === "mala") {
-			slikaMala = el.slika_url ? el.slika_url : '';
-		} else if (el.tip === "velika") {
-			slikaVelika = el.slika_url ? el.slika_url : '';
-		} else if (el.tip === "dodatna") {
-			if (idx === slike.length - 1) {
-				dodatneSlike += `        <dodatnaSlika${count}><![CDATA[${el.slika_url}]]></dodatnaSlika${count}>`;
-			} else {
-				dodatneSlike += `        <dodatnaSlika${count}><![CDATA[${el.slika_url}]]></dodatnaSlika${count}>\r\n`;
-			}
-			count++;
-		}
-	});
+  let count = 1;
+  const dodatneSlike = slike
+    .filter(img => img.tip === "dodatna")
+    .map(img => `        <dodatnaSlika${count++}><![CDATA[${img.slika_url}]]></dodatnaSlika${count - 1}>`)
+    .join("\r\n");
 
-	return `  <izdelek id="${el.id}">
+  const slikaMala = slike.find(s => s.tip === "mala")?.slika_url || "";
+  const slikaVelika = slike.find(s => s.tip === "velika")?.slika_url || "";
+
+  return `  <izdelek id="${el.id}">
       <izdelekID>${izdelekId}</izdelekID>
       <EAN>${el.ean}</EAN>
       <izdelekIme><![CDATA[${el.izdelek_ime}]]></izdelekIme>
@@ -58,7 +44,7 @@ async function createBody(el) {
       <kategorija id="${el.kategorija_id}">${el.kategorija}</kategorija>
       <slikaMala><![CDATA[${slikaMala}]]></slikaMala>
       <slikaVelika><![CDATA[${slikaVelika}]]></slikaVelika>
-      <dobava id="${el.zaloga === 'Na zalogi' ? 1 : 0}">${el.zaloga}</dobava>
+      <dobava id="${el.zaloga === "Na zalogi" ? 1 : 0}">${el.zaloga}</dobava>
       <spletnaStranProizvajalca></spletnaStranProizvajalca>
       <dodatneLastnosti>
 ${dodatneLastnosti}
@@ -70,50 +56,47 @@ ${dodatneSlike}
   `;
 }
 
-export async function build() {
-	const file = `xml/softtrade.xml`;
-	const izdelekInfo = await getIzdelekInfo();
-
-	const head = `<?xml version="1.0" encoding="UTF-8"?>
-<podjetje id="Acord 92, Ljubljana" storitev="BSMAGE/xml-export" uporabnik="prodaja@softtrade.si" ts="05.03.2025 09:12:48" opis_storitve="https://www.pcplus.si/catalog-export/">
-  <izdelki>
-    `;
-	const foot = `</izdelki>
-</podjetje>`;
-
-	try {
-		await fsp.writeFile(file, head);
-		console.log("File created & head written...");
-	} catch (err) {
-		console.error(err.message);
-	}
-
-	// try {
-	// 	for (let i = 1; i < 25; i++) {
-	// 		const body = await createBody(izdelekInfo[0][i]);
-	// 		await fsp.appendFile(file, body);
-	// 	}
-	// 	console.log("Body added...");
-	// } catch (err) {
-	// 	console.error(err.message);
-	// }
-
-	try {
-	  for (const el of izdelekInfo[0]) {
-	    const body = await createBody(el);
-	    await fsp.appendFile(file, body);
-	  }
-	  console.log("Body added...");
-	} catch (err) {
-	  console.error(err.message);
-	}
-
-	try {
-		await fsp.appendFile(file, foot);
-		console.log(`Writing of ${file} Finished!`);
-	} catch (err) {
-		console.error(err.message);
-	}
+function getCurrentTimestamp() {
+    const now = new Date();
+    const pad = n => n.toString().padStart(2, '0');
+    const dd = pad(now.getDate());
+    const mm = pad(now.getMonth() + 1);
+    const yyyy = now.getFullYear();
+    const hh = pad(now.getHours());
+    const min = pad(now.getMinutes());
+    const ss = pad(now.getSeconds());
+    return `${dd}.${mm}.${yyyy} ${hh}:${min}:${ss}`;
 }
 
-build();
+
+export async function build() {
+  const file = `xml/softtrade.xml`;
+
+  const head = `<?xml version="1.0" encoding="UTF-8"?>
+<podjetje id="Softtrade, Ljutomer" ts="${getCurrentTimestamp()}" opis_storitve="https://www.pcplus.si/catalog-export/">
+  <izdelki>
+`;
+  const foot = `</izdelki>
+</podjetje>`;
+
+  try {
+    console.log("Fetching product list...");
+    const izdelekInfo = await getIzdelekInfo();
+
+    console.log(`Generating ${izdelekInfo[0].length} product entries...`);
+    const bodies = await Promise.all(
+      izdelekInfo[0].map(el => createBody(el))
+    );
+
+    const xmlContent = head + bodies.join("") + foot;
+
+    console.log("Writing XML file...");
+    await fsp.writeFile(file, xmlContent, "utf8");
+
+    console.log(`✅ Writing of ${file} finished!`);
+  } catch (err) {
+    console.error(`❌ Error building XML: ${err.message}`);
+  }
+}
+
+build()
