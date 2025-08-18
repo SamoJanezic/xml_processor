@@ -14,6 +14,7 @@
   "type": "module",
   "scripts": {
     "up": "node scripts/up",
+    "down": "node scripts/down",
     "build": "node scripts/builder",
     "app": "node ./app.js",
     "update": "node xml-downloader/app.js",
