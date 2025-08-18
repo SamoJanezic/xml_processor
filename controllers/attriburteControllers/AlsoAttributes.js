@@ -1,4 +1,4 @@
-export class AlsoAttributes {
+class AlsoAttributes {
     constructor(category, attribute) {
         this.category = category;
         this.attribute = attribute;
@@ -185,3 +185,5 @@ export class AlsoAttributes {
         return attributes;
     }
 }
+
+export default AlsoAttributes;

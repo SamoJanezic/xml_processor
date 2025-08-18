@@ -1,4 +1,4 @@
-export default class AsbisAttributes {
+class ElotexAttributes {
 	constructor(category, attribute) {
 		this.category = category;
 		this.attribute = attribute;
@@ -55,3 +55,5 @@ export default class AsbisAttributes {
 		return attributes;
 	}
 }
+
+export default ElotexAttributes;

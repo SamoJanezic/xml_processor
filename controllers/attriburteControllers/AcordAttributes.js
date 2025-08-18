@@ -1,4 +1,4 @@
-export class AcordAttributes {
+class AcordAttributes {
     constructor(category, attribute) {
         this.attribute = attribute;
         this.category = category;
@@ -232,3 +232,5 @@ export class AcordAttributes {
         return attributes;
     }
 }
+
+export default AcordAttributes;

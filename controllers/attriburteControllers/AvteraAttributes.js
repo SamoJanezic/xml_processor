@@ -1,4 +1,4 @@
-export class AvteraAttributes {
+class AvteraAttributes {
     constructor(category, attribute) {
         this.category = category;
         this.attribute = attribute;
@@ -28,7 +28,8 @@ export class AvteraAttributes {
     }
 
     formatAttributes() {
-        if (!this.attribute || !this.attribute.lastnost.length) return null;
+
+        if (!this.attribute?.length) return null;
         const attributes = {};
 
         const attributeHandlers = {
@@ -201,7 +202,7 @@ export class AvteraAttributes {
 
         const handlers = attributeHandlers[this.category] || {};
 
-        this.attribute.lastnost.forEach(el => {
+        this.attribute.forEach(el => {
             const name = el['@_naziv'];
             const handler = handlers[name];
             const result = handler ? handler(el) : AvteraAttributes.defaultHandler(el);
@@ -211,3 +212,5 @@ export class AvteraAttributes {
         return attributes;
     }
 }
+
+export default AvteraAttributes;

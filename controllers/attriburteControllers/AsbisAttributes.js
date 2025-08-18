@@ -1,4 +1,4 @@
-export class AsbisAttributes {
+class AsbisAttributes {
     constructor(category, attribute) {
         this.category = category;
         this.attribute = attribute;
@@ -133,3 +133,5 @@ export class AsbisAttributes {
         return attributes;
     }
 }
+
+export default AsbisAttributes;

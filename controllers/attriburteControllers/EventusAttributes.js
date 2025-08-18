@@ -1,4 +1,4 @@
-export default class EventusAttributes {
+class EventusAttributes {
     constructor(category, attribute) {
         this.attribute = attribute;
         this.category = category;
@@ -20,7 +20,7 @@ export default class EventusAttributes {
     }
 
     static defaultHandler(el) {
-        return { [el['@_id']]: el['#text'] };
+        return { [el['@_naziv']]: el['#text'] };
     }
 
     formatAttributes() {
@@ -197,7 +197,7 @@ export default class EventusAttributes {
         const handlers = attributeHandlers[this.category] || {};
 
         this.attribute.forEach(el => {
-            const id = el['@_id'];
+            const id = el['@_naziv'];
             const handler = handlers[id];
             const result = handler ? handler(el) : EventusAttributes.defaultHandler(el);
             Object.assign(attributes, result);
@@ -206,3 +206,5 @@ export default class EventusAttributes {
         return attributes;
     }
 }
+
+export default EventusAttributes;
