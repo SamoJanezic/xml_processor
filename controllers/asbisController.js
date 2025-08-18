@@ -1,10 +1,10 @@
 import DobaviteljController from "./DobaviteljController.js";
-import { AsbisAttributes } from "./attriburteControllers/AsbisAttributes.js";
 
 export class AsbisController extends DobaviteljController {
-	constructor(categoryMap, ...args) {
+	constructor(categoryMap, Attributes, ...args) {
 		super(...args);
 		this.categoryMap = categoryMap;
+		this.Attributes = Attributes;
 	}
 	name = "asbis";
 	file = [
@@ -16,7 +16,7 @@ export class AsbisController extends DobaviteljController {
 		"EAN",
 		"ProductDescription",
 		"niPodatka",
-		"niPodatka",
+		"MarketingInfo",
 		"niPodatka",
 		"MY_PRICE",
 		"RETAIL_PRICE",
@@ -31,54 +31,61 @@ export class AsbisController extends DobaviteljController {
 		"AVAIL",
 	];
 
+	 ignoreCategorySet = new Set([
+		"Various Accessories",
+		"Wireless Charger",
+		"Power Battery Charger",
+		"Mounting Hardware",
+		"Car Accessories",
+		"Pc Mobile Accessories",
+		"Avtomobilski video snemalnik",
+		"Cables USB",
+		"Cable",
+		"Power Adapter",
+		"Controller Card",
+		"Bluetooth Adapter",
+		"USB Hub",
+		"Multiboard",
+		"IDS Totem",
+		"Networking - Cables",
+		"Žari",
+		"Nega las",
+		"Čistilci na tlak in metle",
+		"Priprava kave in čaja",
+		"Pripomočki za osebno nego",
+		"IPad Accessories",
+		"HDD Cabinet",
+		"HDD/SSD Enclosure",
+		"Intercom Panel",
+		"Antenna",
+		"Networking - Accessories",
+		"Networking - Cloud Keys & Gateways - Cloud Key Enterprise",
+		"Network Management Module",
+		"Network Interface Card",
+		"Networking - Range Extender",
+		"PC Barebone",
+		"PC NetTop",
+		"Server Desktop",
+		"Main Board Server",
+		"Acc - Dental care",
+		"Ščetke za zobe",
+		"Čistilci na tlak in metle",
+		"Pripomočki za osebno nego",
+		"Networked Storage Device",
+		"VC Docks",
+		"Smart Tracker",
+	]);
+
+	routerTypes = {
+		"Networking - Router": "Usmerjevalnik",
+		"Networking - Transceiver": "Usmerjevalnik",
+		"Networking - Wireless Outdoor Access Point": "Dostopna točka",
+		"Networking - Wireless Access Point": "Dostopna točka",
+		"Network Switch": "Stikalo"
+	};
+
 	exceptions(product) {
-		const ignoreCategory = [
-			"Various Accessories",
-			"Wireless Charger",
-			"Power Battery Charger",
-			"Mounting Hardware",
-			"Car Accessories",
-			"Pc Mobile Accessories",
-			"Avtomobilski video snemalnik",
-			"Cables USB",
-			"Cable",
-			"Power Adapter",
-			"Controller Card",
-			"Bluetooth Adapter",
-			"USB Hub",
-			"Multiboard",
-			"IDS Totem",
-			"Networking - Cables",
-			"Žari",
-			"Nega las",
-			"Čistilci na tlak in metle",
-			"Priprava kave in čaja",
-			"Pripomočki za osebno nego",
-			"IPad Accessories",
-			"HDD Cabinet",
-			"HDD/SSD Enclosure",
-			"Intercom Panel",
-			"Antenna",
-			"Networking - Accessories",
-			"Networking - Cloud Keys & Gateways - Cloud Key Enterprise",
-			"Network Management Module",
-			"Network Interface Card",
-			"Networking - Range Extender",
-			"PC Barebone",
-			"PC NetTop",
-			"Server Desktop",
-			"Main Board Server",
-			"Acc - Dental care",
-			"Ščetke za zobe",
-			"Čistilci na tlak in metle",
-			"Pripomočki za osebno nego",
-			"Networked Storage Device",
-			"VC Docks",
-			"Smart Tracker",
-		];
-		if (ignoreCategory.includes(product.ProductType)) {
-			return true;
-		}
+		if (this.ignoreCategorySet.has(product.ProductType)) return true;
 		if (
 			product.EAN.length < 5 ||
 			!product.AVAIL ||
@@ -87,137 +94,151 @@ export class AsbisController extends DobaviteljController {
 		) {
 			return true;
 		}
-		// return true;
-	}
-
-	sortCategories() {
-		// Special handling for "Usmerjevalniki, stikala in AP" (add Vrsta attribute)
-		const routerTypes = {
-			"Networking - Router": "Usmerjevalnik",
-			"Networking - Transceiver": "Usmerjevalnik",
-			"Networking - Wireless Outdoor Access Point": "Dostopna točka",
-			"Networking - Wireless Access Point": "Dostopna točka",
-			"Network Switch": "Stikalo"
-		};
-
-		// Build flat map
-		const flatCategoryMap = {};
-		for (const [newCategory, oldCategories] of Object.entries(this.categoryMap)) {
-			oldCategories.forEach(old => {
-				flatCategoryMap[old] = newCategory;
-			});
-		}
-
-		this.allData.forEach((el) => {
-			const newCat = flatCategoryMap[el.kategorija];
-			if (newCat) {
-				// Special logic for Usmerjevalniki, stikala in AP
-				if (newCat === "Usmerjevalniki, stikala in AP" && routerTypes[el.kategorija] && el.dodatne_lastnosti) {
-					el.dodatne_lastnosti.push({ "@_Name": "Vrsta", "@_Value": routerTypes[el.kategorija] });
-				}
-				el.kategorija = newCat;
-			}
-		});
 	}
 
 	combineData() {
-		const combinedData = [];
-		const opisi = this.getData()[0];
-		const cene = this.getData()[1];
-		opisi.forEach((opis) => {
-			cene.forEach((cena) => {
-				// console.log(opis)
-				// process.exit()
-				if (opis.ProductCode === cena.WIC) {
-					combinedData.push({ ...opis, ...cena });
-				}
-			});
-		});
+		const [opisi, cene] = this.getData();
+        return opisi.flatMap(opis =>
+            cene
+                .filter(cena => opis.ProductCode === cena.WIC)
+                .map(cena => ({ ...opis, ...cena }))
+        );
 		return combinedData;
 	}
 
 	parseObject(obj) {
-		if (obj.element?.length) {
-			return obj.element;
-		}
-		return Object.values(obj);
+		return obj.element?.length ? obj.element : Object.values(obj);
 	}
 
 	formatZaloga(zaloga) {
 		return zaloga > 0 ? "Na zalogi" : "Ni na zalogi";
 	}
 
-	splitDodatneLastnosti() {
-		let lastnosti = [];
+	flattenCategoryMap(categoryMap) {
+		return Object.entries(categoryMap).reduce((acc, [newCategory, oldCategories]) => {
+			oldCategories.forEach(old => acc[old] = newCategory);
+			return acc;
+		}, {});
+	}
 
-		this.allData.forEach((data) => {
-					lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: 'Proizvajalec', lastnostVrednost: data.blagovna_znamka});
-					const Attributes = new AsbisAttributes(data.kategorija, data.dodatne_lastnosti);
-					const attrs = Attributes.formatAttributes()
-					if (attrs !== null && Object.keys(attrs).length !== 0) {
-						for (const el in attrs) {
-							lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el, lastnostVrednost: attrs[el]});
-						}
-					}
-					this.komponenta = lastnosti.map(el => { return {KATEGORIJA_kategorija: el.kategorija, komponenta: el.lastnostNaziv}});
-					this.atribut = lastnosti.map(el => { return {izdelek_ean: el.ean, KOMPONENTA_komponenta:el.lastnostNaziv, atribut: el.lastnostVrednost}});
+	processCategory(data, flatCategoryMap) {
+		let kategorija = data.kategorija;
+		let dodatne_lastnosti = data.dodatne_lastnosti
+			? JSON.parse(JSON.stringify(data.dodatne_lastnosti))
+			: [];
+
+		const newCat = flatCategoryMap[kategorija];
+		if (newCat) {
+			if (newCat === "Usmerjevalniki, stikala in AP" &&
+				this.routerTypes[kategorija] &&
+				Array.isArray(dodatne_lastnosti)) {
+				dodatne_lastnosti.push({
+					"@_Name": "Vrsta",
+					"@_Value": this.routerTypes[kategorija]
 				});
-	}
-
-	splitSlike() {
-		let slike = [];
-		this.allData.forEach((data) => {
-			slike.push({
-				izdelek_ean: data.ean,
-				slika_url: data.slika_mala,
-				tip: "mala",
-			});
-			slike.push({
-				izdelek_ean: data.ean,
-				slika_url: data.slika_velika,
-				tip: "velika",
-			});
-			if (data.dodatne_slike?.[0]) {
-				if (typeof data.dodatne_slike[0] === "object") {
-					data.dodatne_slike[0].forEach((el) => {
-						slike.push({
-							izdelek_ean: data.ean,
-							slika_url: el,
-							tip: "dodatna",
-						});
-					});
-				} else {
-					data.dodatne_slike.forEach((el) => {
-						slike.push({
-							izdelek_ean: data.ean,
-							slika_url: el,
-							tip: "dodatna",
-						});
-					});
-				}
 			}
-		});
-		this.slika = slike;
+			kategorija = newCat;
+		}
+
+		return { ...data, kategorija, dodatne_lastnosti };
 	}
 
-	getEprel(str) {
-		// if (str.length < 15) {
-		// 	return str;
-		// } else {
-		// 	const decodedStr = str
-		// 		.replace(/&lt;/g, "<")
-		// 		.replace(/&gt;/g, ">")
-		// 		.replace(/&quot;/g, '"');
-		// 	const match = decodedStr.match(/<a[^>]*>(\d+)<\/a>/);
-		// 	return match[1];
-		// }
+	processImages(data) {
+		const slike = [
+			{ izdelek_ean: data.ean, slika_url: data.slika_mala, tip: "mala" },
+			{ izdelek_ean: data.ean, slika_url: data.slika_velika, tip: "velika" }
+		];
+
+		if (data.dodatne_slike?.[0]) {
+			const dodatneSlike = Array.isArray(data.dodatne_slike[0])
+				? data.dodatne_slike[0]
+				: data.dodatne_slike;
+
+			slike.push(...dodatneSlike.map(el => ({
+				izdelek_ean: data.ean,
+				slika_url: el,
+				tip: "dodatna"
+			})));
+		}
+
+		return slike;
+	}
+
+	processLastnosti(data) {
+		let lastnosti = [
+			{
+				ean: data.ean,
+				kategorija: data.kategorija,
+				lastnostNaziv: "Proizvajalec",
+				lastnostVrednost: data.blagovna_znamka
+			}
+		];
+
+		const attrs = new this.Attributes(data.kategorija, data.dodatne_lastnosti)
+			.formatAttributes();
+
+		if (attrs && Object.keys(attrs).length) {
+			lastnosti.push(...Object.entries(attrs).map(([naziv, vrednost]) => ({
+				ean: data.ean,
+				kategorija: data.kategorija,
+				lastnostNaziv: naziv,
+				lastnostVrednost: vrednost
+			})));
+		}
+
+		return lastnosti;
+	}
+
+	processOpis(opis) {
+		return (opis !== null && typeof opis !== "string" && opis[0]?.length)
+            ? opis[0]
+            : opis;
+	}
+
+	mapKomponentaAndAtribut(lastnosti) {
+        const komponenta = [];
+        const atribut = [];
+        for (const el of lastnosti) {
+            komponenta.push({
+                KATEGORIJA_kategorija: el.kategorija,
+                komponenta: el.lastnostNaziv
+            });
+            atribut.push({
+                izdelek_ean: el.ean,
+                KOMPONENTA_komponenta: el.lastnostNaziv,
+                atribut: el.lastnostVrednost
+            });
+        }
+        return { komponenta, atribut };
+    }
+
+	processAllData() {
+		const flatCategoryMap = this.flattenCategoryMap(this.categoryMap);
+
+		const { slike, lastnosti } = this.allData.reduce(
+			(acc, rawData) => {
+				const updated = this.processCategory(rawData, flatCategoryMap);
+				rawData.kategorija = updated.kategorija
+				rawData.opis = this.processOpis(rawData.opis);
+				acc.slike.push(...this.processImages(updated));
+				acc.lastnosti.push(...this.processLastnosti(updated));
+				return acc;
+			},
+			{ slike: [], lastnosti: [], newAllData: [] }
+		);
+
+		const { komponenta, atribut } = this.mapKomponentaAndAtribut(lastnosti);
+
+		Object.assign(this, {
+            slika: slike,
+            komponenta,
+            atribut,
+        });
 	}
 
 	executeAll() {
 		this.createDataObject();
-		this.sortCategories();
-		this.splitSlike();
-		this.splitDodatneLastnosti();
+		this.processAllData();
 		this.insertDataIntoDb();
 	}
 }

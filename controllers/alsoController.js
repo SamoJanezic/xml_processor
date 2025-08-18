@@ -1,90 +1,111 @@
 import DobaviteljController from "./DobaviteljController.js";
-import { AlsoAttributes } from "./attriburteControllers/AlsoAttributes.js";
 
 export class AlsoController extends DobaviteljController {
-	constructor(categoryMap, ...args) {
+	constructor(categoryMap, Attributes, ...args) {
 		super(...args);
 		this.categoryMap = categoryMap;
+		this.Attributes = Attributes;
 	}
 	name = "also";
 	nodes = "xmlData.product";
 	file = "also.xml";
 	encoding = "utf8";
 	keys = [
-		"product.idents.ident[2]['@_value']",
-		"product.base.name",
-		"product.base.longname",
-		"product.attributes.marketingtext['#text']",
-		"product.prices.price[0]['@_value']",
-		"product.prices.price[1]['@_value']",
-		"product.prices.price[2]['@_value']",
-		"product.prices.tax['@_rate']",
+		"idents.ident[2]['@_value']",
+		"base.name",
+		"base.longname",
+		"attributes.marketingtext['#text']",
+		"prices.price[0]['@_value']",
+		"prices.price[1]['@_value']",
+		"prices.price[2]['@_value']",
+		"prices.tax['@_rate']",
 		"niPodatka",
 		"niPodatka",
-		"product.pictures.picture",
-		"product.attributes.specification",
-		"product.base.vendor['#text']",
-		"product.base.categoryName['#text']",
-		"product.eprel",
-		"product.stock.quantity['#text']",
+		"pictures.picture",
+		"attributes.specification",
+		"base.vendor['#text']",
+		"base.categoryName['#text']",
+		"eprel",
+		"stock.quantity['#text']",
 	];
 
+	ignoreCategorySet = new Set([
+		" /  / ",
+		"Garancije & storitve / Garancije & podpora / Garancija za UPS",
+		"Garancije & storitve / Garancije & podpora / Garancije za prenosnike",
+		"Garancije & storitve / Garancije & podpora / Garancije za PC",
+		"Garancije & storitve / Garancije & podpora / Garancije za monitorje",
+		"Garancije & storitve / Garancije & podpora / Printer & MFP garancije",
+		"Avdio, video, monitorji & TV / Dodatki / Avdio, video adapterji & kabli",
+		"Garancije & storitve / Garancije & podpora / Garancije za mrežno opremo",
+		"Garancije & storitve / Garancije & podpora / Garancije za sistem konferenc",
+		"Garancije & storitve / Garancije & podpora / Garancije tiskalnika velikega formata",
+		"Garancije & storitve / Garancije & podpora / Garancije za skenerje",
+		"Garancije & storitve / Garancije & podpora / Strežniške garancije",
+		"Garancije & storitve / Garancije & podpora / Garancije za digitalno podpisovanje",
+		"Garancije & storitve / Garancije & podpora / Garancije projektorjev",
+		"Omrežje & Smart Home / Omrežna dodatna oprema / Omrežni & DAC kabli",
+		"Izdelki za električno energijo / Akumulator / Akumulator",
+		"Izdelki za električno energijo / Paneli / Paneli",
+		"Periferija & dodatki / Kabli & adapterji / Adapterji",
+		"Periferija & dodatki / Kabli & adapterji / Kabli - Drugi",
+		"Periferija & dodatki / Kabli & adapterji / Kabli - Ključavnice",
+		"Periferija & dodatki / Kabli & adapterji / Kabli - Napajanje",
+		"Periferija & dodatki / Kabli & adapterji / Kabli - USB & Thunderbolt",
+		"Periferija & dodatki / Kabli & adapterji / USB razdelilci",
+		"Komponente / Krmilniki / Adapterji (HBA)",
+		"Avdio, video, monitorji & TV / Dodatki / Filtri zasebnosti",
+		"Avdio, video, monitorji & TV / Dodatki / Avdio & video dodatki",
+		"Avdio, video, monitorji & TV / Dodatki / Kamere, Droni, Spletne kamere - Baterije",
+		"Komponente / Dodatki za komponente / Dodatki za shranjevanje",
+		"Tiskanje, optično branje & potrošni mat. / Tiskalniki velikega formata (LFP) / Dodatna oprema za velike formate",
+		"Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Stojala",
+		"Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Dodatki za matrične tiskalnike",
+		"Tiskanje, optično branje & potrošni mat. / Kopiranje & faks / Oprema za kopiranje in telefaks",
+		"Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Napajalniki",
+		"Prenosniki, PC & Tablični računalniki / Dodatki / Napajalniki za prenosne računalnike",
+		"Avdio, video, monitorji & TV / Televizorji / Dodatki za televizorje",
+		"Garancije & storitve / Garancije & podpora / Garancije za tablične računalnike",
+		"Komponente / Ventilatorji & hladilni sistemi / Fanless ventilatorji & hladilniki",
+		"Izobraževanje / Predstavitev EDU / Dodatna oprema za predstavitv EDU",
+		"Strežniki, diskovna polja & UPS / Dodatki / PDU dodatke",
+		"Komponente / Krmilniki / Drugi krmilniki",
+		"Omrežje & Smart Home / Mrežna oprema / Stikala - ohišja",
+	]);
+
+	getNestedValue(obj, path) {
+		try {
+			const parts = path
+				.replace(/\[(\d+)\]/g, ".$1")
+				.replace(/\['([^']+)'\]/g, ".$1")
+				.split(".")
+				.filter(Boolean);
+
+			return parts.reduce((acc, key) => {
+				if (acc && Object.prototype.hasOwnProperty.call(acc, key)) {
+					return acc[key];
+				}
+				return undefined;
+			}, obj);
+		} catch {
+			return undefined;
+		}
+	}
+
 	keyRules(obj, product, key, idx, vrstica) {
+		const value = key === "niPodatka" ? null : this.getNestedValue(product, key);
+
 		if (vrstica[idx] === "zaloga") {
-			obj[vrstica[idx]] = this.formatZaloga(eval(key));
-		} else if (key === "niPodatka" || eval(key) === "" || !eval(key)) {
+			obj[vrstica[idx]] = this.formatZaloga(value);
+		} else if (key === "niPodatka" || value === "" || value === undefined) {
 			obj[vrstica[idx]] = null;
 		} else {
-			obj[vrstica[idx]] = eval(key);
+			obj[vrstica[idx]] = value;
 		}
 		return obj;
 	}
 
 	exceptions(param) {
-		const ignoreCategory = [
-			" /  / ",
-			"Garancije & storitve / Garancije & podpora / Garancija za UPS",
-			"Garancije & storitve / Garancije & podpora / Garancije za prenosnike",
-			"Garancije & storitve / Garancije & podpora / Garancije za PC",
-			"Garancije & storitve / Garancije & podpora / Garancije za monitorje",
-			"Garancije & storitve / Garancije & podpora / Printer & MFP garancije",
-			"Avdio, video, monitorji & TV / Dodatki / Avdio, video adapterji & kabli",
-			"Garancije & storitve / Garancije & podpora / Garancije za mrežno opremo",
-			"Garancije & storitve / Garancije & podpora / Garancije za sistem konferenc",
-			"Garancije & storitve / Garancije & podpora / Garancije tiskalnika velikega formata",
-			"Garancije & storitve / Garancije & podpora / Garancije za skenerje",
-			"Garancije & storitve / Garancije & podpora / Strežniške garancije",
-			"Garancije & storitve / Garancije & podpora / Garancije za digitalno podpisovanje",
-			"Garancije & storitve / Garancije & podpora / Garancije projektorjev",
-			"Omrežje & Smart Home / Omrežna dodatna oprema / Omrežni & DAC kabli",
-			"Izdelki za električno energijo / Akumulator / Akumulator",
-			"Izdelki za električno energijo / Paneli / Paneli",
-			"Periferija & dodatki / Kabli & adapterji / Adapterji",
-			"Periferija & dodatki / Kabli & adapterji / Kabli - Drugi",
-			"Periferija & dodatki / Kabli & adapterji / Kabli - Ključavnice",
-			"Periferija & dodatki / Kabli & adapterji / Kabli - Napajanje",
-			"Periferija & dodatki / Kabli & adapterji / Kabli - USB & Thunderbolt",
-			"Periferija & dodatki / Kabli & adapterji / USB razdelilci",
-			"Komponente / Krmilniki / Adapterji (HBA)",
-			"Avdio, video, monitorji & TV / Dodatki / Filtri zasebnosti",
-			"Avdio, video, monitorji & TV / Dodatki / Avdio & video dodatki",
-			"Avdio, video, monitorji & TV / Dodatki / Kamere, Droni, Spletne kamere - Baterije",
-			"Komponente / Dodatki za komponente / Dodatki za shranjevanje",
-			"Tiskanje, optično branje & potrošni mat. / Tiskalniki velikega formata (LFP) / Dodatna oprema za velike formate",
-			"Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Stojala",
-			"Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Dodatki za matrične tiskalnike",
-			"Tiskanje, optično branje & potrošni mat. / Kopiranje & faks / Oprema za kopiranje in telefaks",
-			"Tiskanje, optično branje & potrošni mat. / Tiskalniki, optični bralnik, dodatna opr / Napajalniki",
-			"Prenosniki, PC & Tablični računalniki / Dodatki / Napajalniki za prenosne računalnike",
-			"Avdio, video, monitorji & TV / Televizorji / Dodatki za televizorje",
-			"Garancije & storitve / Garancije & podpora / Garancije za tablične računalnike",
-			"Komponente / Ventilatorji & hladilni sistemi / Fanless ventilatorji & hladilniki",
-			"Izobraževanje / Predstavitev EDU / Dodatna oprema za predstavitv EDU",
-			"Strežniki, diskovna polja & UPS / Dodatki / PDU dodatke",
-			"Komponente / Krmilniki / Drugi krmilniki",
-			"Omrežje & Smart Home / Mrežna oprema / Stikala - ohišja",
-
-		];
 		if (
 			(param.prices.price[0]["@_value"] ||
 				param.prices.price[1]["@_value"] ||
@@ -92,7 +113,7 @@ export class AlsoController extends DobaviteljController {
 		) {
 			return true;
 		}
-		if (ignoreCategory.includes(param["base"]["categoryName"]["#text"])) {
+		if (this.ignoreCategorySet.has(param["base"]["categoryName"]["#text"])) {
 			return true;
 		}
 		if (param["@_id"] === "23370") {
@@ -100,118 +121,116 @@ export class AlsoController extends DobaviteljController {
 		}
 	}
 
-	sortCategories() {
-		const flatCategoryMap = {};
-		for (const [newCategory, oldCategories] of Object.entries(this.categoryMap)) {
-			oldCategories.forEach(old => {
-				flatCategoryMap[old] = newCategory;
-			});
+	processCategory(data, flatCategoryMap) {
+		let kategorija = data.kategorija;
+		let dodatne_lastnosti = data.dodatne_lastnosti
+			? JSON.parse(JSON.stringify(data.dodatne_lastnosti))
+			: [];
+
+		const newCat = flatCategoryMap[kategorija];
+		if (newCat) {
+			kategorija = newCat;
 		}
 
-		this.allData.forEach((el) => {
-			if (flatCategoryMap[el.kategorija]) {
-				el.kategorija = flatCategoryMap[el.kategorija];
-			}
-		});
+		return { ...data, kategorija, dodatne_lastnosti };
 	}
 
 	formatZaloga(zaloga) {
 		return zaloga !== "0 kos" ? "Na zalogi" : "Ni na zalogi";
 	}
 
-	splitDodatneLastnosti() {
-		let lastnosti = [];
-		this.allData.forEach((data) => {
-			lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: 'Proizvajalec', lastnostVrednost: data.blagovna_znamka});
-			if(data.dodatne_lastnosti) {
-				const Attributes = new AlsoAttributes(data.kategorija, data.dodatne_lastnosti);
-				const attrs = Attributes.formatAttributes()
-				if (Object.keys(attrs).length) {
-					for (const el in attrs) {
-						lastnosti.push({ean: data.ean, kategorija: data.kategorija, lastnostNaziv: el, lastnostVrednost: attrs[el]});
-					}
-				}
-			}
-		});
-		this.komponenta = lastnosti.map((el) => {
-			return {
-				KATEGORIJA_kategorija: el.kategorija,
-				komponenta: el.lastnostNaziv,
-			};
-		});
-		this.atribut = lastnosti.map((el) => {
-			return {
-				izdelek_ean: el.ean,
-				KOMPONENTA_komponenta: el.lastnostNaziv,
-				atribut: el.lastnostVrednost,
-			};
-		});
+	flattenCategoryMap(categoryMap) {
+		return Object.entries(categoryMap).reduce((acc, [newCategory, oldCategories]) => {
+			oldCategories.forEach(old => acc[old] = newCategory);
+			return acc;
+		}, {});
 	}
 
-
-	// splitDodatneLastnosti() {
-
-	// 	let lastnosti = [];
-	// 	this.allData.forEach((data) => {
-	// 		if(data.dodatne_lastnosti) {
-	// 			data.dodatne_lastnosti.forEach(el => {
-	// 				lastnosti.push({
-	// 					ean: data.ean,
-	// 					kategorija: data.kategorija,
-	// 					lastnostNaziv: el["@_name"],
-	// 					lastnostVrednost: el["#text"],
-	// 				});
-	// 			});
-	// 		}
-	// 	});
-	// 	this.komponenta = lastnosti.map((el) => {
-	// 		return {
-	// 			KATEGORIJA_kategorija: el.kategorija,
-	// 			komponenta: el.lastnostNaziv.replace(":", ""),
-	// 		};
-	// 	});
-	// 	this.atribut = lastnosti.map((el) => {
-	// 		return {
-	// 			izdelek_ean: el.ean,
-	// 			KOMPONENTA_komponenta: el.lastnostNaziv.replace(":", ""),
-	// 			atribut: el.lastnostVrednost,
-	// 		};
-	// 	});
-	// }
-
-	splitSlike() {
-		let slike = [];
-		this.allData.forEach((data) => {
-			if (data.dodatne_slike.length) {
-				data.dodatne_slike.forEach((el, idx) => {
-					if (idx === 0) {
-						slike.push({
-							izdelek_ean: data.ean,
-							slika_url: el["@_link"],
-							tip: "mala",
-						});
-						slike.push({
-							izdelek_ean: data.ean,
-							slika_url: el["@_link"],
-							tip: "velika",
-						});
-					}
-					slike.push({
-						izdelek_ean: data.ean,
-						slika_url: el["@_link"],
-						tip: "dodatna",
-					});
-				});
+	processLastnosti(data) {
+		let lastnosti = [
+			{
+				ean: data.ean,
+				kategorija: data.kategorija,
+				lastnostNaziv: "Proizvajalec",
+				lastnostVrednost: data.blagovna_znamka
 			}
-		});
-		this.slika = slike;
+		];
+
+		const attrs = new this.Attributes(data.kategorija, data.dodatne_lastnosti)
+			.formatAttributes();
+
+		if (attrs && Object.keys(attrs).length) {
+			lastnosti.push(...Object.entries(attrs).map(([naziv, vrednost]) => ({
+				ean: data.ean,
+				kategorija: data.kategorija,
+				lastnostNaziv: naziv,
+				lastnostVrednost: vrednost
+			})));
+		}
+
+		return lastnosti;
+	}
+
+	processImages(data) {
+		const slike = [];
+
+		if (data.dodatne_slike?.[0]) {
+			const dodatneSlike = Array.isArray(data.dodatne_slike[0]) ? data.dodatne_slike[0] : data.dodatne_slike;
+
+			slike.push(...dodatneSlike.map((el, idx) => ({
+				izdelek_ean: data.ean,
+				slika_url: el['@_link'],
+				tip: idx === 1 ? 'mala' : 'dodatna'
+			}))
+			);
+		}
+
+		return slike;
+	}
+
+	mapKomponentaAndAtribut(lastnosti) {
+        const komponenta = [];
+        const atribut = [];
+        for (const el of lastnosti) {
+            komponenta.push({
+                KATEGORIJA_kategorija: el.kategorija,
+                komponenta: el.lastnostNaziv
+            });
+            atribut.push({
+                izdelek_ean: el.ean,
+                KOMPONENTA_komponenta: el.lastnostNaziv,
+                atribut: el.lastnostVrednost
+            });
+        }
+        return { komponenta, atribut };
+    }
+
+	processAllData() {
+		const flatCategoryMap = this.flattenCategoryMap(this.categoryMap);
+
+		const { slike, lastnosti } = this.allData.reduce(
+			(acc, rawData) => {
+				const updated = this.processCategory(rawData, flatCategoryMap);
+				rawData.kategorija = updated.kategorija
+				acc.slike.push(...this.processImages(updated));
+				acc.lastnosti.push(...this.processLastnosti(updated));
+				return acc;
+			},
+			{ slike: [], lastnosti: [], newAllData: [] }
+		);
+
+		const { komponenta, atribut } = this.mapKomponentaAndAtribut(lastnosti);
+
+		Object.assign(this, {
+            slika: slike,
+            komponenta,
+            atribut,
+        });
 	}
 
 	executeAll() {
 		this.createDataObject();
-		this.sortCategories();
-		this.splitSlike();
-		this.splitDodatneLastnosti();
+		this.processAllData();
 		this.insertDataIntoDb();
 	}
 }

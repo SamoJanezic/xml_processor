@@ -1,10 +1,10 @@
 import DobaviteljController from "./DobaviteljController.js";
-import { AcordAttributes } from "./attriburteControllers/AcordAttributes.js";
 
 export class AcordController extends DobaviteljController {
-	constructor(categoryMap, ...args) {
+	constructor(categoryMap, Attributes, ...args) {
 		super(...args);
 		this.categoryMap = categoryMap;
+		this.Attributes = Attributes;
 	}
 	name = "acord";
 	nodes = "podjetje.izdelki.izdelek";
@@ -29,53 +29,56 @@ export class AcordController extends DobaviteljController {
 		"dobava",
 	];
 
+	ignoreCategorySet = new Set([
+		"Kolutni podaljški",
+		"Žarnice",
+		"Zunanja svetila",
+		"Namizna svetila",
+		"Naglavna svetila",
+		"Ročna svetila",
+		"Pametne inštalacije",
+		"Povečevalne lupe",
+		"LED okrasitev",
+		"Kabli in dodatki",
+		"Svetlobni elementi",
+		"Svetila",
+		"Kabli in adapterji",
+		"Dodatna oprema za komponente",
+		"Dodatki za računalnike",
+		"Dodatna oprema za monitorje",
+		"Transformatorji",
+		"Root catalog",
+		"Ročno orodje",
+		"Baterijsko orodje",
+		"Multimedijski predvajalniki",
+		"Omare in dodatki",
+		"Omare",
+		"LED zasloni",
+		"Računalniške mize",
+		"Polnilci",
+		"Napajalni adapterji",
+		"LED trakovi",
+		"Razdelilci in podaljški",
+		//TODO
+		"Zunanje naprave",
+		"Orodje",
+		"Optične enote",
+		"Stikala",
+		"Senzorji",
+		"Dodatna oprema za omare",
+		"Igračarski pripomočki",
+		"Baterije",
+		"Dodatna oprema za mrežno",
+		"Dodatna oprema za projektorje",
+		"Električna mobilnost",
+		"Globinske 3D kamere",
+		"Hubi, čitalci",
+		"Mikroskopi",
+		"Interaktivni zasloni",
+		"Powerbank baterije"
+	]);
+
 	exceptions(param) {
-		const ignoreCategory = [
-			"Kolutni podaljški",
-			"Žarnice",
-			"Zunanja svetila",
-			"Namizna svetila",
-			"Naglavna svetila",
-			"Ročna svetila",
-			"Pametne inštalacije",
-			"Povečevalne lupe",
-			"LED okrasitev",
-			"Kabli in dodatki",
-			"Svetlobni elementi",
-			"Svetila",
-			"Kabli in adapterji",
-			"Dodatna oprema za komponente",
-			"Dodatki za računalnike",
-			"Dodatna oprema za monitorje",
-			"Transformatorji",
-			"Root catalog",
-			"Ročno orodje",
-			"Baterijsko orodje",
-			"Multimedijski predvajalniki",
-			"Omare in dodatki",
-			"Omare",
-			"LED zasloni",
-			"Računalniške mize",
-			"Polnilci",
-			"Napajalni adapterji",
-			//TODO
-			"Zunanje naprave",
-			"Orodje",
-			"Optične enote",
-			"Stikala",
-			"Senzorji",
-			"Dodatna oprema za omare",
-			"Igračarski pripomočki",
-			"Baterije",
-			"Dodatna oprema za mrežno",
-			"Dodatna oprema za projektorje",
-			"Električna mobilnost",
-			"Globinske 3D kamere",
-			"Hubi, čitalci",
-			"Mikroskopi",
-			"Interaktivni zasloni",
-			"Powerbank baterije",
-		];
 		if (
 			param["EAN"] === "" ||
 			param["EAN"].toString().length < 5 ||
@@ -83,25 +86,30 @@ export class AcordController extends DobaviteljController {
 		) {
 			return true;
 		}
-		if (ignoreCategory.includes(param["kategorija"]["#text"])) {
+		if (this.ignoreCategorySet.has(param["kategorija"]["#text"])) {
 			return true;
 		}
 	}
 
-	sortCategories() {
-		const flatCategoryMap = {};
+	flattenCategoryMap(categoryMap) {
+		return Object.entries(categoryMap).reduce((acc, [newCategory, oldCategories]) => {
+			oldCategories.forEach(old => acc[old] = newCategory);
+			return acc;
+		}, {});
+	}
 
-		for (const [newCategory, oldCategories] of Object.entries(this.categoryMap)) {
-			oldCategories.forEach(old => {
-				flatCategoryMap[old] = newCategory;
-			});
+	processCategory(data, flatCategoryMap) {
+		let kategorija = data.kategorija;
+		let dodatne_lastnosti = data.dodatne_lastnosti
+			? JSON.parse(JSON.stringify(data.dodatne_lastnosti))
+			: [];
+
+		const newCat = flatCategoryMap[kategorija];
+		if (newCat) {
+			kategorija = newCat;
 		}
 
-		this.allData.forEach((el) => {
-			if (flatCategoryMap[el.kategorija]) {
-				el.kategorija = flatCategoryMap[el.kategorija];
-			}
-		})
+		return { ...data, kategorija, dodatne_lastnosti };
 	}
 
 	parseObject(obj) {
@@ -120,87 +128,100 @@ export class AcordController extends DobaviteljController {
 		return zaloga["@_id"] === "1" ? "Na zalogi" : "Ni na zalogi";
 	}
 
-	splitDodatneLastnosti() {
-		let lastnosti = [];
-
-		this.allData.forEach((data) => {
-			lastnosti.push({
+	processLastnosti(data) {
+		let lastnosti = [
+			{
 				ean: data.ean,
 				kategorija: data.kategorija,
 				lastnostNaziv: "Proizvajalec",
-				lastnostVrednost: data.blagovna_znamka,
-			});
-			const Attributes = new AcordAttributes(
-				data.kategorija,
-				data.dodatne_lastnosti.lastnost
-			);
-			const attrs = Attributes.formatAttributes();
-			if (attrs !== null && Object.keys(attrs).length !== 0) {
-				for (const el in attrs) {
-					lastnosti.push({
-						ean: data.ean,
-						kategorija: data.kategorija,
-						lastnostNaziv: el,
-						lastnostVrednost: attrs[el],
-					});
-				}
+				lastnostVrednost: data.blagovna_znamka
 			}
-			this.komponenta = lastnosti.map((el) => {
-				return {
-					KATEGORIJA_kategorija: el.kategorija,
-					komponenta: el.lastnostNaziv,
-				};
-			});
-			this.atribut = lastnosti.map((el) => {
-				return {
-					izdelek_ean: el.ean,
-					KOMPONENTA_komponenta: el.lastnostNaziv,
-					atribut: el.lastnostVrednost,
-				};
-			});
-		});
+		];
+
+		const attrs = new this.Attributes(data.kategorija, data.dodatne_lastnosti.lastnost)
+			.formatAttributes();
+
+		if (attrs && Object.keys(attrs).length) {
+			lastnosti.push(...Object.entries(attrs).map(([naziv, vrednost]) => ({
+				ean: data.ean,
+				kategorija: data.kategorija,
+				lastnostNaziv: naziv,
+				lastnostVrednost: vrednost
+			})));
+		}
+
+		return lastnosti;
 	}
 
-	splitSlike() {
-		let slike = [];
-		this.allData.forEach((data) => {
-			slike.push({
+	processImages(data) {
+		const slike = [
+			{ izdelek_ean: data.ean, slika_url: data.slika_mala, tip: "mala" },
+			{ izdelek_ean: data.ean, slika_url: data.slika_velika, tip: "velika" }
+		];
+
+		if (data.dodatne_slike?.[0]) {
+			const dodatneSlike = Array.isArray(data.dodatne_slike[0])
+				? data.dodatne_slike[0]
+				: data.dodatne_slike;
+
+			slike.push(...dodatneSlike.map(el => ({
 				izdelek_ean: data.ean,
-				slika_url: data.slika_mala,
-				tip: "mala",
-			});
-			slike.push({
-				izdelek_ean: data.ean,
-				slika_url: data.slika_velika,
-				tip: "velika",
-			});
-			if (data.dodatne_slike) {
-				data.dodatne_slike.forEach((el) => {
-					slike.push({
-						izdelek_ean: data.ean,
-						slika_url: el,
-						tip: "dodatna",
-					});
-				});
-			}
-		});
-		this.slika = slike;
+				slika_url: el,
+				tip: "dodatna"
+			})));
+		}
+
+		return slike;
+	}
+
+	mapKomponentaAndAtribut(lastnosti) {
+        const komponenta = [];
+        const atribut = [];
+        for (const el of lastnosti) {
+            komponenta.push({
+                KATEGORIJA_kategorija: el.kategorija,
+                komponenta: el.lastnostNaziv
+            });
+            atribut.push({
+                izdelek_ean: el.ean,
+                KOMPONENTA_komponenta: el.lastnostNaziv,
+                atribut: el.lastnostVrednost
+            });
+        }
+        return { komponenta, atribut };
+    }
+
+	processAllData() {
+		const flatCategoryMap = this.flattenCategoryMap(this.categoryMap);
+
+		const { slike, lastnosti } = this.allData.reduce(
+			(acc, rawData) => {
+				const updated = this.processCategory(rawData, flatCategoryMap);
+				rawData.kategorija = updated.kategorija
+				acc.slike.push(...this.processImages(updated));
+				acc.lastnosti.push(...this.processLastnosti(updated));
+				return acc;
+			},
+			{ slike: [], lastnosti: [], newAllData: [] }
+		);
+
+		const { komponenta, atribut } = this.mapKomponentaAndAtribut(lastnosti);
+
+		Object.assign(this, {
+            slika: slike,
+            komponenta,
+            atribut,
+        });
 	}
 
 	getEprel(key) {
-		if (key !== undefined) {
-			return key.match(/[0-9]+/g)[0];
-		} else {
-			return null;
-		}
+		return key ? key.match(/[0-9]+/g)?.[0] ?? null : null;
 	}
 
 	executeAll() {
 		this.createDataObject();
-		this.sortCategories();
+		this.processAllData();
 		this.addKratki_opis();
-		this.splitSlike();
-		this.splitDodatneLastnosti();
 		this.insertDataIntoDb();
 	}
 }

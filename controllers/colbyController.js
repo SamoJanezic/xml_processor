@@ -1,6 +1,11 @@
 import DobaviteljController from "./DobaviteljController.js";
 
 export class ColbyController extends DobaviteljController {
+	constructor(categoryMap, Attributes, ...args) {
+		super(...args);
+		this.categoryMap = categoryMap;
+		this.Attributes = Attributes;
+	}
 	name = "colby";
 	nodes = "podjetje.izdelek";
 	file = "colby.xml";
@@ -24,135 +29,117 @@ export class ColbyController extends DobaviteljController {
 		"zaloga",
 	];
 
+	ignoreCategorySet = new Set([
+		"Torbice,Vrsta izdelka",
+		"Denarnice",
+		"Svetila",
+		"Obeski",
+		"Pokrivala",
+		"Kozarci",
+		"Maske",
+		"Skodelice",
+		"Pliš",
+		"Oblačila",
+		"Replike orožij",
+		"Dekoracija",
+		"Družabne igre",
+		"Nerf",
+		"Nalepke",
+		"Lifestyle",
+		"Priponke",
+		"Darilni set",
+		"Predpražniki",
+		"Zaščitne maske",
+		"Potovalne skodelice",
+		"Bidoni",
+		"Plakati",
+		"Barski pripomočki",
+		"Karte",
+		"Kelihi",
+		"Vrči",
+		"Prisrčnice",
+		"Igrače",
+		"glasbila",
+		"Ogledala",
+		"Zbirateljske figure",
+		"Figure,Vrsta izdelka",
+		"Figure",
+		"Torbice",
+		"LEGO",
+		"Stabilizatorji",
+		"Powerbanki",
+		"Drugo",
+		"Podstavki",
+		"Kuhinjski pripomočki",
+		"Kabli",
+		"Adapterji",
+		"Gramofoni",
+		"Ventilatorji",
+		"Polnilci",
+		"Napajalniki",
+		"Droni in dodatki",
+		"Kamere",
+		"Kolesa in skuterji",
+		"Športne ure",
+		"Igralne mize",
+		"Podaljški",
+		"Spletne kamere",
+		"Gramofoni",
+		"Konzole",
+	]);
+
 	exceptions(param) {
-		const ignoreCategory = [
-			"Torbice,Vrsta izdelka",
-			"Denarnice",
-			"Svetila",
-			"Obeski",
-			"Pokrivala",
-			"Kozarci",
-			"Maske",
-			"Skodelice",
-			"Pliš",
-			"Oblačila",
-			"Replike orožij",
-			"Dekoracija",
-			"Družabne igre",
-			"Nerf",
-			"Nalepke",
-			"Lifestyle",
-			"Priponke",
-			"Darilni set",
-			"Predpražniki",
-			"Zaščitne maske",
-			"Potovalne skodelice",
-			"Bidoni",
-			"Plakati",
-			"Barski pripomočki",
-			"Karte",
-			"Kelihi",
-			"Vrči",
-			"Prisrčnice",
-			"Igrače",
-			"glasbila",
-			"Ogledala",
-			"Zbirateljske figure",
-			"Figure,Vrsta izdelka",
-			"Figure",
-			"Torbice",
-			"LEGO",
-			"Stabilizatorji",
-			"Powerbanki",
-			"Drugo",
-			"Podstavki",
-			"Kuhinjski pripomočki",
-			"Kabli",
-			"Adapterji"
-		];
-		if (ignoreCategory.includes(param["kategorija"]["#text"])) {
+		if (this.ignoreCategorySet.has(param["kategorija"]["#text"])) {
 			return true;
 		}
 	}
 
-	sortCategory() {
-    const categoryMap = {
-        "Kolesa in skuterji": ["Električna mobilnost"],
-        "Potrošni material": ["Pisarniški material"],
-        "Podloge": ["Podloge za miške"],
-        "Dom in vrt": ["Vse za dom"],
-        "Športne ure": ["Ure"],
-        "Naprave za pametni dom": ["Pametni dom"],
-        "Ohišja": ["Ohišje"],
-        "Igre": [
-            undefined, "PC", "Outright Games", "PS4", "PS5", "SWITCH", "PM Studios", "XBOXONE", "XONE", "Playstation 4",
-            "Xbox One", "Xbox One Series X", "Xbox Series X", "Playstation 5", "Nintendo Switch", "Letalski simulator",
-            "XBOXSERIESX", "XBOX", "XBSX", "Xbox One & Xbox Series X", "Xbox Series X & Xbox One", "Nintendo Switch 2", "Nintendo Switch 2 Edition"
-        ],
-        "Igralni pripomočki": [
-            "VR očala in dodatki", "Polnilna postaja", "Stojala", "Dodatki", "Slušalke,Vrsta izdelka", "Polnilna postaja,Vrsta izdelka",
-            "Kabli,Vrsta izdelka", "Polnilci,Vrsta izdelka", "Kompleti,Vrsta izdelka", "Playstation dodatki", "Xbox dodatki,Vrsta izdelka",
-            "Playstation dodatki,Vrsta izdelka", "Joy-Con,Vrsta izdelka", "Nintendo dodatki", "Igralni ploščki,Vrsta izdelka",
-            "Gaming dodatki", "Nintendo dodatki,Vrsta izdelka", "Evercade", "Igralni ploščki", "Volani", "Igralni ploščki,,Vrsta izdelka",
-            "Xbox dodatki", "EVERCADE", "Igralne palice in ploščki"
-        ],
-        "Droni in dodatki": ["Droni"],
-        "Slušalke": ["Stojala za slušalke"],
-        "Gaming stoli": ["Dodatki za gaming stole"]
-    };
+	flattenCategoryMap(categoryMap) {
+		return Object.entries(categoryMap).reduce((acc, [newCategory, oldCategories]) => {
+			oldCategories.forEach(old => acc[old] = newCategory);
+			return acc;
+		}, {});
+	}
 
-    // Build flat map
-    const flatCategoryMap = {};
-    for (const [newCategory, oldCategories] of Object.entries(categoryMap)) {
-        oldCategories.forEach(old => {
-            flatCategoryMap[old] = newCategory;
-        });
-    }
+	processCategory(data, flatCategoryMap) {
+		let kategorija = data.kategorija;
+		let dodatne_lastnosti = data.dodatne_lastnosti
+			? JSON.parse(JSON.stringify(data.dodatne_lastnosti))
+			: [];
 
-    this.allData.forEach((el) => {
-        if (flatCategoryMap[el.kategorija]) {
-            el.kategorija = flatCategoryMap[el.kategorija];
-        }
-    });
-}
+		const newCat = flatCategoryMap[kategorija];
+		if (newCat) {
+			kategorija = newCat;
+		}
+
+		return { ...data, kategorija, dodatne_lastnosti };
+	}
+
 
 	formatZaloga(zaloga) {
 		return zaloga > 0 ? "Na zalogi" : "Ni na zalogi";
 	}
 
-	splitSlike() {
-		let slike = [];
-		this.allData.forEach((data) => {
-			// console.log(data.dodatne_slike)
-			slike.push({
-				izdelek_ean: data.ean,
-				slika_url: data.slika_mala,
-				tip: "mala",
-			});
-			slike.push({
-				izdelek_ean: data.ean,
-				slika_url: data.slika_velika,
-				tip: "velika",
-			});
-			if (data.dodatne_slike) {
-				data.dodatne_slike.forEach((el) => {
-					slike.push({
-						izdelek_ean: data.ean,
-						slika_url: el,
-						tip: "dodatna",
-					});
-				});
-			}
-		});
-		this.slika = slike;
-	}
+	processImages(data) {
+		console.log(data)
+		const slike = [
+			{ izdelek_ean: data.ean, slika_url: data.slika_mala, tip: "mala" },
+			{ izdelek_ean: data.ean, slika_url: data.slika_velika, tip: "velika" }
+		];
 
-	cleanOpis() {
-		this.allData.forEach((el) => {
-			if (el["opis"] !== null) {
-				el["opis"] = el["opis"].replace(/(<([^>]+)>)/gi, "");
-			}
-		});
+		if (data.dodatne_slike?.[0]) {
+			const dodatneSlike = Array.isArray(data.dodatne_slike[0])
+				? data.dodatne_slike[0]
+				: data.dodatne_slike;
+
+			slike.push(...dodatneSlike.map(el => ({
+				izdelek_ean: data.ean,
+				slika_url: el,
+				tip: "dodatna"
+			})));
+		}
+
+		return slike;
 	}
 
 	parseObject(obj) {
@@ -167,12 +154,32 @@ export class ColbyController extends DobaviteljController {
 		return null;
 	}
 
+	processAllData() {
+		const flatCategoryMap = this.flattenCategoryMap(this.categoryMap);
+
+		const { slike, lastnosti } = this.allData.reduce(
+			(acc, rawData) => {
+				const updated = this.processCategory(rawData, flatCategoryMap);
+				rawData.kategorija = updated.kategorija
+				acc.slike.push(...this.processImages(updated));
+				acc.lastnosti.push(...this.processLastnosti(updated));
+				return acc;
+			},
+			{ slike: [], lastnosti: [] }
+		);
+
+		const { komponenta, atribut } = this.mapKomponentaAndAtribut(lastnosti);
+
+		Object.assign(this, {
+            slika: slike,
+            komponenta,
+            atribut,
+        });
+	}
+
 	executeAll() {
 		this.createDataObject();
-		// this.cleanOpis();
-		// this.addKratki_opis();
-		// this.splitSlike();
-		this.sortCategory();
+		this.processAllData();
 		this.insertDataIntoDb();
 	}
 }
