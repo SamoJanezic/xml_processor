@@ -1,19 +1,20 @@
 import { db } from "../db/db.js";
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 
-export const Atribut = db.define(
-	"ATRIBUT",
+export class Atribut extends Model {}
+
+Atribut.init(
 	{
 		id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true,
-			autoIncrement: true,
+			autoIncrement: true
 		},
 		izdelek_ean: {
 			type: DataTypes.STRING,
 			references: {
 				model: "IZDELEK",
-				key: "ean",
+				key: "ean"
 			},
 			allowNull: false,
 		},
@@ -31,11 +32,15 @@ export const Atribut = db.define(
 		},
 	},
 	{
+		sequelize: db,
+		modelName: "Atribut",
+		tableName: "ATRIBUT",
 		indexes: [
 			{
 				unique: true,
 				fields: ["izdelek_ean", "KOMPONENTA_komponenta"],
-			},
+			}
 		],
+		timestamps: false,
 	}
-);
+)

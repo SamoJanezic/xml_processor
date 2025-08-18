@@ -1,14 +1,15 @@
 import { db } from "../db/db.js";
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 
-export const Izdelek = db.define(
-	"IZDELEK",
+export class Izdelek extends Model {}
+
+Izdelek.init(
 	{
-        ean: {
-            type: DataTypes.STRING,
-            primaryKey: true,
+		ean: {
+			type: DataTypes.STRING,
+			primaryKey: true,
 			allowNull: false,
-        },
+		},
 		eprel: {
 			type: DataTypes.STRING,
 			allowNull: true,
@@ -21,5 +22,11 @@ export const Izdelek = db.define(
 			type: DataTypes.STRING,
 			allowNull: true,
 		},
+	},
+	{
+		sequelize: db,
+		modelName: "Izdelek",
+		tableName: "IZDELEK",
+		timestamps: false, // Add if you don't use createdAt/updatedAt
 	}
 );

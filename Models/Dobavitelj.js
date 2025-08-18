@@ -1,8 +1,8 @@
 import { db } from "../db/db.js";
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 
-export const Dobavitelj = db.define(
-    "DOBAVITELJ",
+export class Dobavitelj extends Model {}
+Dobavitelj.init(
     {
         dobavitelj_id: {
             type: DataTypes.INTEGER,
@@ -14,5 +14,11 @@ export const Dobavitelj = db.define(
             allowNull: false,
             unique: true,
         }
+    },
+    {
+        sequelize: db,
+        modelName: "Dobavitelj",
+        tableName: "DOBAVITELJ",
+        timestamps: false,
     }
 );
