@@ -51,9 +51,6 @@ export default class DobaviteljController {
 			getData = this.combineData();
 		}
 
-
-		// console.log("🚀 ~ Dobavitelj ~ createDataObject ~ getData:", getData)
-
 		getData.forEach((product) => {
 			let newObj = {};
 
@@ -70,7 +67,9 @@ export default class DobaviteljController {
 
 	keyRules(obj, product, key, idx, vrstica) {
 		if (vrstica[idx] === "eprel_id") {
-			obj[vrstica[idx]] = this.getEprel(product[key]);
+			if (typeof this.getEprel === "function") {
+				obj[vrstica[idx]] = this.getEprel(product[key]);
+			}
 		} else if (vrstica[idx] === "zaloga") {
 			obj[vrstica[idx]] = this.formatZaloga(product[key]);
 		} else if (
@@ -87,14 +86,121 @@ export default class DobaviteljController {
 		return obj;
 	}
 
-	addKratki_opis() {
-		this.allData.forEach((el) => {
-			if (el["opis"] !== null) {
-				el["kratki_opis"] =
-					el["opis"].substring(0, 100).replace(/(<([^>]+)>)/gi, "") +
-					"...";
+	flattenCategoryMap(categoryMap) {
+		return Object.entries(categoryMap).reduce((acc, [newCategory, oldCategories]) => {
+			oldCategories.forEach(old => acc[old] = newCategory);
+			return acc;
+		}, {});
+	}
+
+	processCategory(data, flatCategoryMap) {
+		let kategorija = data.kategorija;
+		let dodatne_lastnosti = data.dodatne_lastnosti
+			? JSON.parse(JSON.stringify(data.dodatne_lastnosti))
+			: [];
+
+		const newCat = flatCategoryMap[kategorija];
+		if (newCat) {
+			if (this.name === 'asbis' && newCat === "Usmerjevalniki, stikala in AP" &&
+				this.routerTypes[kategorija] &&
+				Array.isArray(dodatne_lastnosti)) {
+					console.log("Adding router type for category:", kategorija, "Type:", this.routerTypes[kategorija]);
+				dodatne_lastnosti.push({
+					"@_Name": "Vrsta",
+					"@_Value": this.routerTypes[kategorija]
+				});
 			}
-		});
+			kategorija = newCat;
+		}
+
+		return { ...data, kategorija, dodatne_lastnosti };
+	}
+
+	processLastnosti(data) {
+		let lastnosti = [
+			{
+				ean: data.ean,
+				kategorija: data.kategorija,
+				lastnostNaziv: "Proizvajalec",
+				lastnostVrednost: data.blagovna_znamka
+			}
+		];
+
+		const attrs = new this.Attributes(data.kategorija, Array.isArray(data.dodatne_lastnosti?.lastnost) ? data.dodatne_lastnosti.lastnost : data.dodatne_lastnosti)
+			.formatAttributes();
+
+		if (attrs && Object.keys(attrs).length) {
+			lastnosti.push(...Object.entries(attrs).map(([naziv, vrednost]) => ({
+				ean: data.ean,
+				kategorija: data.kategorija,
+				lastnostNaziv: naziv,
+				lastnostVrednost: vrednost
+			})));
+		}
+
+		return lastnosti;
+	}
+
+	mapKomponentaAndAtribut(lastnosti) {
+        const komponenta = [];
+        const atribut = [];
+        for (const el of lastnosti) {
+            komponenta.push({
+                KATEGORIJA_kategorija: el.kategorija,
+                komponenta: el.lastnostNaziv
+            });
+            atribut.push({
+                izdelek_ean: el.ean,
+                KOMPONENTA_komponenta: el.lastnostNaziv,
+                atribut: el.lastnostVrednost
+            });
+        }
+        return { komponenta, atribut };
+    }
+
+	processImages(data) {
+		const slike = [
+			{ izdelek_ean: data.ean, slika_url: data.slika_mala, tip: "mala" },
+			{ izdelek_ean: data.ean, slika_url: data.slika_velika, tip: "velika" }
+		];
+
+		if (data.dodatne_slike?.[0]) {
+			const dodatneSlike = Array.isArray(data.dodatne_slike[0])
+				? data.dodatne_slike[0]
+				: data.dodatne_slike;
+
+			slike.push(...dodatneSlike.map(el => ({
+				izdelek_ean: data.ean,
+				slika_url: el,
+				tip: "dodatna"
+			})));
+		}
+
+		return slike;
+	}
+
+	processAllData() {
+		const flatCategoryMap = this.flattenCategoryMap(this.categoryMap);
+
+		const { slike, lastnosti } = this.allData.reduce(
+			(acc, rawData) => {
+				const updated = this.processCategory(rawData, flatCategoryMap);
+				rawData.kategorija = updated.kategorija;
+				if (typeof rawData.kratki_opis === "string" ) rawData.kratki_opis = rawData.opis ? rawData.opis.substring(0, 100) : null;
+				acc.slike.push(...this.processImages(updated));
+				acc.lastnosti.push(...this.processLastnosti(updated));
+				return acc;
+			},
+			{ slike: [], lastnosti: [] }
+		);
+
+		const { komponenta, atribut } = this.mapKomponentaAndAtribut(lastnosti);
+
+		Object.assign(this, {
+            slika: slike,
+            komponenta,
+            atribut,
+        });
 	}
 
 	prepareDbData() {
@@ -136,7 +242,9 @@ export default class DobaviteljController {
 
 		const { izdelekData, izdelekDobaviteljData, kategorijaData } = this.prepareDbData();
 
-		// process.exit();
+		// console.log(izdelekDobaviteljData)
+		// process.exit()
+
 
 		db.sync();
 		await insertIntoTable(Dobavitelj, { dobavitelj: this.name });
@@ -151,5 +259,11 @@ export default class DobaviteljController {
 			await insertIntoTable(Komponenta, this.komponenta);
 			await insertIntoTable(Atribut, this.atribut);
 		}
+	}
+
+	executeAll() {
+		this.createDataObject();
+		this.processAllData();
+		this.insertDataIntoDb();
 	}
 }

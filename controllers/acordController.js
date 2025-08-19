@@ -91,27 +91,6 @@ export class AcordController extends DobaviteljController {
 		}
 	}
 
-	flattenCategoryMap(categoryMap) {
-		return Object.entries(categoryMap).reduce((acc, [newCategory, oldCategories]) => {
-			oldCategories.forEach(old => acc[old] = newCategory);
-			return acc;
-		}, {});
-	}
-
-	processCategory(data, flatCategoryMap) {
-		let kategorija = data.kategorija;
-		let dodatne_lastnosti = data.dodatne_lastnosti
-			? JSON.parse(JSON.stringify(data.dodatne_lastnosti))
-			: [];
-
-		const newCat = flatCategoryMap[kategorija];
-		if (newCat) {
-			kategorija = newCat;
-		}
-
-		return { ...data, kategorija, dodatne_lastnosti };
-	}
-
 	parseObject(obj) {
 		if (obj.dodatnaSlika1) {
 			return Object.values(obj);
@@ -128,92 +107,6 @@ export class AcordController extends DobaviteljController {
 		return zaloga["@_id"] === "1" ? "Na zalogi" : "Ni na zalogi";
 	}
 
-	processLastnosti(data) {
-		let lastnosti = [
-			{
-				ean: data.ean,
-				kategorija: data.kategorija,
-				lastnostNaziv: "Proizvajalec",
-				lastnostVrednost: data.blagovna_znamka
-			}
-		];
-
-		const attrs = new this.Attributes(data.kategorija, data.dodatne_lastnosti.lastnost)
-			.formatAttributes();
-
-		if (attrs && Object.keys(attrs).length) {
-			lastnosti.push(...Object.entries(attrs).map(([naziv, vrednost]) => ({
-				ean: data.ean,
-				kategorija: data.kategorija,
-				lastnostNaziv: naziv,
-				lastnostVrednost: vrednost
-			})));
-		}
-
-		return lastnosti;
-	}
-
-	processImages(data) {
-		const slike = [
-			{ izdelek_ean: data.ean, slika_url: data.slika_mala, tip: "mala" },
-			{ izdelek_ean: data.ean, slika_url: data.slika_velika, tip: "velika" }
-		];
-
-		if (data.dodatne_slike?.[0]) {
-			const dodatneSlike = Array.isArray(data.dodatne_slike[0])
-				? data.dodatne_slike[0]
-				: data.dodatne_slike;
-
-			slike.push(...dodatneSlike.map(el => ({
-				izdelek_ean: data.ean,
-				slika_url: el,
-				tip: "dodatna"
-			})));
-		}
-
-		return slike;
-	}
-
-	mapKomponentaAndAtribut(lastnosti) {
-        const komponenta = [];
-        const atribut = [];
-        for (const el of lastnosti) {
-            komponenta.push({
-                KATEGORIJA_kategorija: el.kategorija,
-                komponenta: el.lastnostNaziv
-            });
-            atribut.push({
-                izdelek_ean: el.ean,
-                KOMPONENTA_komponenta: el.lastnostNaziv,
-                atribut: el.lastnostVrednost
-            });
-        }
-        return { komponenta, atribut };
-    }
-
-	processAllData() {
-		const flatCategoryMap = this.flattenCategoryMap(this.categoryMap);
-
-		const { slike, lastnosti } = this.allData.reduce(
-			(acc, rawData) => {
-				const updated = this.processCategory(rawData, flatCategoryMap);
-				rawData.kategorija = updated.kategorija
-				acc.slike.push(...this.processImages(updated));
-				acc.lastnosti.push(...this.processLastnosti(updated));
-				return acc;
-			},
-			{ slike: [], lastnosti: [], newAllData: [] }
-		);
-
-		const { komponenta, atribut } = this.mapKomponentaAndAtribut(lastnosti);
-
-		Object.assign(this, {
-            slika: slike,
-            komponenta,
-            atribut,
-        });
-	}
-
 	getEprel(key) {
 		return key ? key.match(/[0-9]+/g)?.[0] ?? null : null;
 	}
@@ -221,7 +114,6 @@ export class AcordController extends DobaviteljController {
 	executeAll() {
 		this.createDataObject();
 		this.processAllData();
-		this.addKratki_opis();
 		this.insertDataIntoDb();
 	}
 }
