@@ -8,6 +8,7 @@ import { Dobavitelj } from "../Models/Dobavitelj.js";
 import { Komponenta } from "../Models/Komponenta.js";
 import { Atribut } from "../Models/Atribut.js";
 import { Slika } from "../Models/Slika.js";
+import "../Models/associations.js";
 
 export default class DobaviteljController {
 	vrstice = [
@@ -93,6 +94,7 @@ export default class DobaviteljController {
 		}, {});
 	}
 
+
 	processCategory(data, flatCategoryMap) {
 		let kategorija = data.kategorija;
 		let dodatne_lastnosti = data.dodatne_lastnosti
@@ -104,7 +106,6 @@ export default class DobaviteljController {
 			if (this.name === 'asbis' && newCat === "Usmerjevalniki, stikala in AP" &&
 				this.routerTypes[kategorija] &&
 				Array.isArray(dodatne_lastnosti)) {
-					console.log("Adding router type for category:", kategorija, "Type:", this.routerTypes[kategorija]);
 				dodatne_lastnosti.push({
 					"@_Name": "Vrsta",
 					"@_Value": this.routerTypes[kategorija]
@@ -243,15 +244,14 @@ export default class DobaviteljController {
 		const { izdelekData, izdelekDobaviteljData, kategorijaData } = this.prepareDbData();
 
 		// console.log(izdelekDobaviteljData)
-		// process.exit()
+		process.exit()
 
 
 		db.sync();
 		await insertIntoTable(Dobavitelj, { dobavitelj: this.name });
 		await insertIntoTable(Izdelek, izdelekData);
-
-		await insertIntoTable(IzdelekDobavitelj, izdelekDobaviteljData);
 		await insertIntoTable(Kategorija, kategorijaData);
+		await insertIntoTable(IzdelekDobavitelj, izdelekDobaviteljData);
 		if (this.slika) {
 			await insertIntoTable(Slika, this.slika);
 		}

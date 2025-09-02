@@ -121,7 +121,6 @@ export class ColbyController extends DobaviteljController {
 	}
 
 	processImages(data) {
-		console.log(data)
 		const slike = [
 			{ izdelek_ean: data.ean, slika_url: data.slika_mala, tip: "mala" },
 			{ izdelek_ean: data.ean, slika_url: data.slika_velika, tip: "velika" }

@@ -1,5 +1,4 @@
 import DobaviteljController from "./DobaviteljController.js";
-
 export class AcordController extends DobaviteljController {
 	constructor(categoryMap, Attributes, ...args) {
 		super(...args);
@@ -82,7 +81,8 @@ export class AcordController extends DobaviteljController {
 		if (
 			param["EAN"] === "" ||
 			param["EAN"].toString().length < 5 ||
-			param["EAN"].toString().includes(" ")
+			param["EAN"].toString().includes(" ") ||
+			param["EAN"] === null
 		) {
 			return true;
 		}
@@ -109,11 +109,5 @@ export class AcordController extends DobaviteljController {
 
 	getEprel(key) {
 		return key ? key.match(/[0-9]+/g)?.[0] ?? null : null;
-	}
-
-	executeAll() {
-		this.createDataObject();
-		this.processAllData();
-		this.insertDataIntoDb();
 	}
 }

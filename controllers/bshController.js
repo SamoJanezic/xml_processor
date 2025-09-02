@@ -35,121 +35,61 @@ export class BshController extends DobaviteljController {
 	];
 
 	combineData() {
-		const combinedData = [];
-		const opisi = parser(
-			this.file[0].fileName,
-			this.file[0].node,
-			this.encoding
+		const [oisip, cene] = this.getData();
+		return opisi.flatMap(
+			opis => cene
+			.filter(cena=> opis.PIData.EANArticleCode === cena.ean)
+			.map(cena => ({ ...opis, ...cena}))
 		);
-		const cene = parser(
-			this.file[1].fileName,
-			this.file[1].node,
-			this.encoding
-		);
-		opisi.forEach((opis) => {
-			cene.forEach((cena) => {
-				if (opis.PIData.EANArticleCode === cena.ean) {
-					combinedData.push({ ...opis, ...cena });
-				}
-			});
-		});
-
 		return combinedData;
 	}
 
 	keyRules(obj, product, key, idx, vrstica) {
-		switch (vrstica[idx]) {
-			case "kratki_opis":
-				product.PIData.PIProperties.PIProperty.forEach((property) => {
-					if (property["@_name"] === "SHORT_DESCRIPTION") {
-						obj[vrstica[idx]] = property["#text"];
-					}
-				});
-				break;
+		const field = vrstica[idx];
+		const properties = product?.PIData?.PIProperties?.PIProperty || [];
+		const otherData = product?.OtherData || {};
 
-			case "opis":
-				product.PIData.PIProperties.PIProperty.forEach((property) => {
-					if (property["@_name"] === "LONG_DESCRIPTION") {
-						obj[vrstica[idx]] = property["#text"];
-					}
-				});
-				break;
+		// helper lookups
+		const findPropertyByName = name =>
+			properties.find(p => p?.["@_name"] === name)?.["#text"] ?? null;
 
-			case "slika_mala":
-				obj[vrstica[idx]] = product.OtherData.LowResolutionPictureName;
-				break;
+		const findPropertyByDescription = desc =>
+			properties.find(p => p?.["@_description"] === desc)?.["#text"] ?? null;
 
-			case "slika_velika":
-				obj[vrstica[idx]] = product.OtherData.HighResolutionPictureName;
-				break;
+		// mapping of field names to their processors
+		const handlers = {
+			kratki_opis: () => findPropertyByName("SHORT_DESCRIPTION"),
+			opis: () => findPropertyByName("LONG_DESCRIPTION"),
+			slika_mala: () => otherData.LowResolutionPictureName ?? null,
+			slika_velika: () => otherData.HighResolutionPictureName ?? null,
+			dodatne_slike: () => {
+				const assets = otherData?.Assets?.Asset ?? [];
+				return assets
+					.filter(a => a?.AssetProperty?.[0]?.["#text"] === "additional picture")
+					.flatMap(a =>
+						a.AssetProperty
+							.filter(p => p?.["@_name"] === "identifier")
+							.map(p => p["#text"])
+					);
+			},
+			dodatne_lastnosti: () => properties,
+			blagovna_znamka: () => product?.PIData?.Brand ?? null,
+			kategorija: () => findPropertyByDescription("Skupina izdelkov"),
+			eprel_id: () => {
+				const qr = findPropertyByName("QR_CODE_2017");
+				const match = qr?.match(/(\d+)/);
+				return match ? match[1] : null;
+			},
+			zaloga: () => this.formatZaloga(product?.zaloga),
+			cena_nabavna: () => product?.cena?.replace(",", ".") ?? null,
+			ppc: () => product?.ppc?.replace(",", ".") ?? null
+		};
 
-			case "dodatne_slike":
-				obj[vrstica[idx]] = [];
-				if (product.OtherData?.Assets?.Asset?.length) {
-					product.OtherData.Assets.Asset.forEach((asset) => {
-						if (
-							asset.AssetProperty[0]["#text"] ===
-							"additional picture"
-						) {
-							asset.AssetProperty.forEach((property) => {
-								if (property["@_name"] === "identifier") {
-									obj[vrstica[idx]].push(property["#text"]);
-								}
-							});
-						}
-					});
-				}
-				break;
-
-			case "dodatne_lastnosti":
-				obj[vrstica[idx]] = product.PIData.PIProperties.PIProperty;
-				break;
-
-			case "blagovna_znamka":
-				obj[vrstica[idx]] = product.PIData.Brand;
-				break;
-
-			case "kategorija":
-				const skupina = product.PIData?.PIProperties?.PIProperty?.find(
-					(property) =>
-						property["@_description"] === "Skupina izdelkov"
-				);
-				if (skupina) {
-					obj[vrstica[idx]] = skupina["#text"];
-				}
-				break;
-
-			case "eprel_id":
-				// getEprel(product);
-				product?.PIData?.PIProperties?.PIProperty?.forEach(
-					(property) => {
-						if (property["@_name"] === "QR_CODE_2017") {
-							const eprelId = property["#text"].match(/(\d+)/);
-							obj[vrstica[idx]] = eprelId[1] || null;
-						}
-					}
-				);
-				break;
-
-			case "zaloga":
-				obj[vrstica[idx]] = this.formatZaloga(product.zaloga);
-				break;
-
-			case "cena_nabavna":
-				obj[vrstica[idx]] = product.cena.replace(",", ".");
-				break;
-
-			case "ppc":
-				obj[vrstica[idx]] = product.ppc.replace(",", ".");
-				break;
-
-			default:
-				obj[vrstica[idx]] = product[key] ?? null;
-				break;
-		}
-
+		// use handler if available, else default to raw value
+		obj[field] = handlers[field]?.() ?? product[key] ?? null;
 		return obj;
 	}
+
 
 	exceptions(param) {
 		const ignoreCategory = [

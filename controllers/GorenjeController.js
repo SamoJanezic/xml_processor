@@ -61,7 +61,7 @@ export class GorenjeController extends DobaviteljController {
 	parseObject(obj) {}
 
 	splitDodatneLastnosti() {
-		console.log("🚀 ~ gorenjeController ~ splitDodatneLastnosti ~ allData:", this.allData)
+		// console.log("🚀 ~ gorenjeController ~ splitDodatneLastnosti ~ allData:", this.allData)
 	}
 
 	splitSlike() {}

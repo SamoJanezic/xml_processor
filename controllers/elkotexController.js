@@ -1,10 +1,10 @@
 import DobaviteljController from "./DobaviteljController.js";
-import ElkotexAttributes from "./attriburteControllers/ElkotexAttributes.js";
 
 export class ElkotexController extends DobaviteljController {
-	constructor(categoryMap, ...args) {
+	constructor(categoryMap, Attributes, ...args) {
 		super(...args);
 		this.categoryMap = categoryMap;
+		this.Attributes = Attributes;
 	}
 	name = "elkotex";
 	nodes = "items.item";
@@ -29,67 +29,68 @@ export class ElkotexController extends DobaviteljController {
 		"zaloga",
 	];
 
+	ignoreCategorySet = new Set([
+		"Uncategorized",
+		"Oprema za kopalnice",
+		"Medicinski pripomočki",
+		"Obnovljeni računalniki",
+		"Bazeni, dodatki za bazene",
+		"LED sijalke, žarnice",
+		"LED luči",
+		"Električno orodje",
+		"Pisarniški stoli",
+		"Balkonske sončne elektrarne",
+		"Pisarniško pohištvo",
+		"Robustni telefoni",
+		"Ostali izdelki",
+		"Odstranjevalci vlaken",
+		"Ohišja za diske",
+		"Vrtno pohištvo in dodatki",
+		"LED trakovi",
+		"Telefonija",
+		"Sokovniki",
+		"Čistilniki zraka",
+		"Baterije in polnilci",
+		"Polnilne postaje, agregati",
+		"Pohištvo",
+		"Solarni paneli",
+		"Namizne svetilke",
+		"Dodatki",
+		"Sit-stand mize, podstavki in nosilci",
+		"Koši za odpadke",
+		"Ostalo",
+		"Rezervni deli",
+		"Rezervni deli in dodatki",
+		"Napajalniki za prenosnike",
+		"Video adapterji",
+		"Zvočni adapterji",
+		"Priključni kabli in adapterji",
+		"Kabli",
+		"Podaljški, razdelilci",
+		"Video kabli",
+		"Mrežni kabli",
+		"Mrežni adapterji",
+		"Video kabli",
+		"Urejanje kablov",
+		"Avto polnilci",
+		"Zvočni kabli",
+		"Kabli in adapterji",
+		"Hlajenje za prenosnike",
+		"Rezervni deli za skiroje",
+		"Torbe in nahrbtniki za prosti čas",
+		"Rezervni deli in dodatki za sesalnike",
+		"Nega telesa",
+		"Domofoni",
+		"Vremenske postaje",
+		"Kuhinjski organizatorji",
+		"Kuhinjski pripomočki",
+		"Priprava hrane",
+		"Pametne naprave",
+		"Čistila",
+	]);
+
 	exceptions(param) {
-		const ignoreCategory = [
-			"Uncategorized",
-			"Oprema za kopalnice",
-			"Medicinski pripomočki",
-			"Obnovljeni računalniki",
-			"Bazeni, dodatki za bazene",
-			"LED sijalke, žarnice",
-			"LED luči",
-			"Električno orodje",
-			"Pisarniški stoli",
-			"Balkonske sončne elektrarne",
-			"Pisarniško pohištvo",
-			"Robustni telefoni",
-			"Ostali izdelki",
-			"Odstranjevalci vlaken",
-			"Ohišja za diske",
-			"Vrtno pohištvo in dodatki",
-			"LED trakovi",
-			"Telefonija",
-			"Sokovniki",
-			"Čistilniki zraka",
-			"Baterije in polnilci",
-			"Polnilne postaje, agregati",
-			"Pohištvo",
-			"Solarni paneli",
-			"Namizne svetilke",
-			"Dodatki",
-			"Sit-stand mize, podstavki in nosilci",
-			"Koši za odpadke",
-			"Ostalo",
-			"Rezervni deli",
-			"Rezervni deli in dodatki",
-			"Napajalniki za prenosnike",
-			"Video adapterji",
-			"Zvočni adapterji",
-			"Priključni kabli in adapterji",
-			"Kabli",
-			"Podaljški, razdelilci",
-			"Video kabli",
-			"Mrežni kabli",
-			"Mrežni adapterji",
-			"Video kabli",
-			"Urejanje kablov",
-			"Avto polnilci",
-			"Zvočni kabli",
-			"Kabli in adapterji",
-			"Hlajenje za prenosnike",
-			"Rezervni deli za skiroje",
-			"Torbe in nahrbtniki za prosti čas",
-			"Rezervni deli in dodatki za sesalnike",
-			"Nega telesa",
-			"Domofoni",
-			"Vremenske postaje",
-			"Kuhinjski organizatorji",
-			"Kuhinjski pripomočki",
- 			"Priprava hrane",
-			"Pametne naprave",
-			"Čistila",
-		];
-		if (ignoreCategory.includes(param["podkategorijaNaziv"])) {
+		if (this.ignoreCategorySet.has(param["podkategorijaNaziv"])) {
 			return true;
 		}
 	}
@@ -97,8 +98,10 @@ export class ElkotexController extends DobaviteljController {
 	sortCategory() {
 		// Build flat map
 		const flatCategoryMap = {};
-		for (const [newCategory, oldCategories] of Object.entries(this.categoryMap)) {
-			oldCategories.forEach(old => {
+		for (const [newCategory, oldCategories] of Object.entries(
+			this.categoryMap
+		)) {
+			oldCategories.forEach((old) => {
 				flatCategoryMap[old] = newCategory;
 			});
 		}
@@ -160,7 +163,7 @@ export class ElkotexController extends DobaviteljController {
 	extractLastnosti(desc) {
 		const html = desc.replaceAll("&scaron;", "š").replaceAll("&nbsp;", " ");
 		const clean = html.replace(/<[^>]+>/g, "\n"); // Remove HTML tags, replace with newlines
-		const preprocessed = clean.replace(/([a-z0-9])([A-ZČŠŽĆĐ])/g, '$1\n$2');
+		const preprocessed = clean.replace(/([a-z0-9])([A-ZČŠŽĆĐ])/g, "$1\n$2");
 		const regex = /([A-Za-zČčŠšŽžĆćĐđč\s\/\-,\(\)0-9&;]+):\s*([^<\n]+)/g;
 
 		let match;
@@ -182,10 +185,7 @@ export class ElkotexController extends DobaviteljController {
 
 		this.allData.forEach((data) => {
 			const lastnosti = this.extractLastnosti(data.opis);
-			const Attributes = new ElkotexAttributes(
-				data.kategorija,
-				lastnosti
-			);
+			const Attributes = new this.Attributes(data.kategorija, lastnosti);
 			const attrs = Attributes.formatAttributes();
 			if (Object.keys(attrs).length) {
 				// console.log(attrs);
@@ -196,7 +196,6 @@ export class ElkotexController extends DobaviteljController {
 	executeAll() {
 		this.createDataObject();
 		this.sortCategory();
-		this.addKratki_opis();
 		this.splitSlike();
 		this.splitDodatneLastnosti();
 		this.insertDataIntoDb();

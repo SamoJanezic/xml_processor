@@ -107,6 +107,9 @@ export class AlsoController extends DobaviteljController {
 	}
 
 	exceptions(param) {
+		if (!param?.idents?.ident[2]["@_value"]) {
+			return true;
+		}
 		if (
 			(param.prices.price[0]["@_value"] ||
 				param.prices.price[1]["@_value"] ||
