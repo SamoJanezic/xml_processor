@@ -19,7 +19,7 @@ Atribut.init(
 			allowNull: false,
 		},
 		KOMPONENTA_komponenta: {
-			type: DataTypes.STRING,
+			type: DataTypes.STRING(255),
 			references: {
 				model: "KOMPONENTA",
 				key: "komponenta",

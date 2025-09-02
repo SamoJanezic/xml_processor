@@ -1,6 +1,7 @@
 import { db } from "../db/db.js";
 import { DataTypes, Model } from "sequelize";
 
+
 export class Izdelek extends Model {}
 
 Izdelek.init(
@@ -27,6 +28,5 @@ Izdelek.init(
 		sequelize: db,
 		modelName: "Izdelek",
 		tableName: "IZDELEK",
-		timestamps: false, // Add if you don't use createdAt/updatedAt
 	}
 );

@@ -57,12 +57,7 @@ IzdelekDobavitelj.init(
 			type: DataTypes.BOOLEAN,
 			defaultValue: 0,
 			allowNull: false,
-		},
-		spremenjen_na: {
-			type: DataTypes.DATE,
-			defaultValue: DataTypes.NOW,
-			allowNull: false,
-		},
+		}
 	},
 	{
 		sequelize: db,
@@ -73,7 +68,6 @@ IzdelekDobavitelj.init(
 				unique: true,
 				fields: ["izdelek_ean", "DOBAVITELJ_dobavitelj"],
 			},
-		],
-		timestamps: false, // Add if you don't use createdAt/updatedAt
+		]
 	}
 );
