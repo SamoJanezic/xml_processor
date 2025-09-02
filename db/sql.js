@@ -52,18 +52,6 @@ export function insertIntoTable(tableName, data) {
 	}
 }
 
-// export async function insertIntoTable(tableName, data) {
-//     if (Array.isArray(data)) {
-//         for (const item of data) {
-//             await tableName.upsert(item); // upsert works in MSSQL
-//         }
-//         console.log(`Successfully upserted ${data.length} entries into ${tableName.name}`);
-//     } else {
-//         await tableName.upsert(data);
-//         console.log(`Successfully upserted entry into ${tableName.name}`);
-//     }
-// }
-
 export function selectAll(tableName, cols) {
 	tableName
 		.findAll({
@@ -142,37 +130,6 @@ export async function getSlikaInfo(ean) {
 	})
 }
 
-// export function upsertTable(tableName, allData) {
-// 	allData.forEach(async data =>{
-// 		const [instance, created] = await tableName.findOrCreate({
-// 			where: {
-// 				izdelek_ean: data.izdelek_ean,
-// 				DOBAVITELJ_dobavitelj: data.DOBAVITELJ_dobavitelj
-// 			},
-// 			defaults: {
-// 				KATEGORIJA_kategorija: data.KATEGORIJA_kategorija,
-// 				izdelek_ime: data.izdelek_ime,
-// 				izdelek_opis: data.izdelek_opis,
-// 				izdelek_kratki_opis: data.izdelek_kratki_opis,
-// 				nabavna_cena: data.nabavna_cena,
-// 				dealer_cena: data.dealer_cena,
-// 				ppc: data.ppc,
-// 				zaloga: data.zaloga,
-// 				aktiven: data.aktiven
-// 			}
-// 		});
-
-// 		if (!created) {
-// 			await instance.update({
-// 				dealer_cena: data.dealer_cena,
-// 				nabavna_cena: data.nabavna_cena,
-// 				ppc: data.ppc,
-// 				zaloga: data.zaloga,
-// 			});
-// 		}
-// 	})
-// }
-
 export async function upsertTable(tableName, allData) {
     for (const data of allData) {
         const [instance, created] = await tableName.findOrCreate({
@@ -203,48 +160,3 @@ export async function upsertTable(tableName, allData) {
         }
     }
 }
-
-
-// export async function getIzdelekInfo() {
-// 	IzdelekDobavitelj.belongsTo(Izdelek, { foreignKey: 'izdelek_ean' });
-// 	IzdelekDobavitelj.belongsTo(Kategorija, { foreignKey: 'KATEGORIJA_kategorija', key: 'kategorija' });
-
-//     try {
-//         const izdelekInfo = await IzdelekDobavitelj.findAll({
-//             attributes: [
-//                 'id',
-//                 'izdelek_ime',
-//                 'opis_izdelka',
-// 				'ppc',
-// 				'nabavna_cena',
-// 				'dealer_cena',
-// 				'zaloga',
-//             ],
-//             include: [
-//                 {
-//                     model: Izdelek,
-//                     attributes: ['ean', 'davcna_stopnja', 'blagovna_znamka'],
-//                     required: true,
-//                 },
-// 				{
-// 					model: Kategorija,
-// 					attributes: ['kategorija', 'kategorija_id'],
-// 					required: true,
-// 					on: {
-//                         '$IZDELEK_DOBAVITELJ.KATEGORIJA_kategorija$': { [Sequelize.Op.eq]: Sequelize.col('Kategorija.kategorija') }
-//                     }
-// 				}
-//             ],
-// 			raw: true
-//         });
-//         return izdelekInfo;
-//     } catch (error) {
-//         console.error('Error fetching izdelek info:', error);
-//     }
-// }
-
-// export async function getSlikaInfo(ean, tip) {
-// 	return await db.query(
-// 		`SELECT slika_url FROM SLIKA WHERE izdelek_ean = ${ean} AND tip = "${tip}"`
-// 	);
-// }
