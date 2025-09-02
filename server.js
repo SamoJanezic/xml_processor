@@ -8,12 +8,24 @@ const port = 3000;
 
 app.use(express.json());
 app.use((req, res, next) => {
-    allow(res);
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-    next();
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, id, table"
+  );
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; connect-src 'self' http://127.0.0.1:3000 http://localhost:3000"
+  );
+
+  // Handle OPTIONS preflight requests
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
 });
 
 app.use("/", routes);

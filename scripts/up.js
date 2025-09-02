@@ -8,13 +8,13 @@ import { Atribut } from "../Models/Atribut.js";
 import { Slika } from "../Models/Slika.js";
 
 const tables = [
-  Izdelek,
-  IzdelekDobavitelj,
   Kategorija,
   Dobavitelj,
+  Izdelek,
   Komponenta,
-  Atribut,
+  IzdelekDobavitelj,
   Slika,
+  Atribut,
 ];
 
 

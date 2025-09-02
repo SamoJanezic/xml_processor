@@ -4,19 +4,31 @@ import { Kategorija } from "../Models/Kategorija.js";
 
 const router = express.Router();
 
-router.get("/getData", (req, res) => {
-	IzdelekDobavitelj.findAll()
-		.then((data) => {
-			res.status(200).json(data);
-		})
-		.catch((err) => {
-			console.error(err);
-		});
+const models = {
+	IzdelekDobavitelj,
+	Kategorija
+}
+
+router.get("/getData", async (req, res) => {
+	console.log(req.headers);
+	try {
+		const table = req.headers.table;
+		if (!models[table]) {
+			return res.status(400).json({ error: "Invalid table name" });
+    	}
+
+		const data = await models[table].findAll();
+
+    	res.status(200).json(data);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Server error" });
+	}
 });
 
 router.get("/getSingle", (req, res) => {
 	IzdelekDobavitelj.findOne({
-		where: { id: req.query.id },
+		where: { id: req.headers.id },
 	})
 		.then((data) => {
 			res.status(200).json(data);
@@ -47,17 +59,17 @@ router.put("/update_izdelek", (req, res) => {
 		{
 			KATEGORIJA_kategorija: data.KATEGORIJA_kategorija,
 			izdelek_ime: data.izdelek_ime,
-			opis: data.opis,
-			kratki_opis: data.kratki_opis,
+			izdelek_opis: data.izdelek_opis,
+			izdelek_kratki_opis: data.izdelek_kratki_opis,
 			dealer_cena: data.dealer_cena,
-			cena_nabavna: data.nabavna_cena,
+			nabavna_cena: data.nabavna_cena,
 			ppc: data.ppc,
 			zaloga: data.zaloga,
 			aktiven: data.aktiven,
 		},
 		{
 			where: {
-				id: 1,
+				id: data.id,
 			},
 		}
 	).then(() => {
@@ -69,10 +81,6 @@ router.put("/update_izdelek", (req, res) => {
 
 router.put("/upsert", (req, res) => {
 
-	console.log(req.body);
-
-	
-	
 	IzdelekDobavitelj.upsert(
     {
       name: username,
@@ -80,10 +88,13 @@ router.put("/upsert", (req, res) => {
     },
     { name: username }
   )
-    .then(data => console.log(data));
+    .then(data => console.log(data))
     .catch(err => console.log(err));
 });
 
-})
+router.get("/func", (req, res) => {
+	console.log(req.headers);
+	res.status(200).json({ message: "Func route" });
+});
 
 export default router;
