@@ -1,10 +1,46 @@
 import BaseAttributes from "./BaseAttributes.js";
 
-class ElkotexAttributes extends BaseAttributes{
+class ElkotexAttributes{
 	constructor(category, attribute) {
 		this.category = category;
-		this.attribute = BaseAttributes.normalizeAttributes(attribute);
+		this.attribute = attribute;
 	}
+
+	static normalizeAttributes(attrs) {
+		if (!attrs) return {};
+		if (Array.isArray(attrs)) return attrs; // Eventus keeps array structure
+
+		const normalized = {};
+		Object.entries(attrs).forEach(([key, value]) => {
+			const normKey =
+				key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
+			normalized[normKey] =
+				typeof value === "string" ? value.trim() : value;
+		});
+		return normalized;
+	}
+
+	static extractCapacity(text) {
+		if (!text) return text;
+		const match = text.match(/(\d+)\s?(GB|TB|MB|ml)/i);
+		return match ? `${match[1]} ${match[2].toUpperCase()}` : text.trim();
+	}
+
+	static extractScreenSize(text) {
+		if (!text) return text;
+		const match = text.match(/^\d+(\.\d+)?/);
+		return match ? `${match[0]}"` : text.trim();
+	}
+
+	static extractResolution(text) {
+		if (!text) return text;
+		const match = text.match(/\b\d{3,4}\s?x\s?\d{3,4}\b/i);
+		return match ? match[0].replace(/\s?x\s?/i, " x ") : text.trim();
+	}
+
+	static replaceVat(text) {
+        return text.replace(/\b(vatov?|wattov?|watt|vat|w)\b/gi, 'W').replace(/\s+W/, ' W').trim();
+    }
 
 	static defaultHandler(attrKey, attrValue) {
 		return { [attrKey]: attrValue };
@@ -30,7 +66,7 @@ class ElkotexAttributes extends BaseAttributes{
 					return { Vrsta: "Papir" };
 				},
 				Kapaciteta: val => ({
-					Kapaciteta: BaseAttributes.extractCapacity(val),
+					Kapaciteta: ElkotexAttributes.extractCapacity(val),
 				}),
 			},
 			"Napajalniki": {
@@ -50,7 +86,7 @@ class ElkotexAttributes extends BaseAttributes{
 			"Pomnilniki": {
 				Tip: val => ({ "Vrsta pomnilnika": val }),
 				Kapaciteta: val => ({
-					"Kapaciteta pomnilnika": BaseAttributes.extractCapacity(val),
+					"Kapaciteta pomnilnika": ElkotexAttributes.extractCapacity(val),
 				}),
 			},
 		};
@@ -67,7 +103,7 @@ class ElkotexAttributes extends BaseAttributes{
 			const handler = handlers[key];
 			const result = handler
 				? handler(value)
-				: BaseAttributes.defaultHandler(key, value);
+				: ElkotexAttributes.defaultHandler(key, value);
 
 			Object.assign(attributes, result);
 		});

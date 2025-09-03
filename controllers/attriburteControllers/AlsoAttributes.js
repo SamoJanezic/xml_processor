@@ -146,6 +146,7 @@ class AlsoAttributes {
                 'Vrsta kartuše': el => ({ Vrsta: 'Kartuša' }),
                 Kompleti: el => ({ Vrsta: 'Kartuša' }),
                 'Format papirja': el => ({ Vrsta: 'Papir' }),
+                'Kapaciteta': el => ({ 'Kapaciteta strani': el['#text'] }),
             },
             Televizije: {
                 Peron: el => ({ 'Smart TV': 'Da', 'Operacijski sistem': el['#text'] }),
