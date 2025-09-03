@@ -34,6 +34,16 @@ export default class DobaviteljController {
 	atribut = null;
 	slika = null;
 
+	escapeXml(str) {
+		return str
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&apos;');
+	}
+
+
 	getData() {
 		if (typeof this.file === "object") {
 			return this.file.map((el) => {
@@ -88,6 +98,7 @@ export default class DobaviteljController {
 	}
 
 	flattenCategoryMap(categoryMap) {
+		if (!categoryMap) return {};
 		return Object.entries(categoryMap).reduce((acc, [newCategory, oldCategories]) => {
 			oldCategories.forEach(old => acc[old] = newCategory);
 			return acc;
@@ -146,13 +157,14 @@ export default class DobaviteljController {
         const komponenta = [];
         const atribut = [];
         for (const el of lastnosti) {
+			const cleanedNaziv = this.escapeXml(el.lastnostNaziv.replace(/:/g, ''))
             komponenta.push({
                 KATEGORIJA_kategorija: el.kategorija,
-                komponenta: el.lastnostNaziv
+                komponenta: cleanedNaziv
             });
             atribut.push({
                 izdelek_ean: el.ean,
-                KOMPONENTA_komponenta: el.lastnostNaziv,
+                KOMPONENTA_komponenta: cleanedNaziv,
                 atribut: el.lastnostVrednost
             });
         }
@@ -196,6 +208,7 @@ export default class DobaviteljController {
 		);
 
 		const { komponenta, atribut } = this.mapKomponentaAndAtribut(lastnosti);
+		// console.log(atribut)
 
 		Object.assign(this, {
             slika: slike,
@@ -210,7 +223,7 @@ export default class DobaviteljController {
 				ean: el.ean,
 				eprel: el.eprel_id,
 				davcna_stopnja: 22,
-				blagovna_znamka: el.blagovna_znamka,
+				blagovna_znamka: el.blagovna_znamka ? this.escapeXml(el.blagovna_znamka) : null,
 			};
 		});
 		const izdelekDobaviteljData = this.allData.map((el) => {
@@ -244,7 +257,8 @@ export default class DobaviteljController {
 		const { izdelekData, izdelekDobaviteljData, kategorijaData } = this.prepareDbData();
 
 		// console.log(izdelekDobaviteljData)
-		process.exit()
+		// console.log(this.atribut)
+		// process.exit()
 
 
 		db.sync();

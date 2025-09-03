@@ -16,7 +16,7 @@ const colbyCategoryMap = {
             "Kabli,Vrsta izdelka", "Polnilci,Vrsta izdelka", "Kompleti,Vrsta izdelka", "Playstation dodatki", "Xbox dodatki,Vrsta izdelka",
             "Playstation dodatki,Vrsta izdelka", "Joy-Con,Vrsta izdelka", "Nintendo dodatki", "Igralni ploščki,Vrsta izdelka",
             "Gaming dodatki", "Nintendo dodatki,Vrsta izdelka", "Evercade", "Igralni ploščki", "Volani", "Igralni ploščki,,Vrsta izdelka",
-            "Xbox dodatki", "EVERCADE", "Igralne palice in ploščki", "Joy-Con",
+            "Xbox dodatki", "EVERCADE", "Igralne palice in ploščki", "Joy-Con", "Volani,Vrsta izdelka"
         ],
         "Droni in dodatki": ["Droni"],
         "Slušalke": ["Stojala za slušalke"],
