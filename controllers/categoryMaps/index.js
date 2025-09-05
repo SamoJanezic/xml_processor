@@ -4,7 +4,7 @@ import alsoCategoryMap from "./alsoCategory.js";
 import avteraCategoryMap from "./avteraCategory.js";
 import asbisCategoryMap from "./asbisCategory.js";
 import elkotexCategoryMap from "./elkotexCategory.js";
-// import colbyCategoryMap from "./colbyCategory.js";
+import colbyCategoryMap from "./colbyCategory.js";
 // import liebherrCategoryMap from "./liebherrCategory.js";
 // import gorenjeCategoryMap from "./gorenjeCategory.js";
 import bshCategoryMap from "./bshCategory.js";
@@ -15,8 +15,8 @@ export const categoryMap = {
   avtera: avteraCategoryMap,
   eventus: eventusCategoryMap,
   asbis: asbisCategoryMap,
-  elkotex: elkotexCategoryMap,
-  // colby: colbyCategoryMap,
+  // elkotex: elkotexCategoryMap,
+  colby: colbyCategoryMap,
   // liebherr: liebherrCategoryMap,
   // gorenje: gorenjeCategoryMap,
   bsh: bshCategoryMap,

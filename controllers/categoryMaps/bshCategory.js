@@ -1,38 +1,40 @@
+import cn from "./categoryNames.js";
+
 const bshCategoryMap = {
-	"Priprava kave in čaja": [
+	[cn.KAVA_CAJ]: [
 		"Avtomat za filter kavo",
 		"Vgrajen kavni avtomat",
 		"Kavni avtomat",
 		"Kavni mlinček",
 		"Čajnik",
 	],
-	Hladilniki: ["Hladilnik", "Hladilnik z zamrzovalnikom"],
-	Pečice: ["Kombinirana parna pečica", "Pečica"],
-	Kuhališča: [
+	[cn.HLADILNIK]: ["Hladilnik", "Hladilnik z zamrzovalnikom"],
+	[cn.K_PECICA]: ["Kombinirana parna pečica", "Pečica"],
+	[cn.K_PLOSCA]: [
 		"Kuhalna plošča",
 		"Štedilnik",
 		"Modularna kuhalna plošča",
 	],
-	Mešalniki: [
+	[cn.MESALNIK]: [
 		"Mešalni stroj",
 		"Nastavek za mešanje",
 		"Ročni mešalnik",
 	],
-	"Mikrovalovne pečice": ["Mikrovalovna pečica"],
-	"Mesoreznice in salamoreznice": ["Mlinček za meso", "Rezalnik"],
-	Nape: ["Napa"],
-	"Opekači kruha": ["Opekač"],
-	"Pomivalni stroji": ["Pomivalni stroj"],
-	"Pralni stroji": ["Pralni stroj"],
-	Sesalniki: [
+	[cn.MIKROVALOVNA]: ["Mikrovalovna pečica"],
+	[cn.MESO_SALAMOREZNICA]: ["Mlinček za meso", "Rezalnik"],
+	[cn.K_NAPA]: ["Napa"],
+	[cn.PEKA_KRUH]: ["Opekač"],
+	[cn.POMIVALNI]: ["Pomivalni stroj"],
+	[cn.PRALNI]: ["Pralni stroj"],
+	[cn.SESALEC]: [
 		"Sesalnik s posodo za prah",
 		"Sesalnik za ponovno polnjenje",
 	],
-	"Sokovniki in ožemalniki": ["Sokovnik"],
-	Multipraktiki: ["Stroj za obdelavo hrane"],
-	"Sušilni stroji": ["Sušilni stroj"],
-	Zamrzovalniki: ["Zamrzovalnik"],
-	Žari: ["Žar"],
+	[cn.SOK_OŽEM]: ["Sokovnik"],
+	[cn.MULTIPRAKTIK]: ["Stroj za obdelavo hrane"],
+	[cn.SUSILNI]: ["Sušilni stroj"],
+	[cn.ZAMRZOVALNIK]: ["Zamrzovalnik"],
+	[cn.ZAR]: ["Žar"],
 };
 
 export default bshCategoryMap;

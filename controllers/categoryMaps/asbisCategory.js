@@ -1,5 +1,7 @@
+import cn from "./categoryNames.js";
+
 const asbisCategoryMap = {
-	"Mrežne kartice, antene, WIFI ojačevalci": [
+	[cn.LAN_CARD_EXTENDERS]: [
 		"Antenna",
 		"Networking - Accessories",
 		"Networking - Cloud Keys & Gateways - Cloud Key Enterprise",
@@ -7,23 +9,23 @@ const asbisCategoryMap = {
 		"Network Interface Card",
 		"Networking - Range Extender",
 	],
-	"Usmerjevalniki, stikala in AP": [
+	[cn.ROUTER_SWITCH_AP]: [
 		"Networking - Router",
 		"Networking - Transceiver",
 		"Networking - Wireless Outdoor Access Point",
 		"Networking - Wireless Access Point",
 		"Network Switch",
 	],
-	Snemalniki: ["Security - Surveillance Video Recorder"],
-	Sesalniki: [
+	[cn.SUR_RECS]: ["Security - Surveillance Video Recorder"],
+	[cn.SESALEC]: [
 		"Vacuum Cleaner Robot",
 		"Vacuum Cleaner Stick",
 		"Vacuum Cleaner Transformer",
 		"Acc - Vacuum Cleaners",
 	],
-	"NAS sistemi": ["Memory NAS", "NAS Accessories", "Desktop NAS", "Rack NAS"],
-	Mešalniki: ["Acc - Blenders", "Hand Blender"],
-	"Trdi diski": [
+	[cn.NAS]: ["Memory NAS", "NAS Accessories", "Desktop NAS", "Rack NAS"],
+	[cn.MESALNIK]: ["Acc - Blenders", "Hand Blender"],
+	[cn.HDD]: [
 		"SSD NAS",
 		"HDD NAS",
 		"HDD/SSD Enclosure",
@@ -37,94 +39,94 @@ const asbisCategoryMap = {
 		"SSD External",
 		"HDD Cabinet",
 	],
-	Domofoni: ["Intercom Panel"],
-	"Naprave za pametni dom": [
+	[cn.SUR_DOMOFON]: ["Intercom Panel"],
+	[cn.P_DOM]: [
 		"Liquidaiser",
 		"Irrigators",
 		"Solar Panel",
 		"Pametni senzorji",
 		"Smart Heaters",
 	],
-	"Optične enote": [
+	[cn.ROM_DRIVE]: [
 		"ODD Blu-RAY Writers",
 		"ODD DVD-RW External Slim",
 		"ODD Blu-ray Writer External Desktop",
 		"ODD DVD-RW",
 	],
-	"Gaming stoli": ["Gaming Chair", "Gaming Desk"],
-	"HI-FI in prenosni zvočniki": [
+	[cn.STOL]: ["Gaming Chair", "Gaming Desk"],
+	[cn.HIFI]: [
 		"Multimedia - Speaker Wi-Fi",
 		"Multimedia - Speaker Bluetooth",
 		"Multimedia - Audio System",
 		"Multimedia - Speaker",
 	],
-	"Ustna nega": ["Acc - Dental care", "Ščetke za zobe"],
-	"Tablični računalniki": ["IPad Accessories"],
-	Slušalke: [
+	[cn.N_USTNA]: ["Acc - Dental care", "Ščetke za zobe"],
+	[cn.TABLET]: ["IPad Accessories"],
+	[cn.SLUSALKE]: [
 		"TWS Bluetooth Headsets",
 		"Multimedia - Headset",
 		"Multimedia - PC Headsets",
 		"Bluetooth Headset",
 		"Gaming Headset",
 	],
-	"Spletne kamere": ["Web Camera", "VC WebCams"],
-	Strežniki: ["Server Desktop", "Main Board Server"],
-	Procesorji: ["CPU Desktop"],
-	"Konferenčna oprema": ["Video Conferencing Solution"],
-	"Programska oprema": ["Software Electronic Keys", "Soft OEM. MS OS for PC"],
-	Monitorji: ["Zaslon velikega formata", "LED monitor"],
-	Mini: ["PC NetTop", "PC Barebone"],
-	Napajalniki: ["Power Supply Unit"],
-	Ohišja: ["PC Chassis"],
-	"Dodatki za prenosnike": [
+	[cn.WEB_CAM]: ["Web Camera", "VC WebCams"],
+	[cn.SERVER]: ["Server Desktop", "Main Board Server"],
+	[cn.CPU]: ["CPU Desktop"],
+	[cn.KONF_OPREMA]: ["Video Conferencing Solution"],
+	[cn.SOFTWARE]: ["Software Electronic Keys", "Soft OEM. MS OS for PC"],
+	[cn.MONITOR]: ["Zaslon velikega formata", "LED monitor"],
+	[cn.MINI_PC]: ["PC NetTop", "PC Barebone"],
+	[cn.PSU]: ["Power Supply Unit"],
+	[cn.OHISJE]: ["PC Chassis"],
+	[cn.LAPTOP_DODATKI]: [
 		"Torbica za prenašanje",
 		"Cooling stand for Notebook",
 	],
-	Hlajenje: ["Cooling System"],
-	Miške: [
+	[cn.COOLER]: ["Cooling System"],
+	[cn.MIS]: [
 		"Input Devices - Mouse Box",
 		"Input Devices - Mouse",
 		"Input Devices - Pointing Device Box",
 		"Gaming Mouse",
 		"Gaming Mousepads",
 	],
-	Tipkovnice: [
+	[cn.TIPKOVNICA]: [
 		"Input Devices - Keyboard Box",
 		"Input Devices - Keyboard",
 		"Gaming Keyboard",
 	],
-	"Osnovne plošče": ["Osnovna plošča za namizni računalnik"],
-	Pomnilniki: [
+	[cn.M_BOARD]: ["Osnovna plošča za namizni računalnik"],
+	[cn.RAM]: [
 		"Memory Gaming Desktop",
 		"Memory ( Server )",
 		"Memory ( Mobile )",
 		"Memory ( Desktop )",
 	],
-	"Razvlažilci zraka": ["Acc - Air Purifiers", "Čistilci zraka"],
-	Podloge: ["Mouse Pad"],
-	"Grafične kartice": ["Graphics Processing Unit", "Video Card"],
-	"Gaming pripomočki": [
+	[cn.Z_RAZVLAZILEC]: ["Acc - Air Purifiers", "Čistilci zraka"],
+	[cn.M_PODLOGE]: ["Mouse Pad"],
+	[cn.GPU]: ["Graphics Processing Unit", "Video Card"],
+	[cn.GAMEPAD]: [
 		"Gaming Controller",
 		"Gaming Accessories",
 		"Gaming Microphone",
 		"Gaming pripomočki",
 	],
-	Kamere: ["Security - Surveillance System Accessories", "IP Camera"],
-	Televizije: ["LED TV"],
-	Žari: ["Acc - Multibakers/Grills", "Grills"],
-	"Vakumski aparati": ["Vacuum Sealers"],
-	"Nega las": ["Feni za lase", "Hair Stylers"],
-	"Priprava kave in čaja": ["Kavni aparati"],
-	"Pripomočki za osebno nego": ["Tehtnice za kopalnico"],
-	"Čistilci na tlak in metle": [
+	[cn.SUR_KAMERE]: ["Security - Surveillance System Accessories", "IP Camera"],
+	[cn.TV]: ["LED TV"],
+	[cn.ZAR]: ["Acc - Multibakers/Grills", "Grills"],
+	[cn.VAKUUM]: ["Vacuum Sealers"],
+	[cn.N_LAS]: ["Feni za lase", "Hair Stylers"],
+	[cn.KAVA_CAJ]: ["Kavni aparati"],
+	[cn.N_ACC]: ["Tehtnice za kopalnico"],
+	[cn.VAP]: [
 		"Acc - Steam Mops",
 		"Steam Mops",
 		"Cleaning Articles",
 	],
-	Kuhalniki: ["Sous-Vide", "Kuhalniki na paro"],
-	Tehtnice: ["Kuhinjske tehtnice"],
-	"Športne ure": ["Plates and ovens", "Otroška ura", "Pametna ura"],
-	"Kuhinjski roboti": ["Robot Kitchen"],
+	[cn.K_PLOSCA]: ["Sous-Vide", "Kuhalniki na paro"],
+	[cn.TEHTNICA]: ["Kuhinjske tehtnice"],
+	[cn.URE]: ["Plates and ovens", "Otroška ura", "Pametna ura"],
+	[cn.K_ROBOT]: ["Robot Kitchen"],
 };
 
 export default asbisCategoryMap

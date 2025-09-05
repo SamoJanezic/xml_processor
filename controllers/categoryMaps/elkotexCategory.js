@@ -1,30 +1,32 @@
+import cn from "./categoryNames.js";
+
 const elkotexCategoryMap = {
-	Komponenta: ["Razširitvene kartice"],
-	Likalniki: ["Likalniki", "Likalniki in likalne mize"],
-	"Ustna nega": ["Nega zob"],
-	"Pripomočki za osebno nego": ["Nega telesa"],
-	"POS in dodatki": [
+	[cn.ZVOČNA_KARTICA]: ["Razširitvene kartice"],
+	[cn.LIKALNIK]: ["Likalniki", "Likalniki in likalne mize"],
+	[cn.N_USTNA]: ["Nega zob"],
+	[cn.N_ACC]: ["Nega telesa"],
+	[cn.POS]: [
 		"Pisarniška tehnika",
 		"Uničevalci dokumentov",
 		"Organizatorji in dodatki",
 	],
-	Tiskalniki: ["Laserski tiskalniki"],
-	Mediji: ["Bluetooth"],
-	"Mrežne kartice, antene, WIFI ojačevalci": [
+	[cn.PRINTER]: ["Laserski tiskalniki"],
+	[cn.EXT_MEDIA]: ["Bluetooth", "USB hubi in priklopne postaje", "Centralne nadzorne enote (HUB)", "MP3/MP4 predvajalniki"],
+	[cn.LAN_CARD_EXTENDERS]: [
 		"Ojačevalniki brezžičnega omrežja",
 		"PoE",
 		"Mrežne kartice",
 	],
-	"Vlažilci zraka": ["Difuzorji", "Vlažilniki zraka"],
-	Fotoaparati: ["Torbe in nahrbtniki za fotoaparate in drone"],
-	"Športne ure": ["Pametne ure"],
-	Sesalniki: [
+	[cn.Z_VLAZILEC]: ["Difuzorji", "Vlažilniki zraka"],
+	[cn.FOTOAPARAT]: ["Torbe in nahrbtniki za fotoaparate in drone"],
+	[cn.URE]: ["Pametne ure"],
+	[cn.SESALEC]: [
 		"Klasični in ročni sesalniki",
 		"Pokončni sesalniki",
 		"Parni čistilniki",
 	],
-	"HI-FI in Prenosni zvočniki": ["Prenosni zvočniki"],
-	"Naprave za pametni dom": [
+	[cn.HIFI]: ["Prenosni zvočniki"],
+	[cn.P_DOM]: [
 		"Domofoni",
 		"Vremenske postaje",
 		"Pametne sijalke",
@@ -34,81 +36,76 @@ const elkotexCategoryMap = {
 		"Pametne vtičnice",
 		"Senzorji",
 	],
-	"Usmerjevalniki, stikala in AP": [
+	[cn.ROUTER_SWITCH_AP]: [
 		"Krmilniki in stikala",
 		"Stikala",
 		"Usmerjevalniki",
 	],
-	Ventilatorji: ["Ventilatorji in dodatki"],
-	Mini: ["Mini-micro-barebone (NUC)"],
-	"Dodatki za prenosnike": [
+	[cn.VENTILATOR]: ["Ventilatorji in dodatki"],
+	[cn.MINI_PC]: ["Mini-micro-barebone (NUC)"],
+	[cn.LAPTOP_DODATKI]: [
 		"Torbe za prenosnike",
 		"Nahrbtniki za prenosnike",
 		"Hlajenje za prenosnike",
 		"Dodatki za tablične računalnike",
 	],
-	Radiatorji: ["Oljni radiatorji", "Konvekcijski radiatorji"],
-	Slušalke: [
+	[cn.RADIATOR]: ["Oljni radiatorji", "Konvekcijski radiatorji"],
+	[cn.SLUSALKE]: [
 		"Slušalke in mikrofoni",
 		"Naglavne slušalke",
 		"True Wireless slušalke",
 		"In-Ear slušalke",
 	],
-	"Zunanje naprave": [
-		"USB hubi in priklopne postaje",
-		"Centralne nadzorne enote (HUB)",
-	],
-	"Mali gospodinjski aparati": [
-		"Kuhinjsko orodje",
-		"Kuhinjski organizatorji",
-		"Kuhinjski pripomočki",
-		"Priprava hrane",
-	],
-	"Domači kino": ["Zvočni sistemi za domači kino", "Medijski predvajalniki"],
-	"Tablični računalniki": [
+	// "Mali gospodinjski aparati": [
+	// 	"Kuhinjsko orodje",
+	// 	"Kuhinjski organizatorji",
+	// 	"Kuhinjski pripomočki",
+	// 	"Priprava hrane",
+	// ],
+	[cn.SOUND_BAR]: ["Zvočni sistemi za domači kino", "Medijski predvajalniki"],
+	[cn.TABLET]: [
 		"Tablični računalniki in e-Bralniki",
 		"Etuiji za tablice in diske",
 	],
-	"Šport in prosti čas": ["Torbe in nahrbtniki za prosti čas"],
-	"Pametne naprave": [
-		"MP3/MP4 predvajalniki",
+	[cn.CAMP]: ["Torbe in nahrbtniki za prosti čas"],
+	[cn.P_DOM]: [
 		"Pametne zapestnice",
 		"Pametni telefoni",
 		"Nosilci za telefone",
 		"Prenosne baterije / Powerbank",
 	],
-	"Kolesa in skuterji": [
+	[cn.KOLO]: [
 		"Dodatki za skiroje",
 		"Električni skiroji",
 		"Vse za kolo",
 	],
-	"Hlajenje in gretje": [
+	[cn.GRETJE]: [
 		"IR grelniki",
-		"Hladilci zraka",
 		"Kaloriferji, stenski grelniki",
 		"Kamini",
 		"Solarni paneli",
 	],
-	"Programska oprema": ["Microsoft Windows", "Microsoft Office"],
-	Powerline: ["Home Plug PowerLine"],
-	"NAS sistemi": ["NAS naprave", "NAS dodatki"],
-	Hlajenje: ["Hladilniki za procesorje", "Termalne paste"],
-	"Priprava kave in čaja": ["Mlinčki za kavo", "Kavni aparati"],
-	"Trdi diski": ["Zunanji diski", "Zunanji SSD diski", "SSD diski"],
-	"Potrošni material": ["Tonerji in črnila", "Papir"],
-	"Spominske kartice in čitalci": [
+	[cn.HLAJENJE]: ["Hladilci zraka"],
+	[cn.SOFTWARE]: ["Microsoft Windows", "Microsoft Office"],
+	[cn.POWERLINE]: ["Home Plug PowerLine"],
+	[cn.NAS]: ["NAS naprave", "NAS dodatki"],
+	[cn.HLAJENJE]: ["Hladilniki za procesorje", "Termalne paste"],
+	[cn.KAVA_CAJ]: ["Mlinčki za kavo", "Kavni aparati"],
+	[cn.HDD]: ["Zunanji diski", "Zunanji SSD diski", "SSD diski"],
+	[cn.POTROSNI_M]: ["Tonerji in črnila", "Papir"],
+	[cn.SD_CARD]: [
 		"Spominske kartice",
 		"Čitalniki kartic in zaščitne škatlice",
 	],
-	Pomnilniki: ["Pomnilniški moduli"],
-	"Opekači kruha": ["Opekači kruha, toasterji"],
-	Ledomat: ["Priprava sladoleda in ledomati"],
-	Tehtnice: ["Kuhinjske tehtnice"],
-	"Mesoreznice in salamoreznice": ["Salamoreznice/mletje mesa"],
-	Mešalniki: ["Blenderji, mešalniki", "Penilniki mleka"],
-	Posoda: ["Posode za živila", "Kuhinjska posoda", "Posodice za vodo"],
-	"Kuhinjski žari": ["Električne pečice, žari in grelne ploskve"],
-	"Dom in vrt": [
+	[cn.RAM]: ["Pomnilniški moduli"],
+	[cn.PEKA_KRUH]: ["Opekači kruha, toasterji"],
+	[cn.LEDOMAT]: ["Priprava sladoleda in ledomati"],
+	[cn.TEHTNICA]: ["Kuhinjske tehtnice"],
+	[cn.MESO_SALAMOREZNICA]: ["Salamoreznice/mletje mesa"],
+	[cn.MESALNIK]: ["Blenderji, mešalniki", "Penilniki mleka"],
+	[cn.POSODA]: ["Posode za živila", "Kuhinjska posoda", "Posodice za vodo"],
+	[cn.K_ZAR]: ["Električne pečice, žari in grelne ploskve"],
+	[cn.DOM_VRT]: [
 		"Stojala za perilo in obešalniki",
 		"Vrtno orodje",
 		"Ročno orodje",
@@ -118,9 +115,9 @@ const elkotexCategoryMap = {
 		"Senčniki in paviljoni",
 		"Oprema vrta in okolice",
 	],
-	"Radio in budilke": ["Radio/Gramofoni"],
-	Žari: ["Kamp žari", "Žari in kurišča"],
-	Kampiranje: [
+	[cn.RADIO]: ["Radio/Gramofoni"],
+	[cn.ZAR]: ["Kamp žari", "Žari in kurišča"],
+	[cn.CAMP]: [
 		"Prenosne svetilke",
 		"Termovke",
 		"Kamp dodatki in ostalo",
@@ -131,7 +128,7 @@ const elkotexCategoryMap = {
 		"Kamp ležalniki in stoli",
 		"Kamp kuhinjski pripomočki",
 	],
-	"Brezprekinitveni napajalniki": ["Brezprekinitvena napajanja"],
+	[cn.UPS]: ["Brezprekinitvena napajanja"],
 };
 
 export default elkotexCategoryMap;
