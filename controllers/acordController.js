@@ -74,7 +74,8 @@ export class AcordController extends DobaviteljController {
 		"Hubi, čitalci",
 		"Mikroskopi",
 		"Interaktivni zasloni",
-		"Powerbank baterije"
+		"Powerbank baterije",
+		"Dodatna oprema",
 	]);
 
 	exceptions(param) {

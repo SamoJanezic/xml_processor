@@ -71,6 +71,7 @@ export class AlsoController extends DobaviteljController {
 		"Strežniki, diskovna polja & UPS / Dodatki / PDU dodatke",
 		"Komponente / Krmilniki / Drugi krmilniki",
 		"Omrežje & Smart Home / Mrežna oprema / Stikala - ohišja",
+		"Telefonija & Pametne naprave / Stacionarni telefoni / Fiksni telefon, IP & PBX",
 	]);
 
 	getNestedValue(obj, path) {

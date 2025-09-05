@@ -35,7 +35,7 @@ export class BshController extends DobaviteljController {
 	];
 
 	combineData() {
-		const [oisip, cene] = this.getData();
+		const [opisi, cene] = this.getData();
 		return opisi.flatMap(
 			opis => cene
 			.filter(cena=> opis.PIData.EANArticleCode === cena.ean)

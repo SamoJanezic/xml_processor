@@ -95,6 +95,7 @@ export class ColbyController extends DobaviteljController {
 	}
 
 	flattenCategoryMap(categoryMap) {
+		if (!categoryMap) return {};
 		return Object.entries(categoryMap).reduce((acc, [newCategory, oldCategories]) => {
 			oldCategories.forEach(old => acc[old] = newCategory);
 			return acc;

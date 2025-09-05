@@ -45,6 +45,8 @@ export class EventusController extends DobaviteljController {
 		"Čistila za tehniko",
 		"Strojne denarnice",
 		"Varnostne kopije in dodatki",
+		"Kabli",
+		"Adapterji",
 	]);
 
 	exceptions(param) {

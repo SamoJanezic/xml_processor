@@ -87,6 +87,10 @@ export class ElkotexController extends DobaviteljController {
 		"Priprava hrane",
 		"Pametne naprave",
 		"Čistila",
+		"Kuhinjsko orodje",
+		"Kuhinjski organizatorji",
+		"Kuhinjski pripomočki",
+		"Priprava hrane",
 	]);
 
 	exceptions(param) {
@@ -193,11 +197,11 @@ export class ElkotexController extends DobaviteljController {
 		});
 	}
 
-	executeAll() {
-		this.createDataObject();
-		this.sortCategory();
-		this.splitSlike();
-		this.splitDodatneLastnosti();
-		this.insertDataIntoDb();
-	}
+	// executeAll() {
+	// 	this.createDataObject();
+	// 	this.sortCategory();
+	// 	this.splitSlike();
+	// 	this.splitDodatneLastnosti();
+	// 	this.insertDataIntoDb();
+	// }
 }
