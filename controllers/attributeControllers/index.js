@@ -5,8 +5,8 @@ import AvteraAttributes from "./avteraAttributes.js";
 import AsbisAttributes from "./asbisAttributes.js";
 import ElkotexAttributes from "./elkotexAttributes.js";
 import ColbyAttributes from "./colbyAttributes.js";
-// import liebherrCategoryMap from "./liebherrCategory.js";
-// import gorenjeCategoryMap from "./gorenjeCategory.js";
+import LiebherrAttributes from "./LiebherrAttributes.js";
+// import gorenjeAttributes from "./gorenjeAttributes.js";
 // import BshAttributes from "./bshAttributes.js";
 
 export const attributesMap = {
@@ -17,7 +17,7 @@ export const attributesMap = {
 	asbis: AsbisAttributes,
 	elkotex: ElkotexAttributes,
 	colby: ColbyAttributes,
+	liebherr: LiebherrAttributes,
 	// bsh: BshAttributes,
-	// liebherr: liebherrCategoryMap,
-	// gorenje: gorenjeCategoryMap,
+	// gorenje: gorenjeAttributes,
 };

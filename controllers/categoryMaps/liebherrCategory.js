@@ -1,0 +1,57 @@
+import cn from "./categoryNames.js";
+
+const liebherrCategoryNames = {
+	[cn.HLADILNIK]: [
+		"Vgradni kombiniran hladilnik z zamrzovalnikom s sistemom BioFresh in NoFrost",
+		"Vgradni kombiniran hladilnik z zamrzovalnikom s sistemom EasyFresh in NoFrost",
+		"Vgradni kombiniran hladilnik z zamrzovalnikom s sistemom EasyFresh in SmartFrost",
+		"Vgradni kombiniran hladilnik z zamrzovalnikom s sistemom BioFresh in SmartFrost",
+		"Kombinirani hladilnik z zamrzovalnikom z BioFresh Professional in NoFrost z možnostjo vgradnje",
+		"Vgradni hladilnik z BioFresh Professional in AutoDoor",
+		"Vgradni hladilnik s sistemom EasyFresh",
+		"Hladilnik, primeren za vgradnjo pod pultom",
+		"Hladilnik, primeren za vgradnjo pod pultom z EasyFresh",
+		"Hladilnik s polnim prostorom BioFresh, primeren za vgradnjo pod pultom",
+		"Vgradni hladilnik s sistemom BioFresh",
+		"Vgradni hladilnik z BioFresh Professional",
+		"Vgradni hladilnik s predalom s temperaturo kleti in s sistemom BioFresh",
+		"Vgradni hladilnik z EasyFresh in košaro za steklenice",
+		"Vgradni hladilnik s predalom s temperaturo kleti in s sistemom EasyFresh",
+		"Hladilnik z zamrzovalnikom francoskih vrat z 2 zamrzovalnima predaloma in sistemom IceMaker",
+		"Hladilnik z zamrzovalnikom s francoskimi vrati z 2 zamrzovalnima predaloma ter napravama IceMaker in InfinitySpring",
+		"Hladilnik z zamrzovalnikom s 4 vrati French Door in EasyTwist-Ice",
+		"Hladilnik z zamrzovalnikom s 4 vrati French Door s sistemom IceMaker",
+		"Kombinirani hladilnik z zamrzovalnikom s sistemom EasyFresh in NoFrost",
+		"Kombinirani hladilnik z zamrzovalnikom s sistemom BioFresh in NoFrost",
+		"Avtomatski hladilnik z zamrzovalnikom s sistemom SmartFrost",
+		"Kombinirani hladilnik z zamrzovalnikom z BioFresh Professional in NoFrost",
+		"Kombinacija z zamrzovalnim predelom NoFrost in predelom za temperiranje vina",
+		"Podpultni hladilnik",
+		"Prostostoječi hladilnik s sistemom EasyFresh",
+		"Prostostoječi hladilnik",
+		"Hladilni aparat brez zamrzovalnika s sistemom BioFresh",
+		"Namizni hladilnik z EasyFresh",
+		"Prostostoječi hladilnik z BioFresh",
+		"Prostostoječi hladilnik z BioFresh Professional",
+		"Kombinacija side-by-side s predalom za temperiranje vina",
+		"Kombinirani aparati Side-by-Side",
+	],
+	[cn.ZAMRZOVALNIK]: [
+		"Vgradna zamrzovalna skrinja z NoFrost in IceTower",
+		"Zamrzovalnik, primeren za vgradnjo pod pultom s funkcijo SmartFrost",
+		"Zamrzovalnik, primeren za vgradnjo pod pult z NoFrost",
+		"Vgradni zamrzovalnik z NoFrost",
+		"Vgradni zamrzovalnik z SmartFrost",
+		"Zamrzovalna skrinja",
+		"Podpultna zamrzovalna omara s sistemom SmartFrost",
+		"Podpultna zamrzovalna omara s sistemom NoFrost",
+		"Prostostoječa zamrzovalna omara s sistemom NoFrost",
+		"Prostostoječi zamrzovalnik z NoFrost in EasyTwist-Ice",
+		"Prostostoječi zamrzovalnik z vrati BluRoX in NoFrost",
+		"Prostostoječa zamrzovalna skrinja z NoFrost in IceTower",
+		"Zamrzovalnik z NoFrost in okolju prijaznimi materiali",
+	]
+}
+
+export default liebherrCategoryNames;
+

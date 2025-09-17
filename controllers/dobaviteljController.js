@@ -1,14 +1,8 @@
 import { db } from "../db/db.js";
 import { parser } from "./parseController.js";
 import { insertIntoTable } from "../db/sql.js";
-import { Izdelek } from "../Models/Izdelek.js";
-import { IzdelekDobavitelj } from "../Models/IzdelekDobavitelj.js";
-import { Kategorija } from "../Models/Kategorija.js";
-import { Dobavitelj } from "../Models/Dobavitelj.js";
-import { Komponenta } from "../Models/Komponenta.js";
-import { Atribut } from "../Models/Atribut.js";
-import { Slika } from "../Models/Slika.js";
-import "../Models/associations.js";
+import { modelsMap } from "../models/index.js";
+import "../models/associations.js";
 
 export default class DobaviteljController {
 	vrstice = [
@@ -129,6 +123,9 @@ export default class DobaviteljController {
 	}
 
 	processLastnosti(data) {
+		if (!data.dodatne_lastnosti?.length) {
+			return;
+		}
 		let lastnosti = [
 			{
 				ean: data.ean,
@@ -173,8 +170,8 @@ export default class DobaviteljController {
 
 	processImages(data) {
 		const slike = [
-			{ izdelek_ean: data.ean, slika_url: data.slika_mala, tip: "mala" },
-			{ izdelek_ean: data.ean, slika_url: data.slika_velika, tip: "velika" }
+			data.slika_mala ?? { izdelek_ean: data.ean, slika_url: data.slika_mala, tip: "mala" },
+			data.slika_velika ?? { izdelek_ean: data.ean, slika_url: data.slika_velika, tip: "velika" }
 		];
 
 		if (data.dodatne_slike?.[0]) {
@@ -200,15 +197,14 @@ export default class DobaviteljController {
 				const updated = this.processCategory(rawData, flatCategoryMap);
 				rawData.kategorija = updated.kategorija;
 				if (typeof rawData.kratki_opis === "string" ) rawData.kratki_opis = rawData.opis ? rawData.opis.substring(0, 100) : null;
-				acc.slike.push(...this.processImages(updated));
-				acc.lastnosti.push(...this.processLastnosti(updated));
+				acc.slike.push(...this.processImages(updated || []));
+				acc.lastnosti.push(...this.processLastnosti(updated) || []);
 				return acc;
 			},
 			{ slike: [], lastnosti: [] }
 		);
 
 		const { komponenta, atribut } = this.mapKomponentaAndAtribut(lastnosti);
-		// console.log(atribut)
 
 		Object.assign(this, {
             slika: slike,
@@ -256,22 +252,19 @@ export default class DobaviteljController {
 
 		const { izdelekData, izdelekDobaviteljData, kategorijaData } = this.prepareDbData();
 
-		// console.log(izdelekDobaviteljData)
-		// console.log(this.atribut)
 		// process.exit()
 
-
 		db.sync();
-		await insertIntoTable(Dobavitelj, { dobavitelj: this.name });
-		await insertIntoTable(Izdelek, izdelekData);
-		await insertIntoTable(Kategorija, kategorijaData);
-		await insertIntoTable(IzdelekDobavitelj, izdelekDobaviteljData);
+		await insertIntoTable(modelsMap.Dobavitelj, { dobavitelj: this.name });
+		await insertIntoTable(modelsMap.Izdelek, izdelekData);
+		await insertIntoTable(modelsMap.Kategorija, kategorijaData);
+		await insertIntoTable(modelsMap.IzdelekDobavitelj, izdelekDobaviteljData);
 		if (this.slika) {
-			await insertIntoTable(Slika, this.slika);
+			await insertIntoTable(modelsMap.Slika, this.slika);
 		}
 		if (this.komponenta && this.atribut) {
-			await insertIntoTable(Komponenta, this.komponenta);
-			await insertIntoTable(Atribut, this.atribut);
+			await insertIntoTable(modelsMap.Komponenta, this.komponenta);
+			await insertIntoTable(modelsMap.Atribut, this.atribut);
 		}
 	}
 

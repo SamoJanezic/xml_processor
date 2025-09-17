@@ -85,7 +85,6 @@ export class BshController extends DobaviteljController {
 			ppc: () => product?.ppc?.replace(",", ".") ?? null
 		};
 
-		// use handler if available, else default to raw value
 		obj[field] = handlers[field]?.() ?? product[key] ?? null;
 		return obj;
 	}
