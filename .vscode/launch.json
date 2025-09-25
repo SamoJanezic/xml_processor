@@ -11,7 +11,7 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}\\controllers\\attriburteControllers\\AvteraAttributes.js"
+			"program": "${workspaceFolder}\\controllers\\attributeControllers\\AvteraAttributes.js"
 		}
 	]
 }
