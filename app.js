@@ -1,6 +1,6 @@
 import { controllerMap } from "./controllers/index.js";
 import { categoryMap } from "./controllers/categoryMaps/index.js";
-import { attributesMap } from "./controllers/attriburteControllers/index.js";
+import { attributesMap } from "./controllers/attributeControllers/index.js";
 
 export function executeAll() {
 	Object.entries(controllerMap).forEach(([key, Controller]) => {
