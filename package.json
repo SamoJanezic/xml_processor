@@ -2,10 +2,11 @@
   "dependencies": {
     "@sequelize/mssql": "^7.0.0-alpha.46",
     "allow-cors": "^2.0.0",
-    "axios": "^1.11.0",
+    "axios": "^1.7.9",
     "express": "^4.21.2",
     "fast-xml-parser": "^4.5.0",
     "node-cron": "^4.2.1",
+    "read-excel-file": "^6.0.1",
     "sequelize": "^6.37.5",
     "sqlite3": "^5.1.7",
     "tedious": "^19.0.0",
@@ -14,7 +15,6 @@
   "type": "module",
   "scripts": {
     "up": "node scripts/up",
-    "down": "node scripts/down",
     "build": "node scripts/builder",
     "app": "node ./app.js",
     "update": "node xml-downloader/app.js",
