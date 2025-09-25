@@ -154,28 +154,28 @@ export class ColbyController extends DobaviteljController {
 		return null;
 	}
 
-	processAllData() {
-		const flatCategoryMap = this.flattenCategoryMap(this.categoryMap);
+	// processAllData() {
+	// 	const flatCategoryMap = this.flattenCategoryMap(this.categoryMap);
 
-		const { slike, lastnosti } = this.allData.reduce(
-			(acc, rawData) => {
-				const updated = this.processCategory(rawData, flatCategoryMap);
-				rawData.kategorija = updated.kategorija
-				acc.slike.push(...this.processImages(updated));
-				acc.lastnosti.push(...this.processLastnosti(updated));
-				return acc;
-			},
-			{ slike: [], lastnosti: [] }
-		);
+	// 	const { slike, lastnosti } = this.allData.reduce(
+	// 		(acc, rawData) => {
+	// 			const updated = this.processCategory(rawData, flatCategoryMap);
+	// 			rawData.kategorija = updated.kategorija
+	// 			acc.slike.push(...this.processImages(updated));
+	// 			acc.lastnosti.push(...this.processLastnosti(updated));
+	// 			return acc;
+	// 		},
+	// 		{ slike: [], lastnosti: [] }
+	// 	);
 
-		const { komponenta, atribut } = this.mapKomponentaAndAtribut(lastnosti);
+	// 	const { komponenta, atribut } = this.mapKomponentaAndAtribut(lastnosti);
 
-		Object.assign(this, {
-            slika: slike,
-            komponenta,
-            atribut,
-        });
-	}
+	// 	Object.assign(this, {
+    //         slika: slike,
+    //         komponenta,
+    //         atribut,
+    //     });
+	// }
 
 	executeAll() {
 		this.createDataObject();
