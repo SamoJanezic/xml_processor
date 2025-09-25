@@ -1,5 +1,5 @@
 import { db } from "../db/db.js";
-import { parser } from "./parseController.js";
+import { xmlParser } from "./parseController.js";
 import { insertIntoTable } from "../db/sql.js";
 import { modelsMap } from "../models/index.js";
 import "../models/associations.js";
@@ -41,10 +41,10 @@ export default class DobaviteljController {
 	getData() {
 		if (typeof this.file === "object") {
 			return this.file.map((el) => {
-				return parser(el.fileName, el.node);
+				return xmlParser(el.fileName, el.node);
 			});
 		}
-		const data = parser(this.file, this.nodes, this.encoding);
+		const data = xmlParser(this.file, this.nodes, this.encoding);
 		return data;
 	}
 
@@ -252,7 +252,7 @@ export default class DobaviteljController {
 
 		const { izdelekData, izdelekDobaviteljData, kategorijaData } = this.prepareDbData();
 
-		// process.exit()
+		process.exit()
 
 		db.sync();
 		await insertIntoTable(modelsMap.Dobavitelj, { dobavitelj: this.name });
@@ -262,9 +262,10 @@ export default class DobaviteljController {
 		if (this.slika) {
 			await insertIntoTable(modelsMap.Slika, this.slika);
 		}
-		if (this.komponenta && this.atribut) {
-			await insertIntoTable(modelsMap.Komponenta, this.komponenta);
-			await insertIntoTable(modelsMap.Atribut, this.atribut);
+		if (this.komponenta && Object.keys(this.komponenta).length > 0 &&
+			this.atribut && Object.keys(this.atribut).length > 0) {
+		await insertIntoTable(modelsMap.Komponenta, this.komponenta);
+		await insertIntoTable(modelsMap.Atribut, this.atribut);
 		}
 	}
 

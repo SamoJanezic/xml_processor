@@ -1,4 +1,4 @@
-import { parser } from "./parseController.js";
+import { xmlParser } from "./parseController.js";
 import DobaviteljController from "./DobaviteljController.js";
 
 export class BshController extends DobaviteljController {

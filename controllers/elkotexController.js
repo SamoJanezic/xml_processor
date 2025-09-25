@@ -22,7 +22,7 @@ export class ElkotexController extends DobaviteljController {
 		"niPodatka",
 		"niPodatka",
 		"slike",
-		"opis",
+		"niPodatka",
 		"znamkaId",
 		"podkategorijaNaziv",
 		"niPodatka",
