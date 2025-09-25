@@ -1,12 +1,11 @@
 import express from "express";
-import { IzdelekDobavitelj } from "../Models/IzdelekDobavitelj.js";
-import { Kategorija } from "../Models/Kategorija.js";
+import [ modelsMap ] from "../models/index.js";
 
 const router = express.Router();
 
 const models = {
-	IzdelekDobavitelj,
-	Kategorija
+	modelsMap.IzdelekDobavitelj,
+	modelsMap.Kategorija
 }
 
 router.get("/getData", async (req, res) => {
@@ -27,7 +26,7 @@ router.get("/getData", async (req, res) => {
 });
 
 router.get("/getSingle", (req, res) => {
-	IzdelekDobavitelj.findOne({
+	modelsMap.IzdelekDobavitelj.findOne({
 		where: { id: req.headers.id },
 	})
 		.then((data) => {
@@ -41,7 +40,7 @@ router.get("/getSingle", (req, res) => {
 router.put("/update_kategorija", (req, res) => {
 	const data = req.body;
 	data.forEach(el => {
-		Kategorija.update(
+		modelsMap.Kategorija.update(
 			{ marza: el.marza },
 			{
 				where: {
@@ -55,7 +54,7 @@ router.put("/update_kategorija", (req, res) => {
 router.put("/update_izdelek", (req, res) => {
 	const data = req.body;
 
-	IzdelekDobavitelj.update(
+	modelsMap.IzdelekDobavitelj.update(
 		{
 			KATEGORIJA_kategorija: data.KATEGORIJA_kategorija,
 			izdelek_ime: data.izdelek_ime,
@@ -81,7 +80,7 @@ router.put("/update_izdelek", (req, res) => {
 
 router.put("/upsert", (req, res) => {
 
-	IzdelekDobavitelj.upsert(
+	modelsMap.IzdelekDobavitelj.upsert(
     {
       name: username,
       results: surveyData,

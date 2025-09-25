@@ -21,7 +21,6 @@ Komponenta.init(
         komponenta: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
         },
     },
     {

@@ -1,71 +1,64 @@
-import { IzdelekDobavitelj } from "./IzdelekDobavitelj.js";
-import { Izdelek } from "./Izdelek.js";
-import { Dobavitelj } from "./Dobavitelj.js";
-import { Kategorija } from "./Kategorija.js";
-import { Slika } from "./Slika.js";
-import { Komponenta } from "./Komponenta.js";
-import { Atribut } from "./Atribut.js";
+import { modelsMap } from "./index.js";
 
-
-IzdelekDobavitelj.belongsTo(Izdelek, {
+modelsMap.IzdelekDobavitelj.belongsTo(modelsMap.Izdelek, {
   foreignKey: "izdelek_ean",
   targetKey: "ean"
 });
 
-IzdelekDobavitelj.belongsTo(Dobavitelj, {
+modelsMap.IzdelekDobavitelj.belongsTo(modelsMap.Dobavitelj, {
   foreignKey: "DOBAVITELJ_dobavitelj",
   targetKey: "dobavitelj"
 });
 
-IzdelekDobavitelj.belongsTo(Kategorija, {
+modelsMap.IzdelekDobavitelj.belongsTo(modelsMap.Kategorija, {
   foreignKey: "KATEGORIJA_kategorija",
   targetKey: "kategorija"
 });
 
-Kategorija.hasMany(IzdelekDobavitelj, {
+modelsMap.Kategorija.hasMany(modelsMap.IzdelekDobavitelj, {
 	foreignKey: "KATEGORIJA_kategorija",
 	sourceKey: "kategorija",
 });
 
 
-Izdelek.hasMany(IzdelekDobavitelj, {
+modelsMap.Izdelek.hasMany(modelsMap.IzdelekDobavitelj, {
 	foreignKey: "izdelek_ean",
 	sourceKey: "ean",
 });
 
 
-Izdelek.hasMany(IzdelekDobavitelj, {
+modelsMap.Izdelek.hasMany(modelsMap.IzdelekDobavitelj, {
 	foreignKey: "izdelek_ean",
 	sourceKey: "ean",
 });
 
-Slika.belongsTo(Izdelek, {
+modelsMap.Slika.belongsTo(modelsMap.Izdelek, {
   foreignKey: "izdelek_ean",
   targetKey: "ean"
 });
 
-Izdelek.hasMany(Slika, {
+modelsMap.Izdelek.hasMany(modelsMap.Slika, {
   foreignKey: "izdelek_ean",
   sourceKey: "ean"
 });
 
 
-Komponenta.belongsTo(Kategorija, {
+modelsMap.Komponenta.belongsTo(modelsMap.Kategorija, {
   foreignKey: "KATEGORIJA_kategorija",
   targetKey: "kategorija"
 });
 
-Kategorija.hasMany(Komponenta, {
+modelsMap.Kategorija.hasMany(modelsMap.Komponenta, {
   foreignKey: "KATEGORIJA_kategorija",
   sourceKey: "kategorija"
 });
 
-Atribut.belongsTo(Komponenta, {
+modelsMap.Atribut.belongsTo(modelsMap.Komponenta, {
   foreignKey: "KOMPONENTA_komponenta",
   targetKey: "komponenta"
 });
 
-Komponenta.hasMany(Atribut, {
+modelsMap.Komponenta.hasMany(modelsMap.Atribut, {
   foreignKey: "KOMPONENTA_komponenta",
   sourceKey: "komponenta"
 });

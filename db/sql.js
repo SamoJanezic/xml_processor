@@ -1,9 +1,5 @@
 import { db } from "./db.js";
-import { Slika } from "../Models/Slika.js";
-import { IzdelekDobavitelj } from "../Models/IzdelekDobavitelj.js";
-import { Izdelek } from "../Models/Izdelek.js";
-import { Kategorija } from "../Models/Kategorija.js";
-import { Sequelize } from "sequelize";
+import { modelsMap } from "../models/index.js";
 
 export function createTable(tableName) {
 	tableName
@@ -18,7 +14,7 @@ export function createTable(tableName) {
 
 export function insertIntoTable(tableName, data) {
 	if (data.length) {
-		if(tableName === IzdelekDobavitelj) {
+		if(tableName === modelsMap.IzdelekDobavitelj) {
 			tableName
 				.bulkCreate(data, { updateOnDuplicate: ['dealer_cena', 'nabavna_cena', 'ppc'] })
 				.then(() => {
@@ -121,7 +117,7 @@ export async function getAtributInfo(ean) {
 }
 
 export async function getSlikaInfo(ean) {
-	return await Slika.findAll({
+	return await modelsMap.Slika.findAll({
 		attributes: ["slika_url", "tip"],
 		where: {
 			izdelek_ean: ean,
