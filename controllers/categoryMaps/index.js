@@ -5,8 +5,8 @@ import avteraCategoryMap from "./avteraCategory.js";
 import asbisCategoryMap from "./asbisCategory.js";
 import elkotexCategoryMap from "./elkotexCategory.js";
 import colbyCategoryMap from "./colbyCategory.js";
-// import liebherrCategoryMap from "./liebherrCategory.js";
-// import gorenjeCategoryMap from "./gorenjeCategory.js";
+import liebherrCategoryMap from "./liebherrCategory.js";
+import gorenjeCategoryMap from "./gorenjeCategory.js";
 import bshCategoryMap from "./bshCategory.js";
 
 export const categoryMap = {
@@ -15,9 +15,9 @@ export const categoryMap = {
   avtera: avteraCategoryMap,
   eventus: eventusCategoryMap,
   asbis: asbisCategoryMap,
-  // elkotex: elkotexCategoryMap,
+  elkotex: elkotexCategoryMap,
   colby: colbyCategoryMap,
-  // liebherr: liebherrCategoryMap,
-  // gorenje: gorenjeCategoryMap,
+  liebherr: liebherrCategoryMap,
+  gorenje: gorenjeCategoryMap,
   bsh: bshCategoryMap,
 };

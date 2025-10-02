@@ -13,8 +13,8 @@ const tables = [
   Izdelek,
   Komponenta,
   IzdelekDobavitelj,
-  Slika,
   Atribut,
+  Slika,
 ];
 
 

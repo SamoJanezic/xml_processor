@@ -10,14 +10,14 @@ import { GorenjeController } from "./GorenjeController.js";
 import { BshController } from "./BshController.js";
 
 export const controllerMap = {
-  also: AlsoController,  //napaka z & (popravljena)
-  acord: AcordController,  //dela
-  avtera: AvteraController, //dela
-  // elkotex: ElkotexController, //problemi z dodatnimi lasnostmi
-  eventus: EventusController, //dela
-  asbis: AsbisController, //napaka z & (popravljena)
+  // also: AlsoController,  //napaka z & (popravljena)
+  // acord: AcordController,  //dela
+  // avtera: AvteraController, //dela
+  // elkotex: ElkotexController, //problemi z dodatnimi lasnostmi neskončen loop
+  // eventus: EventusController, //dela
+  // asbis: AsbisController, //napaka z & (popravljena)
   // colby: ColbyController, //dela
-  // liebherr: LiebherrController,
+  liebherr: LiebherrController,
   // gorenje: GorenjeController,
   // bsh: BshController,
 };

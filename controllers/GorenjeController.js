@@ -63,7 +63,7 @@ export class GorenjeController extends DobaviteljController {
 	}
 
 	sortCategories() {
-		
+
 	}
 
 	parseObject(obj) {}

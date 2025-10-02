@@ -123,6 +123,7 @@ export default class DobaviteljController {
 	}
 
 	processLastnosti(data) {
+		// console.log(data.dodatne_lastnosti)
 		if (!data.dodatne_lastnosti?.length) {
 			return;
 		}
