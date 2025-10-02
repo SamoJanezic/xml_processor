@@ -47,17 +47,16 @@ export class LiebherrController extends dobaviteljController {
 		const ean = this.getEan(prod)
 		const price = prices.filter(p => String(p['Matični podatki//EAN-št']) === String(ean))[0];
 		const promoPrice = promoPrices.filter(p => String(p['EAN-št']) === String(ean))[0];
+		const attributes = this.extractAttributes(prod);
 
 		if(!price && !promoPrice) return;
-			// console.log('product:' , prod)
-			// console.log('price:' , price)
-			// console.log('promo Prices:' , promoPrice)
-		// return
+
+		// console.log(attributes)
+		// process.exit()
 
 		const defaults = {
 			dealer_cena: null,
 			davcna_stopnja: 22,
-			dodatne_lastnosti: null,
 			blagovna_znamka: "Liebherr",
 			zaloga: "preveriti",
 		};
@@ -66,13 +65,14 @@ export class LiebherrController extends dobaviteljController {
 			...defaults,
 			ean: ean,
 			izdelek_ime: prod['@_name'],
+			kratki_opis: promoPrice?.['opis izdelka'] ?? price?.['Opis aparata'],
+			opis: promoPrice?.['opis izdelka'] ?? price?.['Opis aparata'],
+			cena_nabavna: promoPrice?.['Promocijska priporočena maloprodajna cena brez DDV'] ?? price?.['Priporočena maloprodajna cena brez DDV'],
+			ppc: promoPrice?.['Promocijska priporočena maloprodajna cena z DDV'] ?? price?.['Priporočena maloprodajna cena z DDV'],
 			slika_mala: images[0],
 			slika_velika: images[0],
 			dodatne_slike: images,
-			cena_nabavna: promoPrice?.['Promocijska priporočena maloprodajna cena brez DDV'] ?? price?.['Priporočena maloprodajna cena brez DDV'],
-			ppc: promoPrice?.['Promocijska priporočena maloprodajna cena z DDV'] ?? price?.['Priporočena maloprodajna cena z DDV'],
-			kratki_opis: promoPrice?.['opis izdelka'] ?? price?.['Opis aparata'],
-			opis: promoPrice?.['opis izdelka'] ?? price?.['Opis aparata'],
+			dodatne_lastnosti: attributes,
 			kategorija: prod['@_type'],
 			eprel_id: eprel.length ? eprel : null,
 		});
@@ -157,6 +157,47 @@ export class LiebherrController extends dobaviteljController {
 			}
 		});
 		return ids[0];
+	}
+
+	extractAttributes(xmlData) {
+	const groupedAttributes = {};
+
+	const fmtArray = Array.isArray(xmlData.FMT) ? xmlData.FMT : [xmlData.FMT];
+
+		for (const fmt of fmtArray) {
+			const fmtName = fmt["@_name"] || "Unknown FMT";
+			if (!groupedAttributes[fmtName]) groupedAttributes[fmtName] = {};
+			const groups = Array.isArray(fmt.AttributeGroup) ? fmt.AttributeGroup : [fmt.AttributeGroup];
+
+			for (const group of groups) {
+				if (!group) continue;
+
+				const groupName = group["@_name"] || "Unknown Group";
+				if (!groupedAttributes[fmtName][groupName]) groupedAttributes[fmtName][groupName] = {};
+
+				if (!group.Attribute) continue;
+
+				const attrs = Array.isArray(group.Attribute) ? group.Attribute : [group.Attribute];
+
+				for (const attr of attrs) {
+					const name = attr["@_name"];
+					if (!name) continue;
+
+					if (attr.Title && attr.Text) {
+						groupedAttributes[fmtName][groupName][name] = {
+							title: attr.Title,
+							text: attr.Text,
+						};
+					} else if (attr.Value) {
+						groupedAttributes[fmtName][groupName][name] = attr.Value;
+					} else if (attr.FormattedValue) {
+						groupedAttributes[fmtName][groupName][name] = attr.FormattedValue;
+					}
+				}
+			}
+		}
+
+		return groupedAttributes;
 	}
 
 	sortCategories() {
