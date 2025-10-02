@@ -1,6 +1,6 @@
 import cn from "./categoryNames.js";
 
-const acordCategoryNames = {
+const acordCategoryMap = {
 	[cn.AUDIO_VIDEO]: ["Avdio/Video"],
 	[cn.POWERLINE]: ["Vtičnice"],
 	[cn.LAN_CARD_EXTENDERS]: ["Mrežne kartice in adapterji", "WiFi ojačevalci - extender", "Antene"],
@@ -32,4 +32,4 @@ const acordCategoryNames = {
 	[cn.USB_KEY]: ["USB ključi"],
 }
 
-export default acordCategoryNames;
+export default acordCategoryMap;
