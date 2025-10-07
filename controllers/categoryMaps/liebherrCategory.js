@@ -1,6 +1,6 @@
 import cn from "./categoryNames.js";
 
-const liebherrCategoryNames = {
+const liebherrCategoryMap = {
 	[cn.HLADILNIK]: [
 		"Vgradni kombiniran hladilnik z zamrzovalnikom s sistemom BioFresh in NoFrost",
 		"Vgradni kombiniran hladilnik z zamrzovalnikom s sistemom EasyFresh in NoFrost",
@@ -53,5 +53,5 @@ const liebherrCategoryNames = {
 	]
 }
 
-export default liebherrCategoryNames;
+export default liebherrCategoryMap;
 
