@@ -1,5 +1,5 @@
 import dobaviteljController from "./DobaviteljController.js";
-import { excelParser } from "./ParseController.js";
+import { excelParser } from "./parseController.js";
 
 export class LiebherrController extends dobaviteljController {
 	constructor(categoryMap, Attributes, ...args) {
