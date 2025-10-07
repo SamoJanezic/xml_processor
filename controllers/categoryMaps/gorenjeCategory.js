@@ -1,7 +1,55 @@
 import cn from "./categoryNames.js";
 
 const gorenjeCategoryMap = {
-
-}
+	[cn.HLADILNIK]: [
+		"Nosilec za steklenice",
+		"Kombinirani hladilnik/zamrzovalnik",
+		"Kombiniran hladilnik z zamrzovalnikom",
+		"Hladilnik",
+		"Side-by-side",
+		"Dvovratni hladilnik s predalom",
+		"Hladilna vinoteka",
+		"Štirivratni hladilnik",
+		"Vinska vitrina"
+	],
+	[cn.ZAMRZOVALNIK]: ["Zamrzovalna omara", "Zamrzovalna skrinja"],
+	[cn.KLIMA]: ["Klimatska naprava"],
+	[cn.PRALNI]: ["Pralni stroj"],
+	[cn.PRALNO_SUŠILNI]: ["Pralno-sušilni stroj"],
+	[cn.POMIVALNI]: ["Pomivalni stroj"],
+	[cn.SUSILNI]: ["Sušilnik perila"],
+	[cn.POSODA]: ["Posoda za meso", "Posoda za začimbe"],
+	[cn.GRELNIK_V]: ["Grelnik vode"],
+	[cn.PEKA_KRUH]: ["Aparati za peko kruha", "Aparat za peko kruha"],
+	[cn.VAKUUM]: ["Vakuumski varilec folije", "Vrečke ali folije za vakuumski varilec", "Vakuumski aparati", "Strojček za vakuumsko pakiranje", "Sesalnik", "Pečica z mikrovalovi in paro"],
+	[cn.MESO_SALAMOREZNICA]: ["Rezalnik", "Aparat za mletje mesa", "Sekljalnik"],
+	[cn.MIKROVALOVNA]: ["_product/type/mw-grill", "_product/type/mw-regular", "Kombinirana kompaktna mikrovalovna pečica"],
+	[cn.K_NAPA]: ["Kuhinjska napa"],
+	[cn.VENTILATOR]: ["Ventilator"],
+	[cn.TOASTER]: ["Opekač kruha", "Mini žar"],
+	[cn.LEDOMAT]: ["Ledomat"],
+	[cn.SESALEC]: ["Pokončni baterijski sesalnik", "Dodatek za sesalnik", "_product/type/vacuum-hand", "Robotski sesalnik"],
+	[cn.KAVA_CAJ]: ["Kuhalnik turške kave", "Kavni mlinček", "Avtomat za kavo"],
+	[cn.SOK_OŽEM]: ["Ožemalnik", "Sokovnik"],
+	[cn.TEHTNICA]: ["Kuhinjska namizna tehtnica", "Osebna tehnica"],
+	[cn.MESALNIK]: ["Nastavni mešalnik", "Mešalnik", "Palični mešalnik", "Smoothie Maker", "Sekljalnik"],
+	[cn.ZAR]: ["Kontaktni žar"],
+	[cn.K_ZAR]: ["Namizni žar"],
+	[cn.K_ROBOT]: ["Kuhinjski robot"],
+	[cn.K_PLOSCA]: ["Kuhališče", "Indukcijsko kuhališče", "Indukcijska kuhalna plošča z napo"],
+	[cn.RADIATOR]: ["Radiator"],
+	[cn.MULTIPRAKTIK]: ["Multipraktik"],
+	[cn.LIKALNIK]: ["Parni likalnik", "Parna postaja"],
+	[cn.CVRTNIK]: ["Cvrtnik na vroč zrak"],
+	[cn.Z_VLAZILEC]: ["Vlažilnik zraka"],
+	[cn.PREN_KUH]: ["Večnamenski kuhalnik"],
+	[cn.K_PECICA]: ["Pečica", "Mini pečica"],
+	[cn.K_STEDILNIK]: ["Kuhalni aparat"],
+	[cn.SUSILEC_SADJA]: ["Sušilnik hrane"],
+	[cn.HIFI]: ["Zvočniki"],
+	[cn.TV]: ["LCD televizor"],
+	[cn.Z_RAZVLAZILEC]: ["Razvlažilnik zraka"],
+	[cn.VAP]: ["Čistilnik talnih površin", "Čistilnik tal"],
+};
 
 export default gorenjeCategoryMap;
