@@ -133,13 +133,13 @@ class AvteraAttributes {
                 'Tehnologija': el => ({ 'Tehnologija': el['#text'] }),
             },
             'Pralni stroji': {
-                'Zmogljivost pranja': el => ({ 'Kapaciteta': el['#text'] }),
+                'Zmogljivost pranja': el => ({ 'Kapaciteta bobna': el['#text'] }),
                 'Razred energijske učinkovitosti pranja': el => ({ 'Energijski razred': el['#text'] }),
                 'Največja hitrost ožemanja': el => ({ 'št. Obratov centrifuge': el['#text'] }),
                 'Inverter motor': el => ({ 'Inverter motor': el['#text'] }),
             },
             'Sušilni stroji': {
-                'Zmogljivost sušenja': el => ({ 'Kapaciteta': el['#text'] }),
+                'Zmogljivost sušenja': el => ({ 'Kapaciteta bobna': el['#text'] }),
                 'Razred energijske učinkovitosti sušenja': el => ({ 'Energijski razred': el['#text'] }),
                 'Toplotna črpalka': el => ({ 'Toplotna črpalka': el['#text'] }),
                 'Inverter motor': el => ({ 'Inverter motor': el['#text'] }),

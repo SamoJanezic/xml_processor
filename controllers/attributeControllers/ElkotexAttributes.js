@@ -66,7 +66,7 @@ class ElkotexAttributes{
 					return { Vrsta: "Papir" };
 				},
 				Kapaciteta: val => ({
-					Kapaciteta: ElkotexAttributes.extractCapacity(val),
+					"Kapaciteta materiala": ElkotexAttributes.extractCapacity(val),
 				}),
 			},
 			"Napajalniki": {

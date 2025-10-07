@@ -71,7 +71,7 @@ class AsbisAttributes {
             },
             'NAS sistemi': {
                 'Tip': el => ({ 'Postavitev': el['@_Value'] }),
-                'Podprto Število naprav': el => ({ 'Kapaciteta': el['@_Value'] }),
+                'Podprto Število naprav': el => ({ 'Kapaciteta pomnilnika': el['@_Value'] }),
                 'Vmesniki': el => {
                     const match = el['@_Value'].match(/LAN:\s*(\d+x)/i);
                     return match ? { 'št. LAN priklopov': match[1] } : {};

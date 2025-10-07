@@ -175,11 +175,11 @@ class EventusAttributes {
                 cam_locljivost_snemanja: el => ({ Ločljivost: el['#text'] }),
             },
             'USB ključi': {
-                kapaciteta: el => ({ Kapaciteta: el['#text'] }),
+                kapaciteta: el => ({ "Kapaciteta ključka": el['#text'] }),
                 vmesnik: el => ({ Hitrost: el['#text'] }),
             },
             'Spominske kartice in čitalci': {
-                kapaciteta: el => ({ Kapaciteta: el['#text'] }),
+                kapaciteta: el => ({ "Kapaciteta kartice": el['#text'] }),
                 hitrost_zapisovanja: el => ({ 'Hitrost zapisovanja': el['#text'] }),
                 hitrost_branja: el => ({ 'Hitrost branja': el['#text'] }),
                 tip_spominske_kartice: el => ({ 'Tip kartice': el['#text'] }),

@@ -107,7 +107,7 @@ const categoryNames = Object.freeze({
 	LIKALNIK: "Likalniki",
 	SESALEC: "Sesalniki",
 	// HLAJENJE IN GRETJE
-	KLIME: "Klime",
+	KLIMA: "Klime",
 	VENTILATOR: "Ventilatorji",
 	RADIATOR: "Radiatorji",
 	Z_RAZVLAZILEC: "Razvlažilci zraka",

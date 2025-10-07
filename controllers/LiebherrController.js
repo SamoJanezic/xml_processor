@@ -231,16 +231,6 @@ export class LiebherrController extends dobaviteljController {
 		return result;
 	}
 
-	sortCategories() {
-		// console.log(this.allData)
-	}
-
-	parseObject(obj) {}
-
-	splitDodatneLastnosti() {}
-
-	splitSlike() {}
-
 	async executeAll() {
 		await this.createDataObject();
 		this.processAllData();
