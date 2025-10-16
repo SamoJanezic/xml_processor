@@ -2,7 +2,8 @@ import { modelsMap } from "./index.js";
 
 modelsMap.IzdelekDobavitelj.belongsTo(modelsMap.Izdelek, {
   foreignKey: "izdelek_ean",
-  targetKey: "ean"
+  targetKey: "ean",
+  as: 'izdelek'
 });
 
 modelsMap.IzdelekDobavitelj.belongsTo(modelsMap.Dobavitelj, {
@@ -12,7 +13,8 @@ modelsMap.IzdelekDobavitelj.belongsTo(modelsMap.Dobavitelj, {
 
 modelsMap.IzdelekDobavitelj.belongsTo(modelsMap.Kategorija, {
   foreignKey: "KATEGORIJA_kategorija",
-  targetKey: "kategorija"
+  targetKey: "kategorija",
+
 });
 
 modelsMap.Kategorija.hasMany(modelsMap.IzdelekDobavitelj, {
@@ -26,22 +28,17 @@ modelsMap.Izdelek.hasMany(modelsMap.IzdelekDobavitelj, {
 	sourceKey: "ean",
 });
 
-
-modelsMap.Izdelek.hasMany(modelsMap.IzdelekDobavitelj, {
-	foreignKey: "izdelek_ean",
-	sourceKey: "ean",
-});
-
-modelsMap.Slika.belongsTo(modelsMap.Izdelek, {
-  foreignKey: "izdelek_ean",
-  targetKey: "ean"
-});
-
 modelsMap.Izdelek.hasMany(modelsMap.Slika, {
   foreignKey: "izdelek_ean",
-  sourceKey: "ean"
+  sourceKey: "ean",
+  as: "slika"
 });
 
+modelsMap.IzdelekDobavitelj.hasMany(modelsMap.Atribut, {
+  foreignKey: "izdelek_ean",
+  sourceKey: "izdelek_ean",
+  as: "atribut"
+})
 
 modelsMap.Komponenta.belongsTo(modelsMap.Kategorija, {
   foreignKey: "KATEGORIJA_kategorija",
@@ -50,7 +47,8 @@ modelsMap.Komponenta.belongsTo(modelsMap.Kategorija, {
 
 modelsMap.Kategorija.hasMany(modelsMap.Komponenta, {
   foreignKey: "KATEGORIJA_kategorija",
-  sourceKey: "kategorija"
+  sourceKey: "kategorija",
+  as: "Komponenta"
 });
 
 modelsMap.Atribut.belongsTo(modelsMap.Komponenta, {
@@ -60,5 +58,6 @@ modelsMap.Atribut.belongsTo(modelsMap.Komponenta, {
 
 modelsMap.Komponenta.hasMany(modelsMap.Atribut, {
   foreignKey: "KOMPONENTA_komponenta",
-  sourceKey: "komponenta"
+  sourceKey: "komponenta",
+
 });
