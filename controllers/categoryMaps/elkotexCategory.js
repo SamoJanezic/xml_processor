@@ -24,6 +24,7 @@ const elkotexCategoryMap = {
 		"Klasični in ročni sesalniki",
 		"Pokončni sesalniki",
 		"Parni čistilniki",
+		"Robotski sesalniki",
 	],
 	[cn.HIFI]: ["Prenosni zvočniki"],
 	[cn.P_DOM]: [
@@ -106,6 +107,9 @@ const elkotexCategoryMap = {
 	[cn.POSODA]: ["Posode za živila", "Kuhinjska posoda", "Posodice za vodo"],
 	[cn.K_ZAR]: ["Električne pečice, žari in grelne ploskve"],
 	[cn.DOM_VRT]: [
+		"Koši za perilo",
+		"Poštni nabiralniki"
+		"Robotske kosilnice",
 		"Stojala za perilo in obešalniki",
 		"Vrtno orodje",
 		"Ročno orodje",

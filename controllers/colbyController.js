@@ -30,6 +30,7 @@ export class ColbyController extends DobaviteljController {
 	];
 
 	ignoreCategorySet = new Set([
+		"Zbirateljski izdelki",
 		"Torbice,Vrsta izdelka",
 		"Denarnice",
 		"Svetila",

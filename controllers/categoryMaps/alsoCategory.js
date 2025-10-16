@@ -224,7 +224,8 @@ const alsoCategoryMap = {
 	],
 	[cn.TIPKOVNICA]: [
 		"Periferija & dodatki / Tipkovnice / Tipkovnice - Brezžične",
-		"Periferija & dodatki / Tipkovnice / Tipkovnice - Žične"
+		"Periferija & dodatki / Tipkovnice / Tipkovnice - Žične",
+		"Periferija & dodatki / Tipkovnice / Numerične tipkovnice"
 	],
 	[cn.KOMPLET]: [
 		"Periferija & dodatki / Kompleti / Miška & tipkovnica - Brezžično",

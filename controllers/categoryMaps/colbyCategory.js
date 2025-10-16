@@ -10,7 +10,7 @@ const colbyCategoryMap = {
         [cn.OHISJE]: ["Ohišje"],
         [cn.IGRE]: [
             undefined, "PC", "Outright Games", "PS4", "PS5", "SWITCH", "PM Studios", "XBOXONE", "XONE", "Playstation 4",
-            "Xbox One", "Xbox One Series X", "Xbox Series X", "Playstation 5", "Nintendo Switch", "Letalski simulator",
+            "Xbox One", "Xbox One Series X", "Xbox Series X", "Playstation 5", "Nintendo Switch", "Letalski simulator", "Atari 2600+",
             "XBOXSERIESX", "XBOX", "XBSX", "Xbox One & Xbox Series X", "Xbox Series X & Xbox One", "Nintendo Switch 2", "Nintendo Switch 2 Edition"
         ],
         [cn.GAMEPAD]: [
@@ -22,7 +22,8 @@ const colbyCategoryMap = {
         ],
         [cn.DRON]: ["Droni"],
         [cn.SLUSALKE]: ["Stojala za slušalke"],
-        [cn.STOL]: ["Dodatki za gaming stole"]
+        [cn.STOL]: ["Dodatki za gaming stole"],
+        [cn.N_LAS]: ["Sušilnik za lase", "Likalnik za lase", "kodralnik"]
     };
 
 export default colbyCategoryMap;

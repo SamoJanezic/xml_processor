@@ -97,6 +97,7 @@ const asbisCategoryMap = {
 	],
 	[cn.M_BOARD]: ["Osnovna plošča za namizni računalnik"],
 	[cn.RAM]: [
+		"Memory Gaming Mobile",
 		"Memory Gaming Desktop",
 		"Memory ( Server )",
 		"Memory ( Mobile )",

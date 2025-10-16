@@ -30,6 +30,7 @@ export class EventusController extends DobaviteljController {
 	];
 
 	ignoreCategorySet = new Set([
+		"Promocija",
 		"Odprodaja %",
 		"LED osvetlitev",
 		"Rezervni deli",

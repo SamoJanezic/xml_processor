@@ -3,7 +3,7 @@ import cn from "./categoryNames.js";
 const avteraCategoryMap = {
 	[cn.TV]: ["LED hotelski televizorji", "LED TV", "LED prikazovalniki"],
 	[cn.SOUND_BAR]: ["Hišni Kino"],
-	[cn.TABLET]: ["Elektronski bralniki in dodatki"],
+	[cn.TABLET]: ["Elektronski bralniki in dodatki", "Grafične tablice"],
 	[cn.ZAMRZOVALNIK]: ["Hladilne skrinje"],
 	[cn.SD_CARD]: ["Čitalci kartic", "Spominske kartice"],
 	[cn.MONITOR]: ["LCD monitorji"],
@@ -63,6 +63,7 @@ const avteraCategoryMap = {
 	[cn.CELADA]: ["Mestne čelade"],
 	[cn.URE]: ["Nosljive naprave"],
 	[cn.RADIATOR]: ["Električna ogrevala"],
+	[cn.KEY]: ["Varnostni ključi"]
 };
 
 export default avteraCategoryMap;
