@@ -6,8 +6,8 @@ import AsbisAttributes from "./asbisAttributes.js";
 import ElkotexAttributes from "./elkotexAttributes.js";
 import ColbyAttributes from "./colbyAttributes.js";
 import LiebherrAttributes from "./LiebherrAttributes.js";
-// import gorenjeAttributes from "./gorenjeAttributes.js";
-// import BshAttributes from "./bshAttributes.js";
+import GorenjeAttributes from "./GorenjeAttributes.js";
+import BshAttributes from "./BshAttributes.js";
 
 export const attributesMap = {
 	acord: AcordAttributes,
@@ -18,6 +18,6 @@ export const attributesMap = {
 	elkotex: ElkotexAttributes,
 	colby: ColbyAttributes,
 	liebherr: LiebherrAttributes,
-	// bsh: BshAttributes,
-	// gorenje: gorenjeAttributes,
+	bsh: BshAttributes,
+	gorenje: GorenjeAttributes,
 };
