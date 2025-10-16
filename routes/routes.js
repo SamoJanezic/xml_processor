@@ -1,15 +1,19 @@
 import express from "express";
-import [ modelsMap ] from "../models/index.js";
+import { modelsMap } from "../models/index.js";
+import "../models/associations.js";
 
 const router = express.Router();
 
 const models = {
-	modelsMap.IzdelekDobavitelj,
-	modelsMap.Kategorija
+	IzdelekDobavitelj: modelsMap.IzdelekDobavitelj,
+	Kategorija: modelsMap.Kategorija,
+	Slike: modelsMap.Slika,
+	Izdelki: modelsMap.Izdelek,
+	Komponente: modelsMap.Komponenta,
+	Atribut: modelsMap.Atribut,
 }
 
 router.get("/getData", async (req, res) => {
-	console.log(req.headers);
 	try {
 		const table = req.headers.table;
 		if (!models[table]) {
@@ -25,16 +29,48 @@ router.get("/getData", async (req, res) => {
 	}
 });
 
-router.get("/getSingle", (req, res) => {
-	modelsMap.IzdelekDobavitelj.findOne({
-		where: { id: req.headers.id },
-	})
-		.then((data) => {
-			res.status(200).json(data);
-		})
-		.catch((err) => {
-			console.error(err);
+router.get("/getSingle", async (req, res) => {
+	console.log(req.headers)
+	try {
+		const id = req.headers.id;
+
+		const product = await models.IzdelekDobavitelj.findOne({
+			where: { id },
+			attributes: ['id', 'izdelek_ean', 'KATEGORIJA_kategorija', 'izdelek_ime', 'nabavna_cena'],
+			include: [
+				{
+					model: models.Atribut,
+					as: 'atribut',
+					attributes: ['KOMPONENTA_komponenta', 'atribut']
+				},
+				{
+					model: models.Izdelki,
+					as: 'izdelek',
+					include: [
+						{
+							model: models.Slike,
+							as: 'slika',
+							attributes: ['slika_url', 'tip']
+						}
+					]
+				}
+			]
 		});
+
+		if (!product) return res.status(404).json({ error: "Product not found" });
+
+		// 2️⃣ Fetch attributes for this EAN
+		const attributes = await modelsMap.Atribut.findAll({
+			where: { izdelek_ean: product.izdelek_ean },
+			attributes: ['id', 'atribut', 'KOMPONENTA_komponenta', 'izdelek_ean']
+		});
+
+		res.json(product);
+
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: err.message });
+	}
 });
 
 router.put("/update_kategorija", (req, res) => {
@@ -91,9 +127,29 @@ router.put("/upsert", (req, res) => {
     .catch(err => console.log(err));
 });
 
-router.get("/func", (req, res) => {
-	console.log(req.headers);
-	res.status(200).json({ message: "Func route" });
+router.get("/lazy-test", (req, res) => {
+	const offset = req.headers.offset;
+	const limit = req.headers.limit;
+	models.IzdelekDobavitelj.findAll({
+  		limit: limit,
+  		offset: offset,
+		attributes: ['id', 'izdelek_ean', "KATEGORIJA_kategorija", "izdelek_ime", "nabavna_cena"],
+		include: [
+			{
+				model: models.Izdelki,
+				as: 'izdelek',
+				include: [
+					{
+						model: models.Slike,
+						as: 'slika',
+						attributes: ['slika_url', 'tip']
+					}
+				]
+			}
+		]
+	}).then(data => {
+		res.status(200).json(data)
+	})
 });
 
 export default router;
